@@ -8,7 +8,7 @@ export default function SignUpPage() {
   }
   return (
     <div style={{textAlign:"center"}}>
-    <Card style={{display: "inline-grid", marginTop: "200px" }}>
+    <Card style={{display: "inline-grid", marginTop: "200px" }} variant="outlined">
       <CardContent style={{ textAlign: "center",display: "inline-grid"}}>
         <Typography style={{fontWeight: 600, fontSize:15}}>Please fill this form to create your account!</Typography>
         <div style={{ textAlign: "center",display: "inline-grid",marginLeft:"70px",marginRight:'70px'}}>
