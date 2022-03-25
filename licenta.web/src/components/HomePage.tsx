@@ -6,13 +6,15 @@ import ChatIcon from '@material-ui/icons/Chat';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
-export default function HomeScreen() {
+export default function HomePage() {
 
   let navigate = useNavigate(); 
   const handleLogout = () =>{ 
     navigate("/")
   }
-
+    const handleProfile = () =>{ 
+    navigate("/profile")
+  }
   let user = "user";
   return (
     <div style={{textAlign:"center"}}> 
@@ -30,7 +32,7 @@ export default function HomeScreen() {
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs ={4}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={handleProfile}>
                             <PersonIcon />
                             <Typography style={{fontSize:13}}>
                                  Profile

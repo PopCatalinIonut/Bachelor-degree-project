@@ -1,7 +1,8 @@
 import LoginPage from './components/LoginPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import SignUpPage from './components/SignUpPage';
-import HomeScreen from './components/HomeScreen';
+import HomePage from './components/HomePage';
+import ProfilePage from './components/ProfilePage';
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
         <Routes>
             <Route path="/" element={<LoginPage/>}/>
             <Route path="/signup" element={<SignUpPage/>}/>
-            <Route path='/home' element={<HomeScreen/>}/>
+            <Route path='/home' element={<HomePage/>}/>
+            <Route path="/profile" element={<ProfilePage/>}/>
         </Routes>
       </BrowserRouter>
   );
