@@ -15,6 +15,9 @@ export default function HomePage() {
     const handleProfile = () =>{ 
     navigate("/profile")
   }
+  const handleAddItem = () =>{ 
+    navigate("/additem")
+  }
   let user = "user";
   return (
     <div style={{textAlign:"center"}}> 
@@ -74,7 +77,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={handleAddItem}>
                             <SellIcon />
                             <Typography style={{fontSize:13}}>
                                 Want to sell something?
