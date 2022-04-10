@@ -89,7 +89,7 @@ export default function AddItemPage() {
                                 <Typography style={styles.typographyFormat} noWrap>Title: </Typography>
                             </Grid>
                             <Grid item sm={6}>
-                                <TextField variant="standard" onBlur={event => {
+                                <TextField variant="standard" onBlur={(event: { currentTarget: { value: string; }; }) => {
                                     handleItemTitle(event.currentTarget.value);
                                 }}/>
                             </Grid>
@@ -99,25 +99,21 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <Select value={itemCategory}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSelectMainCategory(eventNr);
-                            }}>
+                                    handleSelectMainCategory(eventNr);}}>
                                 {categoryList.map((item) => {
-                                    return <MenuItem key={item} value={item}> {item}</MenuItem>
-                                })}
+                                    return <MenuItem key={item} value={item}> {item}</MenuItem>})}
                             </Select>
                             <Select value={itemSubCategory} style={{marginLeft:"30px"}} onChange={event => {
                                     var eventNr = event.target.value as unknown as number;
-                                    handleSelectCategory(eventNr);
-                            }}>
-                            {itemTypesSelect.filter((x) => x.category === itemCategory)
-                                .map((i) => {
-                                    return (
-                                    <MenuItem key={i.id} value={i.id} onClick={() => {handleSelectCategory(i.id)}}>
-                                        {i.name}
-                                    </MenuItem>
-                                    );
-                                })
-                            }</Select>
+                                    handleSelectCategory(eventNr);}}>
+                                        {itemTypesSelect.filter((x) => x.category === itemCategory)
+                                            .map((i) => {
+                                                return (
+                                                <MenuItem key={i.id} value={i.id} onClick={() => {handleSelectCategory(i.id)}}>
+                                                    {i.name}
+                                                </MenuItem>
+                                                );})}
+                            </Select>
                             </Grid>
                             <Grid item sm={6} >
                                 <Typography style={styles.typographyFormat}>Genre:</Typography>
@@ -150,14 +146,12 @@ export default function AddItemPage() {
                             }}> {(() => {
                                 if (itemCategory === "Footwear"){
                                     var sizes = footwearSizes.filter((x) => x.genre == itemGenre)
-                                    console.log(sizes.length)
                                     if(sizes.length === 0)
                                         return;
                                     else return sizes.map((item) => {
                                             return <MenuItem key={item.size} value={item.size}> {item.size}</MenuItem>
                                         })}
                                 else if(itemCategory === "Clothing"){
-                                    console.log("a intrat in clothing")
                                     return clothingSizes.map((item) => {
                                         return <MenuItem key={item} value={item}> {item}</MenuItem>
                                     })
@@ -169,22 +163,22 @@ export default function AddItemPage() {
                                 <Typography style={styles.typographyFormat}>Fit:</Typography>
                             </Grid>
                             <Grid item sm={6}>
-                            <Select value={itemFit}  onChange={event => {
+                                <Select value={itemFit}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSelectItemFit(eventNr);
-                            }}> {(() => {
-                                if (itemCategory === "Footwear"){
-                                    return  footwearSizes.filter((x) => x.genre == itemGenre)
-                                        .map((item) => {
-                                            return <MenuItem key={item.size} value={item.size}> {item.size}</MenuItem>
-                                        })}
-                                else if(itemCategory === "Clothing"){
-                                    return clothingSizes.map((item) => {
-                                        return <MenuItem key={item} value={item}> {item}</MenuItem>
-                                    })
-                                }else return;
-                              })()}
-                            </Select>
+                                    handleSelectItemFit(eventNr);}}>
+                                    {(() => {
+                                        if (itemCategory === "Footwear"){
+                                            return  footwearSizes.filter((x) => x.genre == itemGenre)
+                                                .map((item) => {
+                                                    return <MenuItem key={item.size} value={item.size}> {item.size}</MenuItem>
+                                                })}
+                                        else if(itemCategory === "Clothing"){
+                                            return clothingSizes.map((item) => {
+                                                return <MenuItem key={item} value={item}> {item}</MenuItem>
+                                            })
+                                        }else return;
+                                    })()}
+                                </Select>
                             </Grid>
                             <Grid item sm={6}>
                                 <Typography style={styles.typographyFormat}>Condition:</Typography>
@@ -203,7 +197,7 @@ export default function AddItemPage() {
                             </Grid>
                             <Grid item sm={6}>
                             <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                    style={{width:"80px"}} onBlur={event => {
+                                    style={{width:"80px"}} onBlur={(event: { currentTarget: { value: string; }; }) => {
                                     handleItemPrice(event.currentTarget.value);
                                 }}/>
                             </Grid>
@@ -235,7 +229,7 @@ export default function AddItemPage() {
                             </Grid>
                             <Grid item sm={6}>
                             <TextField variant="outlined" multiline rows={4} style={{width:"300px"}}
-                                onBlur={event => {
+                                onBlur={(event: { currentTarget: { value: string; }; }) => {
                                     handleSetItemDescription(event.currentTarget.value);
                                 }}
                                 />
@@ -244,7 +238,7 @@ export default function AddItemPage() {
                                 <Typography style={styles.typographyFormat}>City:</Typography>
                             </Grid>
                             <Grid item sm={6}>
-                            <TextField onBlur={event => {
+                            <TextField onBlur={(event: { currentTarget: { value: string; }; }) => {
                                     handleSetItemLocation(event.currentTarget.value);
                                 }}
                                 />

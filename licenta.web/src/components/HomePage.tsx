@@ -18,6 +18,9 @@ export default function HomePage() {
   const handleAddItem = () =>{ 
     navigate("/additem")
   }
+  const handleWishlist = () =>{
+    navigate("/wishlist")
+  }
   let user = "user";
   return (
     <div style={{textAlign:"center"}}> 
@@ -43,7 +46,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={handleWishlist}>
                             <FavoriteIcon /> 
                             <Typography style={{fontSize:13}}>
                                 Wishlist
