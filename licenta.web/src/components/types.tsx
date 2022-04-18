@@ -1,5 +1,5 @@
 
-export interface WishlistItem {
+export interface SellingItem {
     name: string;
     
 }

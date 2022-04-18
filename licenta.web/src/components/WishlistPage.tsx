@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useEffect } from "react";
-import { WishlistItem } from "./types";
+import { SellingItem } from "./types";
 
-var items: WishlistItem[] = [
+var items: SellingItem[] = [
     {name:"test1"},{name:"test2"},{name:"test3"}, {name:"test4"},{name:"test5"},{name:"test6"}
 ]
 

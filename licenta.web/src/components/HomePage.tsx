@@ -21,6 +21,9 @@ export default function HomePage() {
   const handleWishlist = () =>{
     navigate("/wishlist")
   }
+  const handleMarketplace = () =>{
+    navigate("/marketplace")
+  }
   let user = "user";
   return (
     <div style={{textAlign:"center"}}> 
@@ -72,7 +75,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={handleMarketplace}>
                             <ShoppingCart /> 
                             <Typography style={{fontSize:13}}>
                             Marketplace

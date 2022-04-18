@@ -5,6 +5,7 @@ import HomePage from './components/HomePage';
 import ProfilePage from './components/ProfilePage';
 import AddItemPage from './components/AddItemPage';
 import WishlistPage from './components/WishlistPage';
+import MarketplacePage from './components/MarketplacePage';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage/>}/>
             <Route path='/additem' element={<AddItemPage/>}/>
             <Route path='/wishlist' element={<WishlistPage/>}/>
+            <Route path='/marketplace' element={<MarketplacePage/>}/>
         </Routes>
       </BrowserRouter>
   );
