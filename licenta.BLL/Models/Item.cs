@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace licenta.BLL.Models
 {
     public class Item
     {
+        [Key]
+        public int Id { get; set; }
         public string ItemType { get; set; }
         public string ItemCategory { get; set; }
         public string Genre { get; set; }
