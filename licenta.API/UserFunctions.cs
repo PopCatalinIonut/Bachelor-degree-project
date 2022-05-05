@@ -7,7 +7,10 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
+using System.Web.Http;
 using licenta.BLL;
 using licenta.BLL.Managers;
 using licenta.BLL.Models;
@@ -63,19 +66,23 @@ namespace licenta.API
             }
         }
         [FunctionName("VerifyUser")]
-        [OpenApiRequestBody("application/json", typeof(User))]
-        public ActionResult<LoginUserDto> VerifyUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/login")] HttpRequest req,
-            ILogger log)
+        [OpenApiOperation("get", "user")]
+        [OpenApiRequestBody("application/json", typeof(UserDetailsDto))]
+        public ActionResult<UserDetailsDto> VerifyUser(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/login&username={username}&password={password}")] HttpRequest req,
+            [FromUri] string username, [FromUri]string password, ILogger log)
         {
             try
             {
-                string requestBody = new StreamReader(req.Body).ReadToEnd();
-                var userToVerify = JsonConvert.DeserializeObject<LoginUserDto>(requestBody);
-                bool verified =  _userManager.VerifyUser(userToVerify.Username,userToVerify.Password);
-                if (verified == false)
+                User verified =  _userManager.VerifyUser(username,password);
+                if (verified == null)
                     return new NotFoundResult();
-                return userToVerify;
+                return new UserDetailsDto {
+                    Username = verified.LoginUsername,
+                    FirstName = verified.FirstName, 
+                    LastName = verified.LastName, 
+                    Email = verified.Email
+                };
             }
             catch (Exception e)
             {

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using licenta.BLL.Models;
 
@@ -26,11 +28,10 @@ namespace licenta.BLL.Managers
             return user;
         }
 
-        public bool VerifyUser(string username, string password)
+        public User VerifyUser(string username, string password)
         {
-            var user = _context.Users
-                .First(x => x.LoginUsername == username && x.Password == password);
-            return user != null;
+            var user = _context.Users.FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
+            return user;
         }
         public User AddUser(User userToAdd)
         {

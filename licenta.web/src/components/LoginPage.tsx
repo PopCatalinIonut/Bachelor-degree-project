@@ -1,14 +1,30 @@
 import { Button, CardContent, Card,FormControl, Input, InputLabel, Typography } from "@material-ui/core";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useState } from "react";
 import { useNavigate} from "react-router-dom";
+import { useAppDispatch } from "../app/hooks";
+import { userLogin } from "../features/LoginSlice";
+import { LoggedUserDetails } from "../features/types";
 export default function LoginPage() {
-
+  const dispatch = useAppDispatch();
+  const [usernameValue, setUsernameValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
+  const [incorrectCredentials, setIncorrectCredentials] = useState(<div></div>)
   let navigate = useNavigate(); 
   const handleSignup = () =>{ 
     navigate("/signup")
   }
 
-  const handleLogin = () =>{ 
-    navigate("/home")
+  const handleLogin = async () =>{ 
+    const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
+    try {
+      const payload: LoggedUserDetails = unwrapResult(response);
+      console.log(payload)
+      navigate("/home");
+    } catch (err) {
+      setIncorrectCredentials(<div style={{marginTop:"20px",marginBottom:"20px"}}><Typography style={{color:"red"}}>Incorrect username or password</Typography></div>);
+    }
+
   }
   return (
     <div style={{textAlign:"center"}}> 
@@ -16,13 +32,14 @@ export default function LoginPage() {
       <CardContent>
         <div style={{ display: "inline-grid"}}>
           <Typography style={{fontWeight: 600, fontSize:30}}>Welcome!</Typography>
+          {incorrectCredentials}
           <FormControl>
               <InputLabel>Username</InputLabel>
-              <Input/>
+              <Input value={usernameValue} onChange={event =>{ setUsernameValue(event.target.value)}}/>
           </FormControl>
           <FormControl>
               <InputLabel >Password</InputLabel>
-              <Input type="password" />
+              <Input type="password" value={passwordValue} onChange={event =>{setPasswordValue(event.target.value)}}/>
           </FormControl>
         </div>
         <div >
