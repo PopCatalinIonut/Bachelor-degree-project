@@ -17,6 +17,10 @@ export default function SignUpPage() {
 
   let navigate = useNavigate(); 
   const dispatch = useAppDispatch();
+
+  const handleGoBack = () =>{
+    navigate("/");
+  }
   const handleSignUp = async () =>{ 
 
     var errors = verifyInputs();
@@ -84,7 +88,7 @@ export default function SignUpPage() {
             onClick={handleSignUp}> Create account
           </Button>
           <Button type="button" color="secondary"  variant="contained" style={{marginTop:"10px"}}
-            onClick={handleSignUp}> Go back
+            onClick={handleGoBack}> Go back
           </Button>
         </div>
         <Snackbar
