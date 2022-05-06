@@ -6,14 +6,16 @@ import ChatIcon from '@material-ui/icons/Chat';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
-import { useAppSelector } from "../app/hooks";
-import { userSelector } from "../features/LoginSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { logout, userSelector } from "../features/LoginSlice";
 import { LoggedUserDetails } from "../features/types";
 export default function HomePage() {
-    
+
+  const dispatch = useAppDispatch();
   const userLogged: LoggedUserDetails | null = useAppSelector(userSelector);
   let navigate = useNavigate(); 
   const handleLogout = () =>{ 
+    dispatch<any>(logout({}));
     navigate("/")
   }
     const handleProfile = () =>{ 
