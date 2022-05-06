@@ -46,16 +46,24 @@ namespace licenta.API
         }
         [FunctionName("AddUser")]
         [OpenApiOperation("add", "users")]
-        [OpenApiRequestBody("application/json", typeof(User))]
-        public ActionResult<User> AddUser(
+        [OpenApiRequestBody("application/json", typeof(string))]
+        public async Task<ActionResult<string>> AddUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequest req,
             ILogger log)
         {
             try
             {
-                string requestBody = new StreamReader(req.Body).ReadToEnd();
+                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var addUserData = JsonConvert.DeserializeObject<User>(requestBody);
-                return _userManager.AddUser(addUserData);
+                var message = _userManager.AddUser(addUserData);
+                if (message.Length == 0)
+                    return new OkResult();
+                
+                var result = new ObjectResult(message)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+                return result;
             }
             catch (Exception e)
             {
