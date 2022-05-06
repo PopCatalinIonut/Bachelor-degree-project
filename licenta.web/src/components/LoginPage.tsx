@@ -3,8 +3,8 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
-import { userLogin } from "../features/LoginSlice";
-import { LoggedUserDetails } from "../features/types";
+import { userLogin } from "../features/LoginSlice/LoginSlice";
+import { LoggedUserDetails } from "../features/LoginSlice/types";
 export default function LoginPage() {
   const dispatch = useAppDispatch();
 

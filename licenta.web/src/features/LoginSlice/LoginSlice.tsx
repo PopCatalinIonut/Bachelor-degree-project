@@ -4,11 +4,11 @@ import {
     PayloadAction,
   } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import { SetInitialStatePayload } from "./payloads";
+import { RootState } from "../../app/store";
+import { SetInitialLoginSliceStatePayload } from "./payloads";
 import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "./types";
 
-export interface ConfigurationState {
+export interface LoginSiceConfigurationState {
     user: LoggedUserDetails | null;
     initialized: boolean;
 }
@@ -45,7 +45,7 @@ export const userLogin = createAsyncThunk(
     return user;
   },
 );
-const initialState: ConfigurationState = {
+const initialState: LoginSiceConfigurationState = {
     initialized: false,
     user: null
 };
@@ -54,7 +54,7 @@ export const loginSlice = createSlice({
     name: "loginSlice",
     initialState,
     reducers: {
-      setInitialState: (state, action: PayloadAction<SetInitialStatePayload>) => {
+      setInitialState: (state, action: PayloadAction<SetInitialLoginSliceStatePayload>) => {
         state.user = action.payload.user;
         state.initialized = true;
       },

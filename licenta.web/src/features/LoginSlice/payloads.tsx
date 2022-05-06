@@ -1,5 +1,5 @@
 import { LoggedUserDetails } from "./types";
 
-export interface SetInitialStatePayload {
+export interface SetInitialLoginSliceStatePayload {
   user: LoggedUserDetails;
 }
