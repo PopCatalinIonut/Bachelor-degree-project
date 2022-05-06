@@ -1,10 +1,10 @@
-import { Button, Card, CardContent, Fab, Grid, Input, InputAdornment,  MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, Fab, Grid, Input, InputAdornment,  MenuItem, Select, Snackbar, TextField, Typography } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions } from "../data/ItemCategory";
+import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
 const styles = {
     typographyFormat: {
         padding: "10px 20px",
@@ -28,38 +28,8 @@ export default function AddItemPage() {
     const [itemPrice, setItemPrice] = useState("");
     const [itemLocation, setItemLocation] = useState("");
     const [itemDescription, setItemDescription] = useState("");
-
-    function handleSetItemDescription(item: string): void{
-        setItemDescription(item);
-    }
-    function handleSetItemLocation(item: string): void{
-        setItemLocation(item);
-    }
-    function handleItemPrice (item: string): void{
-        setItemPrice(item);
-    }
-    function handleItemTitle(item:string): void{
-        setItemTitle(item);
-    }
-    function handleSelectItemCondition(item:string): void {
-        setItemCondition(item);
-    }
-    function handleSelectItemFit(item: string): void{
-        setItemFit(item);
-    }
-    function handleSetItemSize(item: string): void{
-        setItemSize(item);
-    }
-    function handleSetItemGenre(item: string): void {
-        setItemGenre(item);
-    }
-    function handleSelectCategory(item: number): void {
-        setItemSubCategory(item); 
-    }
-    function handleSelectMainCategory(item: string): void {
-        setItemCategory(item);
-    }
-
+    const [itemColor, setItemColor] = useState("");
+    const [snackOpened, setSnackOpened] = useState("");
     const [images, setImages] = useState([""])
 
     const onImageAdd = (event: any) => {
@@ -74,6 +44,26 @@ export default function AddItemPage() {
         newimages.splice(index,1);
         setImages(newimages);
     }
+
+    const handleAddItem = async ()  =>{
+        console.log("enter add item")
+        console.log(images.length)
+        var errors = verifyInputs();
+        if(errors.length > 0){
+            console.log("unverified");
+            setSnackOpened(errors);
+        }
+    }
+    const verifyInputs = () =>{
+        var errors: string = "";
+        if(itemCategory.length === 0 || itemSubCategory === 0 || images.length < 2 || 
+            itemSize.length === 0 || itemDescription.length === 0 || 
+            itemFit.length === 0 || itemPrice.length === 0 || itemTitle.length === 0 ||
+            itemLocation.length === 0 || itemGenre.length === 0 || itemColor.length === 0){
+            errors+="There are empty fields";
+        }
+        return errors;
+      }
     return (
         <div style={{textAlign:"center"}}>
             <div style={{textAlign:"center",marginBottom:"20px"}}>
@@ -90,7 +80,7 @@ export default function AddItemPage() {
                             </Grid>
                             <Grid item sm={6}>
                                 <TextField variant="standard" onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                    handleItemTitle(event.currentTarget.value);
+                                    setItemTitle(event.currentTarget.value);
                                 }}/>
                             </Grid>
                             <Grid item sm={6}>
@@ -99,20 +89,20 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <Select value={itemCategory}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSelectMainCategory(eventNr);}}>
+                                    setItemCategory(eventNr);}}>
                                 {categoryList.map((item) => {
                                     return <MenuItem key={item} value={item}> {item}</MenuItem>})}
                             </Select>
                             <Select value={itemSubCategory} style={{marginLeft:"30px"}} onChange={event => {
                                     var eventNr = event.target.value as unknown as number;
-                                    handleSelectCategory(eventNr);}}>
+                                    setItemSubCategory(eventNr);}}>
                                         {itemTypesSelect.filter((x) => x.category === itemCategory)
                                             .map((i) => {
                                                 return (
-                                                <MenuItem key={i.id} value={i.id} onClick={() => {handleSelectCategory(i.id)}}>
+                                                <MenuItem key={i.id} value={i.id} onClick={() => {setItemSubCategory(i.id)}}>
                                                     {i.name}
                                                 </MenuItem>
-                                                );})}
+                                            );})}
                             </Select>
                             </Grid>
                             <Grid item sm={6} >
@@ -121,7 +111,7 @@ export default function AddItemPage() {
                             <Grid item sm={6} >
                             <Select value={itemGenre}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSetItemGenre(eventNr);
+                                    setItemGenre(eventNr);
                             }}>{(() => {
                                 if(itemCategory === "Footwear"){
                                     return genreList.map((item) => {
@@ -142,7 +132,7 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <Select value={itemSize}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSetItemSize(eventNr);
+                                    setItemSize(eventNr);
                             }}> {(() => {
                                 if (itemCategory === "Footwear"){
                                     var sizes = footwearSizes.filter((x) => x.genre == itemGenre)
@@ -165,7 +155,7 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                                 <Select value={itemFit}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSelectItemFit(eventNr);}}>
+                                    setItemFit(eventNr);}}>
                                     {(() => {
                                         if (itemCategory === "Footwear"){
                                             return  footwearSizes.filter((x) => x.genre == itemGenre)
@@ -186,9 +176,21 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <Select value={itemCondition}  onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
-                                    handleSelectItemCondition(eventNr);
+                                    setItemCondition(eventNr);
                             }}>
                             {conditions.map((item) =>{
+                                return <MenuItem key={item} value={item}>{item}</MenuItem>
+                            })}</Select>
+                            </Grid>
+                            <Grid item sm={6}>
+                                <Typography style={styles.typographyFormat}>Color:</Typography>
+                            </Grid>
+                            <Grid item sm={6}>
+                            <Select value={itemColor}  onChange={event => {
+                                    var eventNr = event.target.value as unknown as string;
+                                    setItemColor(eventNr);
+                            }}>
+                            {colors.map((item) =>{
                                 return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
                             </Grid>
@@ -198,7 +200,7 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                     style={{width:"80px"}} onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                    handleItemPrice(event.currentTarget.value);
+                                    setItemPrice(event.currentTarget.value);
                                 }}/>
                             </Grid>
                             <Grid item sm={6}>
@@ -230,7 +232,7 @@ export default function AddItemPage() {
                             <Grid item sm={6}>
                             <TextField variant="outlined" multiline rows={4} style={{width:"300px"}}
                                 onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                    handleSetItemDescription(event.currentTarget.value);
+                                    setItemDescription(event.currentTarget.value);
                                 }}
                                 />
                             </Grid>
@@ -239,18 +241,20 @@ export default function AddItemPage() {
                             </Grid>
                             <Grid item sm={6}>
                             <TextField onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                    handleSetItemLocation(event.currentTarget.value);
+                                    setItemLocation(event.currentTarget.value);
                                 }}
                                 />
                             </Grid>
                         </Grid>
                   </div>
-                <Button style={{marginTop:"10px"}} variant="contained" color="primary">Submit</Button>
-              </CardContent>
+                <Button onClick={handleAddItem} style={{marginTop:"10px"}} variant="contained" color="primary">Submit</Button>
+                <Snackbar
+                    open={snackOpened.length !== 0 ? true : false} autoHideDuration={3000} message={snackOpened}
+                    anchorOrigin={{vertical: "top", horizontal: "center"}} onClose={() => setSnackOpened("")}/>  
+                </CardContent>
           </Card>
       </div>
     );
-  
   }
 
   export {}

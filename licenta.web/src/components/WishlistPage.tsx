@@ -6,7 +6,7 @@ import React, { useEffect } from "react";
 import { SellingItem } from "./types";
 
 var items: SellingItem[] = [
-    {name:"test1"},{name:"test2"},{name:"test3"}, {name:"test4"},{name:"test5"},{name:"test6"}
+   
 ]
 
 export default function WishlistPage(){

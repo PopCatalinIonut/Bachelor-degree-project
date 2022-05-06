@@ -2,9 +2,10 @@ export const categoryList = [ "Footwear", "Clothing"]
 
 export const genreList = ["Men", "Women", "Unisex"]
 
-export const clothingSizes = [
-  "XS" , "S" , "M" , "L" , "XL" , "XXL"
-]
+export const clothingSizes = [ "XS" , "S" , "M" , "L" , "XL" , "XXL"]
+
+export const colors =[ "Red", "Orange", "Yellow", "Green", "Cyan","Blue","Purple",
+      "White","Black","Gray","Pink","Brown","Multicolor","Beige","Magenta","Olive"]
 
 export const conditions = [ "New with tags", "New without tags", "New with defects", "Good", "Used"]
 

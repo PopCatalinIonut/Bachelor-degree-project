@@ -3,11 +3,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Button, Card, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { SellingItem } from "./types";
-import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/ItemCategory";
+import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
 
-var items: SellingItem[] = [
-    {name:"test1"},{name:"test2"},{name:"test3"}, {name:"test4"},{name:"test5"},{name:"test6"}
-]
 
 var selectCategories = ["None"].concat(categoryList);
 var selectClothingSizes = ["None"].concat(clothingSizes);
@@ -22,7 +19,7 @@ export default function MarketplacePage(){
     const [itemSubCategory, setItemSubCategory] = useState(0);
     const [itemCategory, setItemCategory] = useState("");
     const [itemGenre, setItemGenre] = useState("");
-
+    var items: SellingItem[] =[];
     const [itemCondition, setItemCondition] = useState("");
     const [itemSize, setItemSize] =useState("");
     useEffect(() => {
@@ -137,6 +134,7 @@ export default function MarketplacePage(){
                                  return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
                         </FormControl>
+                        
                     <Button>
 
                     </Button>
