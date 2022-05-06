@@ -20,7 +20,6 @@ export default function LoginPage() {
     const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
     try {
       const payload: LoggedUserDetails = unwrapResult(response);
-      console.log(payload)
       navigate("/home");
     } catch (err) {
       setIncorrectCredentials(<div style={{marginTop:"20px",marginBottom:"20px"}}><Typography style={{color:"red"}}>Incorrect username or password</Typography></div>);

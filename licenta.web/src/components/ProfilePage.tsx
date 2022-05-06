@@ -1,8 +1,11 @@
-import { Accordion, AccordionDetails, AccordionSummary, Button, Card, CardContent, Fab, Grid, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, Fab, Grid, Typography } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from "react";
+import { useAppSelector } from "../app/hooks";
+import { LoggedUserDetails } from "../features/types";
+import { userSelector } from "../features/LoginSlice";
 const styles = {
     typographyFormat: {
         padding: "10px 20px",
@@ -17,7 +20,8 @@ export default function ProfilePage() {
       navigate("/home")
     }
   
-    let user = "user";
+    const currentUser: LoggedUserDetails | null = useAppSelector(userSelector);
+    
     return (
         <div style={{textAlign:"center"}}>
             <div style={{textAlign:"center",marginTop: "100px",marginBottom:"20px"}}>
@@ -34,25 +38,25 @@ export default function ProfilePage() {
                                 <Typography style={styles.typographyFormat} noWrap>First name: </Typography>
                             </Grid>
                             <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>name </Typography>
+                                <Typography style={styles.typographyFormat}>{currentUser?.firstName} </Typography>
                             </Grid>
                             <Grid item sm={6}>
                                 <Typography style={styles.typographyFormat} noWrap>Last name: </Typography>
                             </Grid>
                             <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>lastname </Typography>
+                                <Typography style={styles.typographyFormat}>{currentUser?.lastName}</Typography>
                             </Grid>
                             <Grid item sm={6} >
                                 <Typography style={styles.typographyFormat}>Email:</Typography>
                             </Grid>
                             <Grid item sm={6} >
-                                <Typography style={styles.typographyFormat}>email </Typography>
+                                <Typography style={styles.typographyFormat}>{currentUser?.email}</Typography>
                             </Grid>
                             <Grid item sm={6}>
                                 <Typography style={styles.typographyFormat}>Username:</Typography>
                             </Grid>
                             <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>username </Typography>
+                                <Typography style={styles.typographyFormat}>{currentUser?.username} </Typography>
                             </Grid>
                         </Grid>
                         <Accordion style={{marginTop:"30px",marginBottom:"30px"}}>

@@ -6,8 +6,12 @@ import ChatIcon from '@material-ui/icons/Chat';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
+import { useAppSelector } from "../app/hooks";
+import { userSelector } from "../features/LoginSlice";
+import { LoggedUserDetails } from "../features/types";
 export default function HomePage() {
-
+    
+  const userLogged: LoggedUserDetails | null = useAppSelector(userSelector);
   let navigate = useNavigate(); 
   const handleLogout = () =>{ 
     navigate("/")
@@ -24,12 +28,11 @@ export default function HomePage() {
   const handleMarketplace = () =>{
     navigate("/marketplace")
   }
-  let user = "user";
   return (
     <div style={{textAlign:"center"}}> 
         <div style={{ textAlign:"center"}}>
             <Typography style={{marginTop:"50px", fontWeight:800, fontSize:30, marginLeft:"100px"}}> 
-                Welcome {user} to the streetwear revolution!
+                Welcome {userLogged?.firstName} to the streetwear revolution!
                 <Button style={{float:"right"}} variant="contained" color="primary" onClick={handleLogout}>
                     Log out
                 </Button>
