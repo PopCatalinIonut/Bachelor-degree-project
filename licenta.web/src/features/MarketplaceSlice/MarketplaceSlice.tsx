@@ -12,12 +12,30 @@ const initialState: MarketplaceConfigurationState = {
     initialized: false,
     posts: null
 };
+
+
+export const getAllPosts = createAsyncThunk(
+  "features/MarketplaceSlice/getAllPosts",
+  async() =>{
+    try{
+      const response = await axios.get<Post[]>("http://localhost:7071/api/posts");
+      var posts: Post[] = [];
+      response.data.forEach((post) =>{
+        posts.push(post);
+      })
+      return posts;
+    }
+  catch (err: any) {
+    return err.response.data;
+    }
+  }
+);
+
 export const addItemToMarketplace = createAsyncThunk(
   "features/MarketplaceSlice/addItemToMarketplace",
   async (post: PostEncoded, { rejectWithValue }) => {
     try{ 
-      console.log(post.item.images)
-       const response = await axios.post<Post>("http://localhost:7071/api/posts",
+       await axios.post<Post>("http://localhost:7071/api/posts",
        { item: {
           name: post.item.name,
           type: post.item.type,
@@ -41,7 +59,6 @@ export const addItemToMarketplace = createAsyncThunk(
     }
   }
 );
-
 
 export const marketplaceSlice = createSlice({
     name: "marketplaceItemsSlice",

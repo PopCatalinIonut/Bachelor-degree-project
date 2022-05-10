@@ -2,8 +2,11 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Button, Card, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import { SellingItem } from "./types";
+import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
+import { useAppDispatch } from "../app/hooks";
+import { getAllPosts } from "../features/MarketplaceSlice/MarketplaceSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 
 var selectCategories = ["None"].concat(categoryList);
@@ -15,23 +18,35 @@ var selectItemTypes = [{name: "None",category: "Footwear"}].concat(itemTypesSele
 
 export default function MarketplacePage(){
 
+    const dispatch = useAppDispatch();
     const [itemSubCategory, setItemSubCategory] = useState("");
     const [itemCategory, setItemCategory] = useState("");
     const [itemGenre, setItemGenre] = useState("");
-    var items: SellingItem[] =[];
     const [itemCondition, setItemCondition] = useState("");
     const [itemSize, setItemSize] =useState("");
-
+    const [postList, setPostList] = useState<Post[]>([]);
     const [itemsToShow, setItemsToShow] = useState(<div><Typography>No items found!</Typography></div>);
-    useEffect(() => {
-        if(items.length !== 0){
+    
+    const fetchPosts = async () =>{
+        const response = await dispatch(getAllPosts())
+        const data = unwrapResult(response) as Post[];
+
+        if(data.length !== 0){
+            setPostList(data);
             setItemsToShow(<Grid container spacing={1}>
-                {items.map((item) =>{
-                    return <Grid item sm={4}> <Card><Typography>{item.name}</Typography>
+                {data.map((post) =>{
+                    return <Grid item sm={4}> <Card>
+                        <Typography>{post.description} + {post.item.price}</Typography>
+                        <img alt="" style={{width:"100px"}} src={post.item.images[1].link}></img>
                         </Card></Grid>
                 })}
             </Grid>)
         }
+        return data;
+    }
+    useEffect(() => {
+        console.log("fetching posts")
+        fetchPosts()
     },[]);
     
     function handleSetItemGenre(item: string): void {
@@ -111,7 +126,7 @@ export default function MarketplacePage(){
                             handleSetItemSize(eventNr);
                             }}> {(() => {
                                 if (itemCategory === "Footwear"){
-                                    var sizes = selectFootwearSizes.filter((x) => x.genre == itemGenre)
+                                    var sizes = selectFootwearSizes.filter((x) => x.genre === itemGenre)
                                     if(sizes.length === 0)
                                         return;
                                     else return sizes.map((item) => {
