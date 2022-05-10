@@ -1,24 +1,39 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
-import { SellingItem } from "../../components/types";
+import { Post, PostEncoded } from "../../components/types";
 import { SetInitialMarketplaceSliceStatePayload } from "./payloads";
 
 export interface MarketplaceConfigurationState {
-  items: SellingItem[] | null;
+  posts: Post[] | null;
   initialized: boolean;
 }
 const initialState: MarketplaceConfigurationState = {
     initialized: false,
-    items: null
+    posts: null
 };
-
 export const addItemToMarketplace = createAsyncThunk(
   "features/MarketplaceSlice/addItemToMarketplace",
-  async (item: SellingItem, { rejectWithValue }) => {
-  
+  async (post: PostEncoded, { rejectWithValue }) => {
     try{ 
-       const response = await axios.post<SellingItem>("http://localhost:7071/api");
+      console.log(post.item.images)
+       const response = await axios.post<Post>("http://localhost:7071/api/posts",
+       { item: {
+          name: post.item.name,
+          type: post.item.type,
+          category: post.item.category,
+          genre: post.item.genre,
+          size: post.item.size,
+          fit: post.item.fit,
+          condition: post.item.condition,
+          price: Number(post.item.price),
+          color: post.item.color,
+          images: post.item.images
+      },
+      cityLocation: post.cityLocation,
+      description: post.description,
+      userId : post.userId
+    });
       return "";
     }
     catch (err: any) {
@@ -33,14 +48,15 @@ export const marketplaceSlice = createSlice({
     initialState,
     reducers: {
       setInitialState: (state, action: PayloadAction<SetInitialMarketplaceSliceStatePayload>) => {
-        state.items = action.payload.items;
+        state.posts = action.payload.posts;
         state.initialized = true;
       },
     },
     extraReducers: builder => {
       builder
-        //.addCase(.fulfilled, (state, action) => {
-       // });
+        .addCase(addItemToMarketplace.fulfilled, (state, action) => {
+          console.log(action.payload)
+        });
     },
   });
 
@@ -48,7 +64,7 @@ export const {
   setInitialState,
 } = marketplaceSlice.actions;
   
-export const marketplaceItemsSelector = (state: RootState) => state.marketplaceSlice.items;
+export const marketplaceItemsSelector = (state: RootState) => state.marketplaceSlice.posts;
 export default marketplaceSlice.reducer;
 
   

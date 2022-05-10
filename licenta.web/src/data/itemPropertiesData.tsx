@@ -143,42 +143,34 @@ export const footwearSizes = [
 ]
 export const itemTypesSelect = [
     {
-      id: 1,
       name: "Casual shoes",
       category: "Footwear"
     },
     {
-      id: 2,
       name: "Slides",
       category: "Footwear"
     },
     {
-      id: 3,
       name: "Sneakers",
       category: "Footwear"
     },
     {
-      id: 4,
       name: "Jackets",
       category: "Clothing"
     },
     {
-      id: 5,
       name: "Shirts",
       category: "Clothing"
     },
     {
-      id: 6,
       name: "T-Shirts",
       category: "Clothing"
     },
     {
-      id: 7,
       name: "Shorts",
       category: "Clothing"
     },
     {
-      id: 8,
       name: "Pants",
       category: "Clothing"
     }

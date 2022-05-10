@@ -1,4 +1,5 @@
 export interface LoggedUserDetails{
+    id: number;
     username: string;
     firstName: string;
     lastName: string;

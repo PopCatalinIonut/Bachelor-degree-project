@@ -7,14 +7,12 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
-using licenta.BLL;
 using licenta.BLL.Managers;
 using licenta.BLL.Models;
-using licenta.BLL.DTOs;
+using licenta.BLL.Helpers;
 
 namespace licenta.API
 {
@@ -75,8 +73,8 @@ namespace licenta.API
         }
         [FunctionName("VerifyUser")]
         [OpenApiOperation("get", "user")]
-        [OpenApiRequestBody("application/json", typeof(UserDetailsDto))]
-        public ActionResult<UserDetailsDto> VerifyUser(
+        [OpenApiRequestBody("application/json", typeof(User))]
+        public ActionResult<User> VerifyUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/login&username={username}&password={password}")] HttpRequest req,
             [FromUri] string username, [FromUri]string password, ILogger log)
         {
@@ -85,12 +83,7 @@ namespace licenta.API
                 User verified =  _userManager.VerifyUser(username,password);
                 if (verified == null)
                     return new NotFoundResult();
-                return new UserDetailsDto {
-                    Username = verified.LoginUsername,
-                    FirstName = verified.FirstName, 
-                    LastName = verified.LastName, 
-                    Email = verified.Email
-                };
+                return verified;
             }
             catch (Exception e)
             {

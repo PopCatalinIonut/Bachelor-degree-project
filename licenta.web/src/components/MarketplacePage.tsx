@@ -11,17 +11,18 @@ var selectClothingSizes = ["None"].concat(clothingSizes);
 var selectConditions = ["None"].concat(conditions);
 var selectFootwearSizes = [{size:"None",genre:"",category:"Footwear",}].concat(footwearSizes);
 var selectGenreList = ["None"].concat(genreList);
-var selectItemTypes = [{id: 1,name: "Casual shoes",category: "Footwear"}].concat(itemTypesSelect);
+var selectItemTypes = [{name: "None",category: "Footwear"}].concat(itemTypesSelect);
 
 export default function MarketplacePage(){
 
-    const [itemsToShow, setItemsToShow] = useState(<div><Typography>No items found!</Typography></div>);
-    const [itemSubCategory, setItemSubCategory] = useState(0);
+    const [itemSubCategory, setItemSubCategory] = useState("");
     const [itemCategory, setItemCategory] = useState("");
     const [itemGenre, setItemGenre] = useState("");
     var items: SellingItem[] =[];
     const [itemCondition, setItemCondition] = useState("");
     const [itemSize, setItemSize] =useState("");
+
+    const [itemsToShow, setItemsToShow] = useState(<div><Typography>No items found!</Typography></div>);
     useEffect(() => {
         if(items.length !== 0){
             setItemsToShow(<Grid container spacing={1}>
@@ -36,7 +37,7 @@ export default function MarketplacePage(){
     function handleSetItemGenre(item: string): void {
         setItemGenre(item);
     }
-    function handleSelectSubCategory(item: number): void {
+    function handleSelectSubCategory(item: string): void {
         setItemSubCategory(item); 
     }
     function handleSelectMainCategory(item: string): void {
@@ -74,11 +75,11 @@ export default function MarketplacePage(){
                     <FormControl style={{marginLeft:"50px",width:"70px"}}>
                         <InputLabel >Subcategory</InputLabel>
                         <Select value={itemSubCategory} onChange={event => {
-                            var eventNr = event.target.value as unknown as number;
+                            var eventNr = event.target.value as unknown as string;
                             handleSelectSubCategory(eventNr);}}>
                             {selectItemTypes.filter((x) => x.category === itemCategory).map((i) => {
                                 return (
-                                    <MenuItem key={i.id} value={i.id} onClick={() => {handleSelectSubCategory(i.id)}}>
+                                    <MenuItem key={i.name} value={i.name} onClick={() => {handleSelectSubCategory(i.name)}}>
                                         {i.name}
                                     </MenuItem>);
                             })}

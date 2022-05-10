@@ -1287,7 +1287,7 @@
     <table id="473" parent="163" name="ItemImages"/>
     <table id="474" parent="163" name="Items"/>
     <table id="475" parent="163" name="Messages"/>
-    <table id="476" parent="163" name="SellingAdds"/>
+    <table id="476" parent="163" name="Posts"/>
     <table id="477" parent="163" name="Users"/>
     <table id="478" parent="163" name="__EFMigrationsHistory"/>
     <table id="479" parent="163" name="sqlite_master">
@@ -1307,8 +1307,8 @@
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="483" parent="473" name="Image">
-      <DataType>BLOB|0s</DataType>
+    <column id="483" parent="473" name="Link">
+      <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
     <foreign-key id="484" parent="473" name="FK_ItemImages_Items_ItemId">
@@ -1331,38 +1331,38 @@
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="488" parent="474" name="ItemType">
+    <column id="488" parent="474" name="Name">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="489" parent="474" name="ItemCategory">
+    <column id="489" parent="474" name="Type">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="490" parent="474" name="Genre">
+    <column id="490" parent="474" name="Category">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="491" parent="474" name="Size">
+    <column id="491" parent="474" name="Genre">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="492" parent="474" name="Fit">
+    <column id="492" parent="474" name="Size">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <column id="493" parent="474" name="Condition">
-      <DataType>INTEGER|0s</DataType>
-      <NotNull>1</NotNull>
+    <column id="493" parent="474" name="Fit">
+      <DataType>TEXT|0s</DataType>
       <Position>7</Position>
     </column>
-    <column id="494" parent="474" name="Price">
-      <DataType>REAL|0s</DataType>
+    <column id="494" parent="474" name="Condition">
+      <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
     </column>
-    <column id="495" parent="474" name="Description">
-      <DataType>TEXT|0s</DataType>
+    <column id="495" parent="474" name="Price">
+      <DataType>REAL|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>9</Position>
     </column>
     <key id="496" parent="474" name="PK_Items">
@@ -1422,39 +1422,39 @@
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="508" parent="476" name="Title">
-      <DataType>TEXT|0s</DataType>
+    <column id="508" parent="476" name="UserId">
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <column id="509" parent="476" name="UserId">
+    <column id="509" parent="476" name="ItemId">
       <DataType>INTEGER|0s</DataType>
-      <NotNull>1</NotNull>
       <Position>3</Position>
     </column>
-    <column id="510" parent="476" name="ItemId">
-      <DataType>INTEGER|0s</DataType>
-      <Position>4</Position>
-    </column>
-    <column id="511" parent="476" name="Date">
+    <column id="510" parent="476" name="Date">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
+      <Position>4</Position>
+    </column>
+    <column id="511" parent="476" name="CityLocation">
+      <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="512" parent="476" name="CityLocation">
+    <column id="512" parent="476" name="Description">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <foreign-key id="513" parent="476" name="FK_SellingAdds_Items_ItemId">
+    <foreign-key id="513" parent="476" name="FK_Posts_Items_ItemId">
       <ColNames>ItemId</ColNames>
       <OnDelete>restrict</OnDelete>
       <RefColNames>Id</RefColNames>
       <RefKeyName>PK_Items</RefKeyName>
       <RefTableName>Items</RefTableName>
     </foreign-key>
-    <index id="514" parent="476" name="IX_SellingAdds_ItemId">
+    <index id="514" parent="476" name="IX_Posts_ItemId">
       <ColNames>ItemId</ColNames>
     </index>
-    <key id="515" parent="476" name="PK_SellingAdds">
+    <key id="515" parent="476" name="PK_Posts">
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>

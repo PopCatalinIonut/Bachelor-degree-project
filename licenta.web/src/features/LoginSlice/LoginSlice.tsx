@@ -9,7 +9,7 @@ import { SetInitialLoginSliceStatePayload } from "./payloads";
 import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "./types";
 
 export interface LoginSiceConfigurationState {
-    user: LoggedUserDetails | null;
+    user: LoggedUserDetails;
     initialized: boolean;
 }
 export const userSignUp = createAsyncThunk(
@@ -40,14 +40,15 @@ export const userLogin = createAsyncThunk(
       username: response.data.username,
       firstName: response.data.firstName,
       lastName: response.data.lastName,
-      email: response.data.email
+      email: response.data.email,
+      id: response.data.id
     };
     return user;
   },
 );
 const initialState: LoginSiceConfigurationState = {
     initialized: false,
-    user: null
+    user: {id: 0, username: "", firstName: "", lastName: "", email: "" }
 };
 
 export const loginSlice = createSlice({
@@ -59,7 +60,7 @@ export const loginSlice = createSlice({
         state.initialized = true;
       },
       logout: (state, action: PayloadAction<{}>) => {
-        state.user = null;
+        state.user = { id: 0, username: "", firstName: "", lastName: "", email: ""};
         state.initialized = false;
       },
     },
@@ -70,7 +71,8 @@ export const loginSlice = createSlice({
             username: action.payload.username,
             firstName: action.payload.firstName,
             lastName: action.payload.lastName,
-            email: action.payload.email
+            email: action.payload.email,
+            id: action.payload.id
           }
         });
     },
