@@ -27,7 +27,7 @@ namespace licenta.BLL.DTOs
             return new Post
             {
                 CityLocation = postToAdd.CityLocation,
-                Date = new DateTime().Date,
+                Date = DateTime.Now,
                 Description = postToAdd.Description,
                 UserId = postToAdd.UserId,
                 Item = convertFromAddItemDtoToItem(postToAdd.Item)

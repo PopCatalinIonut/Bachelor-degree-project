@@ -8,6 +8,7 @@ using Azure.Storage.Blobs;
 using licenta.BLL.DTOs;
 using licenta.BLL.Helpers;
 using licenta.BLL.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
@@ -62,8 +63,8 @@ namespace licenta.BLL.Managers
                     
                 var encodedImage =  itemToAdd.Item.Images[i].Split(',')[1];
                 var decodedImage = Convert.FromBase64String(encodedImage);
-                    
-                var imageName = "item" + itemId + "_" + i + "of" + imageCount + ".jpeg";
+                int currentImageNr = i + 1;
+                var imageName = "item" + itemId + "_" + currentImageNr + "of" + imageCount + ".jpeg";
                 var cloudBlockBlob = cloudBobContainer.GetBlockBlobReference(imageName);
                 cloudBlockBlob.Properties.ContentType = "image/jpeg";
                 Stream stream = new MemoryStream(decodedImage);
@@ -83,6 +84,16 @@ namespace licenta.BLL.Managers
             await _context.SaveChangesAsync();
             return true;
 
+        }
+
+        public List<Post> GetAllPosts()
+        {
+            var posts = _context.Posts
+                .Include(post => post.Item)
+                .ThenInclude(item=> item.Images)
+                .ToList();
+
+            return posts;
         }
     }
 }

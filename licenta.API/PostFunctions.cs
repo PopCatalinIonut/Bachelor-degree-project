@@ -6,11 +6,14 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using licenta.BLL.DTOs;
 using licenta.BLL.Managers;
 using licenta.BLL.Helpers;
+using licenta.BLL.Models;
+
 namespace licenta.API
 {
     public class PostFunctions
@@ -23,7 +26,24 @@ namespace licenta.API
         }
         [HttpPost]
         
-
+        [FunctionName("GetAllPosts")]
+        [OpenApiRequestBody("application/json", typeof(Post))]
+        public ActionResult<List<Post>> GetAllUsers(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "posts")] HttpRequest req,
+            ILogger log)
+        {
+            try
+            {
+                return _postManager.GetAllPosts();
+            }
+            catch (Exception e)
+            {
+                return new ObjectResult(e)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+        }
         [FunctionName("AddPost")]
         [OpenApiOperation("add", "posts")]
         [OpenApiRequestBody("application/json", typeof(AddPostDto))]
