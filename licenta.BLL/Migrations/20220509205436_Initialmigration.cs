@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace licenta.BLL.Migrations
 {
-    public partial class initialSetup : Migration
+    public partial class Initialmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,14 +13,14 @@ namespace licenta.BLL.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ItemType = table.Column<string>(type: "TEXT", nullable: true),
-                    ItemCategory = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: true),
+                    Type = table.Column<string>(type: "TEXT", nullable: true),
+                    Category = table.Column<string>(type: "TEXT", nullable: true),
                     Genre = table.Column<string>(type: "TEXT", nullable: true),
                     Size = table.Column<string>(type: "TEXT", nullable: true),
                     Fit = table.Column<string>(type: "TEXT", nullable: true),
                     Condition = table.Column<int>(type: "INTEGER", nullable: false),
-                    Price = table.Column<double>(type: "REAL", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: true)
+                    Price = table.Column<double>(type: "REAL", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -51,7 +51,7 @@ namespace licenta.BLL.Migrations
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: false),
-                    Image = table.Column<byte[]>(type: "BLOB", nullable: true)
+                    Link = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -65,22 +65,22 @@ namespace licenta.BLL.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SellingAdds",
+                name: "Posts",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    CityLocation = table.Column<string>(type: "TEXT", nullable: true)
+                    CityLocation = table.Column<string>(type: "TEXT", nullable: true),
+                    Description = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SellingAdds", x => x.Id);
+                    table.PrimaryKey("PK_Posts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SellingAdds_Items_ItemId",
+                        name: "FK_Posts_Items_ItemId",
                         column: x => x.ItemId,
                         principalTable: "Items",
                         principalColumn: "Id",
@@ -131,8 +131,8 @@ namespace licenta.BLL.Migrations
                 column: "SenderId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SellingAdds_ItemId",
-                table: "SellingAdds",
+                name: "IX_Posts_ItemId",
+                table: "Posts",
                 column: "ItemId");
         }
 
@@ -145,7 +145,7 @@ namespace licenta.BLL.Migrations
                 name: "Messages");
 
             migrationBuilder.DropTable(
-                name: "SellingAdds");
+                name: "Posts");
 
             migrationBuilder.DropTable(
                 name: "Users");

@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using licenta.BLL;
+using licenta.BLL.Helpers;
 
 namespace licenta.BLL.Migrations
 {
@@ -22,11 +22,11 @@ namespace licenta.BLL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Category")
+                        .HasColumnType("TEXT");
+
                     b.Property<int>("Condition")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("TEXT");
 
                     b.Property<string>("Fit")
                         .HasColumnType("TEXT");
@@ -34,16 +34,16 @@ namespace licenta.BLL.Migrations
                     b.Property<string>("Genre")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("ItemCategory")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ItemType")
+                    b.Property<string>("Name")
                         .HasColumnType("TEXT");
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
 
                     b.Property<string>("Size")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Type")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -57,11 +57,11 @@ namespace licenta.BLL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte[]>("Image")
-                        .HasColumnType("BLOB");
-
                     b.Property<int>("ItemId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Link")
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -97,7 +97,7 @@ namespace licenta.BLL.Migrations
                     b.ToTable("Messages");
                 });
 
-            modelBuilder.Entity("licenta.BLL.Models.SellingAd", b =>
+            modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,11 +109,11 @@ namespace licenta.BLL.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("ItemId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<string>("Title")
-                        .HasColumnType("TEXT");
 
                     b.Property<int>("UserId")
                         .HasColumnType("INTEGER");
@@ -122,7 +122,7 @@ namespace licenta.BLL.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.ToTable("SellingAdds");
+                    b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("licenta.BLL.Models.User", b =>
@@ -175,7 +175,7 @@ namespace licenta.BLL.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("licenta.BLL.Models.SellingAd", b =>
+            modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
                     b.HasOne("licenta.BLL.Models.Item", "Item")
                         .WithMany()

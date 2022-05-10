@@ -7,6 +7,6 @@ namespace licenta.BLL.Models
         [Key]
         public int Id { get; set; }
         public int ItemId { get; set; }
-        public byte[] Image { get; set; }
+        public string Link { get; set; }
     }
 }

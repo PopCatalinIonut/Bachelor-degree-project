@@ -1,6 +1,6 @@
-import { SellingItem } from "../../components/types";
+import { Post } from "../../components/types";
 
 
 export interface SetInitialMarketplaceSliceStatePayload {
-  items: SellingItem[];
+  posts: Post[];
 }

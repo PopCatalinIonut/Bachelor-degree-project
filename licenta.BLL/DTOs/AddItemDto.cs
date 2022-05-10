@@ -1,12 +1,10 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using licenta.BLL.Models;
 
-namespace licenta.BLL.Models
+namespace licenta.BLL.DTOs
 {
-    public class Item
+    public class AddItemDto
     {
-        [Key]
-        public int Id { get; set; }
         public string Name { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
@@ -15,6 +13,6 @@ namespace licenta.BLL.Models
         public string Fit { get; set; }
         public Condition Condition { get; set; }
         public double Price { get; set; }
-        public List<ItemImage> Images { get; set; }
+        public List<string> Images { get; set; }
     }
 }

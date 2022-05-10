@@ -1,12 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Reflection;
+using licenta.BLL.Helpers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace licenta.BLL
+namespace licenta.BLL.Helpers
 {
     public class ShopDbContextFactory : IDesignTimeDbContextFactory<ShopDbContext>
     {
