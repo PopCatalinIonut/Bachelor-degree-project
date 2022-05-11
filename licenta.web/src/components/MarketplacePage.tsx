@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Button, Card, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import { Card, Dialog, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice/MarketplaceSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import MarketplaceItemPreview from "./MarketplaceItemPreview";
+import MarketplacePostPreview from "./MarketplacePostPreview";
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
+import PostDetailsDialog from "./PostDetailsDialog";
 
 export default function MarketplacePage(){
 
@@ -27,18 +28,18 @@ export default function MarketplacePage(){
         const response = await dispatch(getAllPosts())
         const data = unwrapResult(response) as Post[];
         if(data.length !== 0)
-            postList = data;
+            setPostsToShow(data);
     }
     useEffect(() => {
         fetchPosts()
     },[]);
     
     const handleApplyFilters = () =>{
-       var filteredPosts = postList.filter((post) => (categoryValue.length === 0) || (categoryValue.length != 0 && post.item.category === categoryValue) )
-            .filter((post) => (typeValue.length === 0) || (typeValue.length != 0 && post.item.type === typeValue))
-            .filter((post) =>(genreValue.length === 0) || (genreValue.length !=0 && post.item.genre === genreValue))
-            .filter((post) =>(conditionValue.length === 0) || (conditionValue.length !=0 && post.item.condition === conditionValue))
-            .filter((post) => (sizeValue.length === 0) || (sizeValue.length !=0 && post.item.size === sizeValue))
+       var filteredPosts = postList.filter((post) => (categoryValue.length === 0) || (categoryValue.length !== 0 && post.item.category === categoryValue) )
+            .filter((post) => (typeValue.length === 0) || (typeValue.length !== 0 && post.item.type === typeValue))
+            .filter((post) =>(genreValue.length === 0) || (genreValue.length !== 0 && post.item.genre === genreValue))
+            .filter((post) =>(conditionValue.length === 0) || (conditionValue.length !== 0 && post.item.condition === conditionValue))
+            .filter((post) => (sizeValue.length === 0) || (sizeValue.length !== 0 && post.item.size === sizeValue))
         setPostsToShow(filteredPosts)
     }
     const handleClearFilters = () =>{
@@ -53,6 +54,17 @@ export default function MarketplacePage(){
     const handleGoHome = () =>{ 
         navigate("/home")
     };
+    
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogPost, setDialogPost] = useState<Post>();
+    const handleDialogOpen = (post:Post) => {
+        setDialogPost(post);
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () =>{
+        setDialogOpen(false);
+    }
 
     return (
         <div style={{textAlign:"center",marginTop:"100px"}}>
@@ -140,7 +152,7 @@ export default function MarketplacePage(){
                  
                 </Card>
             </div>
-            <Card style={{display: "inline-grid",width:"1200px"}}>
+            <Card style={{display: "inline-grid",width:"1500px"}}>
             {(() => {
                 if (postList.length === 0)
                     return ( <div><Typography>No items found!</Typography></div> );
@@ -148,15 +160,27 @@ export default function MarketplacePage(){
                     <Grid container spacing={1}>
                             {postsToShow.map((post) =>{
                                 return ( <Grid item xs={4}>
-                                        <MarketplaceItemPreview 
-                                        item={post.item} userId={post.userId} 
-                                        description={post.description} cityLocation={post.cityLocation}/>
-                                    </Grid>  )
+                                            <MarketplacePostPreview post={post} setDialogOpen={handleDialogOpen}/>
+                                        </Grid>  )
                             })}
                     </Grid>
                 )
             })()}
             </Card>
+            {(() => {
+                console.log(dialogPost)
+                if (dialogPost !== undefined)
+                    return (
+                        <div>
+                            <Dialog
+                                fullWidth  maxWidth="md"  open={dialogOpen}
+                                onClose={handleDialogClose}>
+                                <PostDetailsDialog item={dialogPost.item} userId={dialogPost.userId}
+                                description={dialogPost.description} cityLocation={dialogPost.cityLocation}></PostDetailsDialog>
+                            </Dialog>
+                        </div>
+                    );
+            })()}
         </div>
     )
 }

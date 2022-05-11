@@ -1,12 +1,21 @@
 import { useState } from "react";
 import { Post } from "./types";
-import {  Fab, Paper, Grid, Typography } from "@material-ui/core";
+import { Fab, Paper, Grid, Typography } from "@material-ui/core";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-export default function MarketplaceItemPreview (post: Post){
+import OpenInFullIcon from '@mui/icons-material/OpenInFull';
 
+
+export interface MarketplacePostPreviewProps {
+    post: Post;
+    setDialogOpen: (post: Post) => void;
+  }
+export default function MarketplacePostPreview (props: MarketplacePostPreviewProps){
+
+    var post = props.post;
     const [imageToShow, setImageToShow] = useState({image:post.item.images[0],counter:0});
+
     const handleImageChangeRight = () =>{
         if(imageToShow.counter + 1 < post.item.images.length)
             setImageToShow({image:post.item.images[imageToShow.counter+1],counter:imageToShow.counter+1})
@@ -15,8 +24,12 @@ export default function MarketplaceItemPreview (post: Post){
         if(imageToShow.counter -1 >= 0)
             setImageToShow({image:post.item.images[imageToShow.counter-1],counter:imageToShow.counter-1})
     }
+
+    const handleOpenDialog = () =>{
+        props.setDialogOpen(post);
+    }
     return (
-        <Paper style={{  margin: 'auto', width: 400,maxWidth:400 }} >
+        <Paper style={{  margin: 'auto', width: 500,maxWidth: 500 }} >
             <Grid container spacing={2}>
                 <Grid item>
                     <div style={{ width: 200, height: 200 , backgroundImage:"url(" + imageToShow.image.link + ")",
@@ -29,33 +42,35 @@ export default function MarketplaceItemPreview (post: Post){
                         </Fab>
                     </div>
                 </Grid>
+                
                 <Grid item xs={9} sm container>
-                    <Grid item xs container direction="column">
-                        <Grid item xs>
+                    <Grid item xs container direction="column" >
+                        <Grid item xs >
                             <Typography gutterBottom style={{fontWeight:600}} component="div">
                                 {post.item.name}
                             </Typography>
-                            <Typography style={{marginTop:30}} variant="body2" gutterBottom>
+                            <Typography style={{marginTop:25}} variant="body2" gutterBottom>
                                 {"Size " +post.item.size}
                             </Typography>
-                            <Typography  style={{marginTop:30}}variant="body2">
+                            <Typography  style={{marginTop:25}}variant="body2">
                                 {post.item.condition}
                             </Typography>
-                           
-                        </Grid>
-                    </Grid>
-                    <Grid item xs={3}>
-                        <Typography style={{float:"right",marginRight:5}}>
+                            <Typography style={{float:"right",marginRight:5,marginTop:25}}>
                             {"$" + post.item.price}
                         </Typography>
+                        </Grid>
                     </Grid>
                     <Grid item xs={12}>
-                    <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5}}>
+                  <div>
+                  <Fab style={{float:"left",width:35 , height:10}} size="small" onClick={handleOpenDialog}> 
+                        <OpenInFullIcon/>
+                    </Fab>
+                    <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:10}}>
                             <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
                         </Typography>
+                      </div>
                     </Grid>
                 </Grid>
-
             </Grid>
         </Paper>
     )
