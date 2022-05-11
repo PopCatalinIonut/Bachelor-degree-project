@@ -4,17 +4,17 @@ import { Button, Card, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typ
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
-import { useAppDispatch } from "../app/hooks";
-import { getAllPosts } from "../features/MarketplaceSlice/MarketplaceSlice";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice/MarketplaceSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-
-
+import MarketplaceItemPreview from "./MarketplaceItemPreview";
 var selectCategories = ["None"].concat(categoryList);
 var selectClothingSizes = ["None"].concat(clothingSizes);
 var selectConditions = ["None"].concat(conditions);
 var selectFootwearSizes = [{size:"None",genre:"",category:"Footwear",}].concat(footwearSizes);
 var selectGenreList = ["None"].concat(genreList);
 var selectItemTypes = [{name: "None",category: "Footwear"}].concat(itemTypesSelect);
+
 
 export default function MarketplacePage(){
 
@@ -24,28 +24,16 @@ export default function MarketplacePage(){
     const [itemGenre, setItemGenre] = useState("");
     const [itemCondition, setItemCondition] = useState("");
     const [itemSize, setItemSize] =useState("");
-    const [postList, setPostList] = useState<Post[]>([]);
-    const [itemsToShow, setItemsToShow] = useState(<div><Typography>No items found!</Typography></div>);
+    let postList: Post[] = useAppSelector(marketplaceItemsSelector);
     
     const fetchPosts = async () =>{
         const response = await dispatch(getAllPosts())
         const data = unwrapResult(response) as Post[];
-
-        if(data.length !== 0){
-            setPostList(data);
-            setItemsToShow(<Grid container spacing={1}>
-                {data.map((post) =>{
-                    return <Grid item sm={4}> <Card>
-                        <Typography>{post.description} + {post.item.price}</Typography>
-                        <img alt="" style={{width:"100px"}} src={post.item.images[1].link}></img>
-                        </Card></Grid>
-                })}
-            </Grid>)
-        }
-        return data;
+        if(data.length !== 0)
+            postList = data;
+        
     }
     useEffect(() => {
-        console.log("fetching posts")
         fetchPosts()
     },[]);
     
@@ -70,7 +58,7 @@ export default function MarketplacePage(){
     };
 
     return (
-        <div style={{textAlign:"center",marginTop:"150px"}}>
+        <div style={{textAlign:"center",marginTop:"100px"}}>
              <div style={{textAlign:"center",marginBottom:"20px"}}>
              <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
@@ -152,16 +140,35 @@ export default function MarketplacePage(){
                         </FormControl>
                         
                     <Button>
-
+                        Apply changes
                     </Button>
                     <Button>
-                        
+                        Reset filters
                     </Button>
                 </Card>
             </div>
-            <Card style={{display: "inline-grid",width:"1200px"}} variant="outlined">
-                {itemsToShow}
+            <Card style={{display: "inline-grid",width:"1200px"}}>
+            {(() => {
+                if (postList.length === 0)
+                    return (
+                        <div><Typography>No items found!</Typography></div>
+                    );
+                else return (
+                    <Grid container spacing={1}>
+                            {postList.map((post) =>{
+                                return (
+                                    <Grid item xs={4}>
+                                        <MarketplaceItemPreview 
+                                        item={post.item} userId={post.userId} 
+                                        description={post.description} cityLocation={post.cityLocation}/>
+                                    </Grid>
+                                    )
+                            })}
+                    </Grid>
+                )
+            })()}
             </Card>
         </div>
     )
 }
+

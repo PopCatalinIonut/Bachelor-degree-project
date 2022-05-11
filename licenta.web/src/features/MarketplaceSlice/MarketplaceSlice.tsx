@@ -5,15 +5,23 @@ import { Post, PostEncoded } from "../../components/types";
 import { SetInitialMarketplaceSliceStatePayload } from "./payloads";
 
 export interface MarketplaceConfigurationState {
-  posts: Post[] | null;
+  posts: Post[];
   initialized: boolean;
 }
 const initialState: MarketplaceConfigurationState = {
-    initialized: false,
-    posts: null
+  initialized: false,
+  posts: []
 };
-
-
+const enumConverter = (enumValue: number) =>{
+  switch(enumValue){
+    case 1: return "New with tags"
+    case 2: return "New without tags"
+    case 3: return "New with defects"
+    case 4: return "Good"
+    case 5: return "Used"
+  }
+  return ""
+}
 export const getAllPosts = createAsyncThunk(
   "features/MarketplaceSlice/getAllPosts",
   async() =>{
@@ -21,6 +29,7 @@ export const getAllPosts = createAsyncThunk(
       const response = await axios.get<Post[]>("http://localhost:7071/api/posts");
       var posts: Post[] = [];
       response.data.forEach((post) =>{
+        post.item.condition = enumConverter(Number(post.item.condition))
         posts.push(post);
       })
       return posts;
@@ -73,7 +82,11 @@ export const marketplaceSlice = createSlice({
       builder
         .addCase(addItemToMarketplace.fulfilled, (state, action) => {
           console.log(action.payload)
-        });
+        })
+        .addCase(getAllPosts.fulfilled,(state,action) =>{
+          state.posts = action.payload;
+          console.log("fullfiled")
+        })
     },
   });
 

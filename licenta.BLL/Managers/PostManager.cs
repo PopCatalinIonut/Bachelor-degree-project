@@ -12,7 +12,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Auth;
-using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace licenta.BLL.Managers
 {
@@ -92,7 +91,6 @@ namespace licenta.BLL.Managers
                 .Include(post => post.Item)
                 .ThenInclude(item=> item.Images)
                 .ToList();
-
             return posts;
         }
     }
