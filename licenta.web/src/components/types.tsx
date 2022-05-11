@@ -12,7 +12,8 @@ export interface AddSellingItem {
 }
 
 export interface SellingItem extends Omit<AddSellingItem,"images"> {
-  images: ItemImage[]
+  images: ItemImage[];
+  id: number;
 }
 
 export interface ItemImage{
