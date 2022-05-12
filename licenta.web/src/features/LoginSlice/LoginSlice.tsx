@@ -37,7 +37,7 @@ export const userLogin = createAsyncThunk(
     const response = await axios.get<LoggedUserDetails>("http://localhost:7071/api/users/login" 
     .concat("&username=").concat(credentials.username).concat("&password=").concat(credentials.password));
     var user = {
-      username: response.data.username,
+      loginUsername: response.data.loginUsername,
       firstName: response.data.firstName,
       lastName: response.data.lastName,
       email: response.data.email,
@@ -48,7 +48,7 @@ export const userLogin = createAsyncThunk(
 );
 const initialState: LoginSiceConfigurationState = {
     initialized: false,
-    user: {id: 0, username: "", firstName: "", lastName: "", email: "" }
+    user: {id: 0, loginUsername: "", firstName: "", lastName: "", email: "" }
 };
 
 export const loginSlice = createSlice({
@@ -60,7 +60,7 @@ export const loginSlice = createSlice({
         state.initialized = true;
       },
       logout: (state, action: PayloadAction<{}>) => {
-        state.user = { id: 0, username: "", firstName: "", lastName: "", email: ""};
+        state.user = { id: 0, loginUsername: "", firstName: "", lastName: "", email: ""};
         state.initialized = false;
       },
     },
@@ -68,7 +68,7 @@ export const loginSlice = createSlice({
       builder
         .addCase(userLogin.fulfilled, (state, action) => {
           state.user = {
-            username: action.payload.username,
+            loginUsername: action.payload.loginUsername,
             firstName: action.payload.firstName,
             lastName: action.payload.lastName,
             email: action.payload.email,

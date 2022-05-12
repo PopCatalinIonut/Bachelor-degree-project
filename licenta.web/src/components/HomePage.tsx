@@ -13,6 +13,7 @@ export default function HomePage() {
 
   const dispatch = useAppDispatch();
   const userLogged: LoggedUserDetails | null = useAppSelector(userSelector);
+  console.log(userLogged)
   let navigate = useNavigate(); 
   const handleLogout = () =>{ 
     dispatch<any>(logout({}));

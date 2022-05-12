@@ -5,21 +5,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Migrations\20220423142703_InitialMigration.cs" />
-    <Compile Remove="Migrations\20220423142703_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20220423142838_InitialMigration.cs" />
-    <Compile Remove="Migrations\20220423142838_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20220423143010_InitialMigration.cs" />
-    <Compile Remove="Migrations\20220423143010_InitialMigration.Designer.cs" />
-    <Compile Remove="Migrations\20220423144146_InitialMigration.cs" />
-    <Compile Remove="Migrations\20220423144146_InitialMigration.Designer.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Folder Include="Helpers\" />
     <Folder Include="Managers\" />
     <Folder Include="Migrations" />
-    <Folder Include="Migrations\" />
     <Folder Include="Utils" />
   </ItemGroup>
 

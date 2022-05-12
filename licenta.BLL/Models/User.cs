@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace licenta.BLL.Models
 {
@@ -11,6 +12,10 @@ namespace licenta.BLL.Models
         public string LoginUsername { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
+        
+        public List<Post> PostedPosts { get; set; }
+        
+        public List<WishlistPost> WishlistList { get; set; }
 
     }
 }

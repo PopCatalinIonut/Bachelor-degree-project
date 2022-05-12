@@ -56,7 +56,7 @@ export default function ProfilePage() {
                                 <Typography style={styles.typographyFormat}>Username:</Typography>
                             </Grid>
                             <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>{currentUser?.username} </Typography>
+                                <Typography style={styles.typographyFormat}>{currentUser?.loginUsername} </Typography>
                             </Grid>
                         </Grid>
                         <Accordion style={{marginTop:"30px",marginBottom:"30px"}}>

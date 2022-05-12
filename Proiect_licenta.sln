@@ -42,10 +42,4 @@ Global
 		{4543BD9C-10CE-42F5-9D9F-0F3D8246AEAC}.Release|x86.ActiveCfg = Release|Any CPU
 		{4543BD9C-10CE-42F5-9D9F-0F3D8246AEAC}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {E85029D2-F89D-4D06-AA5B-0EEA0F2BBEE5}
-	EndGlobalSection
 EndGlobal

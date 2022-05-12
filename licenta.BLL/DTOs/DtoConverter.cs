@@ -29,8 +29,17 @@ namespace licenta.BLL.DTOs
                 CityLocation = postToAdd.CityLocation,
                 Date = DateTime.Now,
                 Description = postToAdd.Description,
-                UserId = postToAdd.UserId,
-                Item = convertFromAddItemDtoToItem(postToAdd.Item)
+                Seller = new User
+                {
+                    Email = "",
+                    FirstName = "",
+                    Id = postToAdd.UserId,
+                    LastName = "",
+                    LoginUsername = "",
+                    Password = ""
+                },
+                Item = convertFromAddItemDtoToItem(postToAdd.Item),
+                IsActive = true
             };
 
         }
