@@ -29,14 +29,22 @@ export interface AddPost{
     cityLocation: string;
 }
 
-export interface Post extends Omit<AddPost,"item">{
- item: SellingItem;  
+export interface Post extends Omit<AddPost,"item"|"userId">{
+    id: number;
+    item: SellingItem;  
+    user: PostUserDetails
 }
 
 export interface SellingItemEncoded extends Omit<AddSellingItem, 'images'> {
     images: string[]
     
 }
-export interface PostEncoded extends Omit<Post, 'item'> {
+export interface PostEncoded extends Omit<AddPost, 'item'> {
     item: SellingItemEncoded
+}
+
+export interface PostUserDetails {
+    firstName: string;
+    lastName: string;
+    id: number;
 }

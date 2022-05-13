@@ -12,8 +12,8 @@ namespace licenta.BLL.DTOs
         public string Email { get; set; }
         public string Password { get; set; }
         
-        public List<Post> PostedPosts { get; set; }
+        public List<PostWithUserDetailsDto> PostedPosts { get; set; }
         
-        public List<Post> WishlistList { get; set; }
+        public List<PostWithUserDetailsDto> WishlistList { get; set; }
     }
 }

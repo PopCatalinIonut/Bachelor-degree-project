@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Web.Http;
+using licenta.BLL.DTOs;
 using licenta.BLL.Managers;
 using licenta.BLL.Models;
 using licenta.BLL.Helpers;
@@ -74,15 +75,19 @@ namespace licenta.API
         [FunctionName("VerifyUser")]
         [OpenApiOperation("get", "user")]
         [OpenApiRequestBody("application/json", typeof(User))]
-        public ActionResult<User> VerifyUser(
+        public ActionResult<UserWithWishlistDto> VerifyUser(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/login&username={username}&password={password}")] HttpRequest req,
             [FromUri] string username, [FromUri]string password, ILogger log)
         {
             try
             {
-                User verified =  _userManager.VerifyUser(username,password);
+                UserWithWishlistDto verified =  _userManager.VerifyUser(username,password);
                 if (verified == null)
                     return new NotFoundResult();
+                JsonConvert.SerializeObject(verified, new JsonSerializerSettings(){
+                    PreserveReferencesHandling = PreserveReferencesHandling.Objects,
+                    Formatting = Formatting.Indented
+                });
                 return verified;
             }
             catch (Exception e)

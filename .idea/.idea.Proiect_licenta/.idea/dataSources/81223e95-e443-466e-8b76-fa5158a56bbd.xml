@@ -1418,159 +1418,167 @@
       <Primary>1</Primary>
     </key>
     <column id="508" parent="476" name="Id">
+      <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="509" parent="476" name="ItemId">
+    <column id="509" parent="476" name="SellerId">
       <DataType>INTEGER|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="510" parent="476" name="Date">
-      <DataType>TEXT|0s</DataType>
-      <NotNull>1</NotNull>
+    <column id="510" parent="476" name="ItemId">
+      <DataType>INTEGER|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="511" parent="476" name="CityLocation">
+    <column id="511" parent="476" name="Date">
       <DataType>TEXT|0s</DataType>
+      <NotNull>1</NotNull>
       <Position>4</Position>
     </column>
-    <column id="512" parent="476" name="Description">
+    <column id="512" parent="476" name="CityLocation">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="513" parent="476" name="IsActive">
-      <DataType>INTEGER|0s</DataType>
-      <NotNull>1</NotNull>
+    <column id="513" parent="476" name="Description">
+      <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <foreign-key id="514" parent="476" name="FK_Posts_Users_Id">
-      <ColNames>Id</ColNames>
-      <OnDelete>cascade</OnDelete>
+    <column id="514" parent="476" name="IsActive">
+      <DataType>INTEGER|0s</DataType>
+      <NotNull>1</NotNull>
+      <Position>7</Position>
+    </column>
+    <foreign-key id="515" parent="476" name="FK_Posts_Users_SellerId">
+      <ColNames>SellerId</ColNames>
+      <OnDelete>restrict</OnDelete>
       <RefColNames>Id</RefColNames>
       <RefKeyName>PK_Users</RefKeyName>
       <RefTableName>Users</RefTableName>
     </foreign-key>
-    <foreign-key id="515" parent="476" name="FK_Posts_Items_ItemId">
+    <foreign-key id="516" parent="476" name="FK_Posts_Items_ItemId">
       <ColNames>ItemId</ColNames>
       <OnDelete>restrict</OnDelete>
       <RefColNames>Id</RefColNames>
       <RefKeyName>PK_Items</RefKeyName>
       <RefTableName>Items</RefTableName>
     </foreign-key>
-    <index id="516" parent="476" name="IX_Posts_ItemId">
+    <index id="517" parent="476" name="IX_Posts_SellerId">
+      <ColNames>SellerId</ColNames>
+    </index>
+    <index id="518" parent="476" name="IX_Posts_ItemId">
       <ColNames>ItemId</ColNames>
     </index>
-    <key id="517" parent="476" name="PK_Posts">
+    <key id="519" parent="476" name="PK_Posts">
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="518" parent="477" name="Id">
+    <column id="520" parent="477" name="Id">
       <AutoIncrement>1</AutoIncrement>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="519" parent="477" name="FirstName">
+    <column id="521" parent="477" name="FirstName">
       <DataType>TEXT|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="520" parent="477" name="LastName">
+    <column id="522" parent="477" name="LastName">
       <DataType>TEXT|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="521" parent="477" name="LoginUsername">
+    <column id="523" parent="477" name="LoginUsername">
       <DataType>TEXT|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="522" parent="477" name="Email">
+    <column id="524" parent="477" name="Email">
       <DataType>TEXT|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="523" parent="477" name="Password">
+    <column id="525" parent="477" name="Password">
       <DataType>TEXT|0s</DataType>
       <Position>6</Position>
     </column>
-    <key id="524" parent="477" name="PK_Users">
+    <key id="526" parent="477" name="PK_Users">
       <ColNames>Id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="525" parent="478" name="PostId">
+    <column id="527" parent="478" name="PostId">
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="526" parent="478" name="UserId">
+    <column id="528" parent="478" name="UserId">
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <foreign-key id="527" parent="478" name="FK_WishlistPosts_Users_UserId">
+    <foreign-key id="529" parent="478" name="FK_WishlistPosts_Users_UserId">
       <ColNames>UserId</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>Id</RefColNames>
       <RefKeyName>PK_Users</RefKeyName>
       <RefTableName>Users</RefTableName>
     </foreign-key>
-    <index id="528" parent="478" name="sqlite_autoindex_WishlistPosts_1">
+    <index id="530" parent="478" name="sqlite_autoindex_WishlistPosts_1">
       <ColNames>PostId
 UserId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="529" parent="478" name="IX_WishlistPosts_UserId">
+    <index id="531" parent="478" name="IX_WishlistPosts_UserId">
       <ColNames>UserId</ColNames>
     </index>
-    <key id="530" parent="478" name="PK_WishlistPosts">
+    <key id="532" parent="478" name="PK_WishlistPosts">
       <ColNames>PostId
 UserId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_WishlistPosts_1</UnderlyingIndexName>
     </key>
-    <column id="531" parent="479" name="MigrationId">
+    <column id="533" parent="479" name="MigrationId">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="532" parent="479" name="ProductVersion">
+    <column id="534" parent="479" name="ProductVersion">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="533" parent="479" name="sqlite_autoindex___EFMigrationsHistory_1">
+    <index id="535" parent="479" name="sqlite_autoindex___EFMigrationsHistory_1">
       <ColNames>MigrationId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="534" parent="479" name="PK___EFMigrationsHistory">
+    <key id="536" parent="479" name="PK___EFMigrationsHistory">
       <ColNames>MigrationId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex___EFMigrationsHistory_1</UnderlyingIndexName>
     </key>
-    <column id="535" parent="480" name="type">
+    <column id="537" parent="480" name="type">
       <DataType>text|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="536" parent="480" name="name">
+    <column id="538" parent="480" name="name">
       <DataType>text|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="537" parent="480" name="tbl_name">
+    <column id="539" parent="480" name="tbl_name">
       <DataType>text|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="538" parent="480" name="rootpage">
+    <column id="540" parent="480" name="rootpage">
       <DataType>int|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="539" parent="480" name="sql">
+    <column id="541" parent="480" name="sql">
       <DataType>text|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="540" parent="481" name="name">
+    <column id="542" parent="481" name="name">
       <Position>1</Position>
     </column>
-    <column id="541" parent="481" name="seq">
+    <column id="543" parent="481" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

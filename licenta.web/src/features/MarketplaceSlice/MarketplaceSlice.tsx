@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
 import { Post, PostEncoded } from "../../components/types";
-import { SetInitialMarketplaceSliceStatePayload } from "./payloads";
+import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload } from "./payloads";
 
 export interface MarketplaceConfigurationState {
   posts: Post[];
@@ -32,6 +32,7 @@ export const getAllPosts = createAsyncThunk(
         post.item.condition = enumConverter(Number(post.item.condition))
         posts.push(post);
       })
+      console.log(posts)
       return posts;
     }
   catch (err: any) {
@@ -39,6 +40,22 @@ export const getAllPosts = createAsyncThunk(
     }
   }
 );
+
+export const AddItemToWishlist = createAsyncThunk(
+  "features/MarketplaceSlice/addItemToWishlist",
+  async(props : AddItemToWishlistPayload, {rejectWithValue}) =>{
+    try{
+         const response = await axios.post<Post>("http://localhost:7071/api/posts/wishlist",{
+          userId: props.userId,
+          postId: props.postId
+        })
+       console.log(response.statusText)
+      return "Ok";
+    }catch (err: any) {
+      return rejectWithValue(err.response.data);
+      }
+  }
+)
 
 export const addItemToMarketplace = createAsyncThunk(
   "features/MarketplaceSlice/addItemToMarketplace",
@@ -61,7 +78,7 @@ export const addItemToMarketplace = createAsyncThunk(
       description: post.description,
       userId : post.userId
     });
-      return "";
+      return "Ok";
     }
     catch (err: any) {
     return rejectWithValue(err.response.data);
@@ -85,7 +102,6 @@ export const marketplaceSlice = createSlice({
         })
         .addCase(getAllPosts.fulfilled,(state,action) =>{
           state.posts = action.payload;
-          console.log("fullfiled")
         })
     },
   });

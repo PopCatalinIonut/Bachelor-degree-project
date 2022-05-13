@@ -4,7 +4,25 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MessageIcon from '@mui/icons-material/Message';
-export default function PostDetailsDialog(post: Post | undefined){
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { addItemToUserWishlist, userSelector } from "../features/UserSlice/UserSlice";
+import { AddItemToWishlist } from "../features/MarketplaceSlice/MarketplaceSlice";
+export default function PostDetailsDialog(post: Post){
+    
+    const dispatch = useAppDispatch();
+    const user = useAppSelector(userSelector);
+    const handleAddToWishlist = async () =>{
+        const response = await dispatch(AddItemToWishlist({
+             userId: user.id,
+             postId: post.id
+        }))
+        var message = response.payload as string;
+        if(message === "Ok"){
+            dispatch(addItemToUserWishlist(post));
+        }else{
+            alert("Can not be added");
+        }
+    }
     return (
         <div style={{margin: 'auto', width: 900}}>
                 <Grid container>
@@ -68,7 +86,7 @@ export default function PostDetailsDialog(post: Post | undefined){
                     </Grid>
                 </Grid>
                 <Grid item style={{textAlign:"center", marginTop:30, marginBottom:10}}>
-                    <Fab variant="extended"> Add to wishlist
+                    <Fab variant="extended" onClick={handleAddToWishlist}> Add to wishlist
                         <FavoriteIcon/>
                     </Fab>
                     <Fab variant="extended"> Message seller

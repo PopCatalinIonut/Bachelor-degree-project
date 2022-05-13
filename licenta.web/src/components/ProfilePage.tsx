@@ -4,8 +4,8 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from "react";
 import { useAppSelector } from "../app/hooks";
-import { LoggedUserDetails } from "../features/LoginSlice/types";
-import { userSelector } from "../features/LoginSlice/LoginSlice";
+import { LoggedUserDetails } from "../features/UserSlice/types";
+import { userSelector } from "../features/UserSlice/UserSlice";
 const styles = {
     typographyFormat: {
         padding: "10px 20px",

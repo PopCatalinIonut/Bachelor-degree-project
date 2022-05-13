@@ -6,6 +6,7 @@ using System.Linq;
 using licenta.BLL.Helpers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
 
 [assembly: FunctionsStartup(typeof(licenta.API.Startup))]
 namespace licenta.API
@@ -20,15 +21,19 @@ namespace licenta.API
                 .AddNewtonsoftJsonFile(dir)
                 .Build();
             
+            builder.Services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                {
+                    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                });
             var providers = config.Providers.AsEnumerable().ToList();
-            string key = "SQLite";
+            const string key = "SQLite";
             var connectionProvider = providers.First();
             connectionProvider.TryGet(key, out var connectionString);
             
             builder.Services
                 .AddDbContext<ShopDbContext>(options => options.UseSqlite(connectionString));
         }
-       
     }
 
 }

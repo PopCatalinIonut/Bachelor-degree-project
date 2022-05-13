@@ -175,7 +175,7 @@ export default function MarketplacePage(){
                             <Dialog
                                 fullWidth  maxWidth="md"  open={dialogOpen}
                                 onClose={handleDialogClose}>
-                                <PostDetailsDialog item={dialogPost.item} userId={dialogPost.userId}
+                                <PostDetailsDialog item={dialogPost.item} user={dialogPost.user} id={dialogPost.id}
                                 description={dialogPost.description} cityLocation={dialogPost.cityLocation}></PostDetailsDialog>
                             </Dialog>
                         </div>

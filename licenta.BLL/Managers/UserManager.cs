@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using licenta.BLL.DTOs;
 using licenta.BLL.Helpers;
 using licenta.BLL.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace licenta.BLL.Managers
 {
@@ -12,10 +14,39 @@ namespace licenta.BLL.Managers
         {
             _context = context;
         }
-        public User VerifyUser(string username, string password)
+        public UserWithWishlistDto VerifyUser(string username, string password)
         {
-            var user = _context.Users.FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
-            return user;
+            var user = _context.Users
+                .Include(x => x.PostedPosts).Include(x => x.WishlistList).FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
+            if (user == null) return null;
+            
+            var posts = (
+                from Posts in _context.Posts
+                join WPost in _context.WishlistPosts on Posts.Id equals WPost.PostId
+                where (WPost.UserId == user.Id)
+                select new Post
+                {
+                    Id = Posts.Id,
+                    CityLocation = Posts.CityLocation,
+                    Date = Posts.Date,
+                    Description = Posts.Description,
+                    IsActive = Posts.IsActive,
+                    Item = Posts.Item,
+                    Seller = Posts.Seller
+                }
+            ).ToList();
+                
+            return new UserWithWishlistDto
+            {
+                Email = user.Email,
+                FirstName = user.FirstName,
+                Id = user.Id,
+                LastName = user.LastName,
+                LoginUsername = user.LoginUsername,
+                PostedPosts = DtoConverter.ConvertPostsToPostsWithUserDetailsDto(user.PostedPosts),
+                WishlistList = DtoConverter.ConvertPostsToPostsWithUserDetailsDto(posts),
+            };
+
         }
 
         public string AddUser(User userToAdd)

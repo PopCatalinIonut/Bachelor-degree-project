@@ -26,15 +26,45 @@ namespace licenta.API
         }
         [HttpPost]
         
-        [FunctionName("GetAllPosts")]
+        [FunctionName("AddToWishlist")]
+        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
+        public async Task<ActionResult<Post>> AddPostToWishlist(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "posts/wishlist")] HttpRequest req,
+            ILogger log)
+        {
+            try
+            { 
+                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var addPostData = JsonConvert.DeserializeObject<WishlistPost>(requestBody);
+               
+                var added = _postManager.AddPostToWishlist(addPostData);
+                if (added)
+                    return new OkResult();
+                
+                var result = new ObjectResult(false)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new ObjectResult(e)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+        }
+        
+        [FunctionName("GetActivePosts")]
         [OpenApiRequestBody("application/json", typeof(Post))]
-        public ActionResult<List<Post>> GetAllUsers(
+        public ActionResult<List<Post>> GetActivePosts(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "posts")] HttpRequest req,
             ILogger log)
         {
             try
             {
-                return _postManager.GetAllPosts();
+                return _postManager.GetActivePosts();
             }
             catch (Exception e)
             {

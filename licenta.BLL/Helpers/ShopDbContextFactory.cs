@@ -25,6 +25,7 @@ namespace licenta.BLL.Helpers
             
             var optionsBuilder = new DbContextOptionsBuilder<ShopDbContext>();
             optionsBuilder.UseSqlite(connectionString);
+            
             return new ShopDbContext(optionsBuilder.Options);
         }
     }

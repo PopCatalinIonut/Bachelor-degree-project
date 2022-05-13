@@ -48,7 +48,9 @@ namespace licenta.BLL.Managers
             var cloudBlobClient = account.CreateCloudBlobClient();
             var cloudBobContainer = cloudBlobClient.GetContainerReference(blobStorageName); 
             
-            var post = DtoConverter.convertFromAddPostDtoToPost(itemToAdd);
+            var post = DtoConverter.ConvertFromAddPostDtoToPost(itemToAdd);
+            var user = _context.Users.FirstOrDefault(x => x.Id == post.Seller.Id);
+            post.Seller = user;
             _context.Posts.Add(post);
             await _context.SaveChangesAsync();
 
@@ -85,13 +87,44 @@ namespace licenta.BLL.Managers
 
         }
 
-        public List<Post> GetAllPosts()
+        public List<Post> GetActivePosts()
         {
-            var posts = _context.Posts
-                .Include(post => post.Item)
-                .ThenInclude(item=> item.Images)
-                .ToList();
+            var posts = _context.Posts.Where(x => x.IsActive == true)
+                .Include(x => x.Item)
+                .ThenInclude(item => item.Images)
+                .Select(x => new Post
+            {
+                Date = x.Date,
+                CityLocation = x.CityLocation,
+                Description = x.Description,
+                Item = x.Item,
+                Id = x.Id,
+                IsActive = x.IsActive,
+                Seller = new User
+                {
+                    FirstName = x.Seller.FirstName,
+                    LastName = x.Seller.LastName,
+                    Id = x.Seller.Id,
+                }
+            }).ToList();
             return posts;
+        }
+
+        public bool AddPostToWishlist(WishlistPost addPostData)
+        {
+            var existingUser = _context.Users.FirstOrDefault(x => x.Id == addPostData.UserId);
+            var existingPost = _context.Posts.FirstOrDefault(x => x.Id == addPostData.PostId);
+            if (existingPost == null || existingUser == null) return false;
+            {
+                var existingRelation = _context.WishlistPosts.FirstOrDefault(x => x.PostId == addPostData.PostId && x.UserId == addPostData.UserId);
+                if (existingRelation != null) 
+                    return false;
+                     
+                _context.WishlistPosts.Add(addPostData);
+                _context.SaveChangesAsync();
+                return true;
+            }
+
         }
     }
 }

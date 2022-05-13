@@ -6,7 +6,7 @@ namespace licenta.BLL.DTOs
 {
     public static class DtoConverter
     {
-        public static Item convertFromAddItemDtoToItem(AddItemDto itemToConvert)
+        public static Item ConvertFromAddItemDtoToItem(AddItemDto itemToConvert)
         {
             return new Item
             {
@@ -22,7 +22,7 @@ namespace licenta.BLL.DTOs
             };
         }
 
-        public static Post convertFromAddPostDtoToPost(AddPostDto postToAdd)
+        public static Post ConvertFromAddPostDtoToPost(AddPostDto postToAdd)
         {
             return new Post
             {
@@ -38,10 +38,40 @@ namespace licenta.BLL.DTOs
                     LoginUsername = "",
                     Password = ""
                 },
-                Item = convertFromAddItemDtoToItem(postToAdd.Item),
+                Item = ConvertFromAddItemDtoToItem(postToAdd.Item),
                 IsActive = true
             };
-
         }
+
+        public static PostWithUserDetailsDto ConvertPostToPostWithUserDetailsDto(Post post)
+        {
+            PostWithUserDetailsDto newPost = new PostWithUserDetailsDto
+            {
+                CityLocation = post.CityLocation,
+                Date = post.Date,
+                Description = post.Description,
+                Id = post.Id,
+                IsActive = post.IsActive,
+                Item = post.Item,
+                Seller = new UserDetailsOnPostDto
+                {
+                    FirstName = post.Seller.FirstName,
+                    Id = post.Seller.Id,
+                    LastName = post.Seller.LastName
+                }
+            };
+            return newPost;
+        }
+
+        public static List<PostWithUserDetailsDto> ConvertPostsToPostsWithUserDetailsDto(List<Post> posts)
+        {
+            List<PostWithUserDetailsDto> postList = new List<PostWithUserDetailsDto>();
+            foreach (var post in posts)
+            {
+                postList.Add(ConvertPostToPostWithUserDetailsDto(post));
+            }
+            return postList;
+        }
+        
     }
 }

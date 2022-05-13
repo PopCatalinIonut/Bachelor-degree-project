@@ -17,9 +17,9 @@ namespace licenta.BLL.Helpers
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller).HasForeignKey(x => x.Id);
+            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller);
             builder.Entity<Item>();
-            builder.Entity<Post>();
+            builder.Entity<Post>().HasOne(x => x.Seller);
             builder.Entity<ItemImage>();
             builder.Entity<Message>();
             builder.Entity<WishlistPost>().HasKey(x => new { x.PostId, x.UserId });

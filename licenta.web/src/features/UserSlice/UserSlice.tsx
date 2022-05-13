@@ -41,12 +41,12 @@ export const userLogin = createAsyncThunk(
       loginUsername: response.data.loginUsername,
       firstName: response.data.firstName,
       lastName: response.data.lastName,
-      email: response.data.email,
+      email: response.data.email, 
       id: response.data.id,
       postedPosts: response.data.postedPosts,
       wishlist: response.data.wishlist
     };
-    console.log("user: " + user)
+    console.log(response.data.wishlist)
     return user;
   },
 );
@@ -93,6 +93,6 @@ export const {
   addItemToUserWishlist
 } = userSlice.actions;
   
-export const userSelector = (state: RootState) => state.loginSlice.user;
+export const userSelector = (state: RootState) => state.userSlice.user;
 export default userSlice.reducer;
   

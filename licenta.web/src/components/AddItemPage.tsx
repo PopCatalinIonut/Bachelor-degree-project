@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addItemToMarketplace } from "../features/MarketplaceSlice/MarketplaceSlice";
-import { userSelector } from "../features/LoginSlice/LoginSlice";
+import { userSelector } from "../features/UserSlice/UserSlice";
 const styles = {
 
     typographyFormat: {
@@ -85,10 +85,10 @@ export default function AddItemPage() {
                     condition: conditionValue, price: Number(priceValue),
                     color: colorValue, images: convertedImages,
                 },
-                description: descriptionValue, cityLocation: locationValue,  userId : user.id
+                description: descriptionValue, cityLocation: locationValue, userId: user.id
             }))
             var message = response.payload as string;
-            if(message.length > 0)
+            if(message !== "Ok")
               setSnackOpened(message);
             else{
               setSnackOpened("Item has been successfuly posted!\n Now you will be redirected to home.");

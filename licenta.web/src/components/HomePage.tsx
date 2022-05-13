@@ -7,8 +7,8 @@ import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { logout, userSelector } from "../features/LoginSlice/LoginSlice";
-import { LoggedUserDetails } from "../features/LoginSlice/types";
+import { logout, userSelector } from "../features/UserSlice/UserSlice";
+import { LoggedUserDetails } from "../features/UserSlice/types";
 export default function HomePage() {
 
   const dispatch = useAppDispatch();
