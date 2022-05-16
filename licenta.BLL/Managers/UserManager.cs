@@ -17,7 +17,10 @@ namespace licenta.BLL.Managers
         public UserWithWishlistDto VerifyUser(string username, string password)
         {
             var user = _context.Users
-                .Include(x => x.PostedPosts).Include(x => x.WishlistList).FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
+                .Include(x => x.PostedPosts)
+                .ThenInclude(x => x.Item).ThenInclude(x => x.Images)
+                .Include(x => x.WishlistList)
+                .FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
             if (user == null) return null;
             
             var posts = (
@@ -31,7 +34,8 @@ namespace licenta.BLL.Managers
                     Date = Posts.Date,
                     Description = Posts.Description,
                     IsActive = Posts.IsActive,
-                    Item = Posts.Item,
+                    Item = new Item(Posts.Item.Id,Posts.Item.Name,Posts.Item.Type,Posts.Item.Category,Posts.Item.Genre,
+                        Posts.Item.Size,Posts.Item.Fit,Posts.Item.Condition,Posts.Item.Price,Posts.Item.Images),
                     Seller = Posts.Seller
                 }
             ).ToList();
