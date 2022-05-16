@@ -53,7 +53,7 @@ namespace licenta.BLL.DTOs
                 Id = post.Id,
                 IsActive = post.IsActive,
                 Item = post.Item,
-                Seller = new UserDetailsOnPostDto
+                Seller = new BaseUser
                 {
                     FirstName = post.Seller.FirstName,
                     Id = post.Seller.Id,

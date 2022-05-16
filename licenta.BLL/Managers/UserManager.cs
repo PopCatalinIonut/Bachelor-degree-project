@@ -44,7 +44,7 @@ namespace licenta.BLL.Managers
                 LastName = user.LastName,
                 LoginUsername = user.LoginUsername,
                 PostedPosts = DtoConverter.ConvertPostsToPostsWithUserDetailsDto(user.PostedPosts),
-                WishlistList = DtoConverter.ConvertPostsToPostsWithUserDetailsDto(posts),
+                Wishlist = DtoConverter.ConvertPostsToPostsWithUserDetailsDto(posts),
             };
 
         }
