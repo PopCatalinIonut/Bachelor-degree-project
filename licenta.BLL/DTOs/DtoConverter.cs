@@ -72,6 +72,18 @@ namespace licenta.BLL.DTOs
             }
             return postList;
         }
+
+        public static DisplayMessageDto ConvertMessageToDisplayMessageDto(Message message)
+        {
+            return new DisplayMessageDto
+            {
+                Date = message.Date,
+                Id = message.Id,
+                Receiver = message.Receiver,
+                Sender = message.Sender,
+                Text = message.MessageText
+            };
+        }
         
     }
 }

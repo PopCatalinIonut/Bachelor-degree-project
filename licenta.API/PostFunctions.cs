@@ -25,8 +25,8 @@ namespace licenta.API
         {
             _postManager = new PostManager(dbContext);
         }
-        [HttpPost]
         
+        [HttpPost]
         [FunctionName("AddToWishlist")]
         [OpenApiRequestBody("application/json", typeof(WishlistPost))]
         public async Task<ActionResult<Post>> AddPostToWishlist(
@@ -67,7 +67,6 @@ namespace licenta.API
         {
             try
             { 
-                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var removePostData = new WishlistPost { PostId = postId, UserId = userId };
                
                 var removed = _postManager.RemovePostFromWishlist(removePostData);
@@ -119,7 +118,7 @@ namespace licenta.API
                 string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var addPostData = JsonConvert.DeserializeObject<AddPostDto>(requestBody);
 
-                bool added = await _postManager.AddPost(addPostData);
+                var added = await _postManager.AddPost(addPostData);
                 if (added)
                     return new OkResult();
                 
