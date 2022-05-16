@@ -15,11 +15,11 @@ namespace licenta.BLL.Managers
             _context = context;
         }
 
-        public bool SendMessage(SendMessageDto addPostData)
+        public DisplayMessageDto SendMessage(SendMessageDto addPostData)
         {
             var sender = _context.Users.FirstOrDefault(x => x.Id == addPostData.SenderId);
             var receiver = _context.Users.FirstOrDefault(x => x.Id == addPostData.ReceiverId);
-            if (sender == null || receiver == null) return false;
+            if (sender == null || receiver == null) return null;
             var messageToAdd = new Message
             {
                 Date = DateTime.Now,
@@ -29,7 +29,14 @@ namespace licenta.BLL.Managers
             };
             _context.Messages.Add(messageToAdd);
             _context.SaveChangesAsync();
-            return true;
+            return new DisplayMessageDto
+            {
+                Id = messageToAdd.Id,
+                Date = messageToAdd.Date,
+                Receiver = messageToAdd.Receiver,
+                Sender = messageToAdd.Sender,
+                Text = messageToAdd.MessageText
+            };
         }
 
         public List<DisplayMessageDto> GetUserMessages(int userId)

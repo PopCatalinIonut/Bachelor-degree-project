@@ -11,6 +11,8 @@ import MarketplacePostPreview from "./MarketplacePostPreview";
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PostDetailsDialog from "./PostDetailsDialog";
+import { userSelector } from "../features/UserSlice";
+
 
 export default function MarketplacePage(){
 
@@ -20,20 +22,21 @@ export default function MarketplacePage(){
     const [genreValue, setGenreValue] = useState("");
     const [conditionValue, setConditionValue] = useState("");
     const [sizeValue, setSizeValue] =useState("");
-    
+
+    let user = useAppSelector(userSelector)
     let navigate = useNavigate(); 
     let postList: Post[] = useAppSelector(marketplaceItemsSelector);
-    const [postsToShow, setPostsToShow] = useState(postList);
+    const [postsToShow, setPostsToShow] = useState<Post[]>(postList);
     const fetchPosts = async () =>{
         const response = await dispatch(getAllPosts())
         const data = unwrapResult(response) as Post[];
         if(data.length !== 0)
-            setPostsToShow(data);
+            setPostsToShow(data)
     }
     useEffect(() => {
         fetchPosts()
     },[]);
-    
+
     const handleApplyFilters = () =>{
        var filteredPosts = postList.filter((post) => (categoryValue.length === 0) || (categoryValue.length !== 0 && post.item.category === categoryValue) )
             .filter((post) => (typeValue.length === 0) || (typeValue.length !== 0 && post.item.type === typeValue))
@@ -55,17 +58,23 @@ export default function MarketplacePage(){
         navigate("/home")
     };
     
-    const [dialogOpen, setDialogOpen] = useState(false);
-    const [dialogPost, setDialogPost] = useState<Post>();
+    const [dialogPost, setDialogPost] = useState(<div></div>);
     const handleDialogOpen = (post:Post) => {
-        setDialogPost(post);
-        setDialogOpen(true);
+        setDialogPost(
+            <div>
+                <Dialog
+                    fullWidth  maxWidth="md"  open={true}
+                    onClose={handleDialogClose}>
+                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id}
+                    description={post.description} cityLocation={post.cityLocation}></PostDetailsDialog>
+                </Dialog>
+            </div>
+        );
     };
 
     const handleDialogClose = () =>{
-        setDialogOpen(false);
+        setDialogPost(<div></div>)
     }
-
     return (
         <div style={{textAlign:"center",marginTop:"100px"}}>
              <div style={{textAlign:"center",marginBottom:"20px"}}>
@@ -160,26 +169,14 @@ export default function MarketplacePage(){
                     <Grid container spacing={1}>
                             {postsToShow.map((post) =>{
                                 return ( <Grid item xs={4}>
-                                            <MarketplacePostPreview post={post} setDialogOpen={handleDialogOpen}/>
+                                            <MarketplacePostPreview post={post} dialogClose={handleDialogOpen} user={user}/>
                                         </Grid>  )
                             })}
                     </Grid>
                 )
             })()}
             </Card>
-            {(() => {
-                if (dialogPost !== undefined)
-                    return (
-                        <div>
-                            <Dialog
-                                fullWidth  maxWidth="md"  open={dialogOpen}
-                                onClose={handleDialogClose}>
-                                <PostDetailsDialog item={dialogPost.item} user={dialogPost.user} id={dialogPost.id}
-                                description={dialogPost.description} cityLocation={dialogPost.cityLocation}></PostDetailsDialog>
-                            </Dialog>
-                        </div>
-                    );
-            })()}
+            {dialogPost}
         </div>
     )
 }

@@ -29,7 +29,7 @@ export interface MessagesConfigurationState {
   );
 
   export const sendMessage = createAsyncThunk(
-    "features/MarketplaceSlice/sendMessage",
+    "features/MessageSlice/sendMessage",
     async(props : SendMessage, {rejectWithValue}) =>{
       try{
            const response = await axios.post<DisplayMessage>("http://localhost:7071/api/messages",{
@@ -37,7 +37,7 @@ export interface MessagesConfigurationState {
            receiverId: props.receiverId,
            text: props.text
           })
-         console.log(response.statusText)
+         console.log(response.data)
         return {
           id: response.data.id,
           sender: response.data.sender,
@@ -75,7 +75,7 @@ export const {
     setInitialState,
 } = messageSlice.actions;
     
-  export const marketplaceItemsSelector = (state: RootState) => state.marketplaceSlice.posts;
+  export const messagesSelector = (state: RootState) => state.messageSlice.messages;
   export default messageSlice.reducer;
   
     

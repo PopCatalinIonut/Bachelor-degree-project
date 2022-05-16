@@ -48,7 +48,6 @@ export const AddItemToWishlist = createAsyncThunk(
           userId: props.userId,
           postId: props.postId
         })
-       console.log(response.statusText)
       return "Ok";
     }catch (err: any) {
       return rejectWithValue(err.response.data);

@@ -1,15 +1,17 @@
 import { useState } from "react";
-import { Post } from "./types";
-import { Fab, Paper, Grid, Typography } from "@material-ui/core";
+import { Post, PostUserDetails } from "./types";
+import { Fab, Paper, Grid, Typography, Dialog } from "@material-ui/core";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import ContactSellerDialog from "./ContactSellerDialog";
 
 
 export interface MarketplacePostPreviewProps {
     post: Post;
-    setDialogOpen: (post: Post) => void;
+    dialogClose: (post: Post) => void;
+    user: PostUserDetails
   }
 export default function MarketplacePostPreview (props: MarketplacePostPreviewProps){
 
@@ -25,8 +27,8 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
             setImageToShow({image:post.item.images[imageToShow.counter-1],counter:imageToShow.counter-1})
     }
 
-    const handleOpenDialog = () =>{
-        props.setDialogOpen(post);
+    const handleCloseDialog = () =>{
+        props.dialogClose(post);
     }
     return (
         <Paper style={{  margin: 'auto', width: 500,maxWidth: 500 }} >
@@ -62,7 +64,7 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
                     </Grid>
                     <Grid item xs={12}>
                   <div>
-                  <Fab style={{float:"left",width:35 , height:10}} size="small" onClick={handleOpenDialog}> 
+                  <Fab style={{float:"left",width:35 , height:10}} size="small" onClick={handleCloseDialog}> 
                         <OpenInFullIcon/>
                     </Fab>
                     <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:10}}>

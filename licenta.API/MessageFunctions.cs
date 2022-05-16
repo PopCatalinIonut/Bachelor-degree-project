@@ -30,7 +30,7 @@ namespace licenta.API
         [HttpPost]
         [FunctionName("SendMessage")]
         [OpenApiRequestBody("application/json", typeof(SendMessageDto))]
-        public async Task<ActionResult<Post>> AddPostToWishlist(
+        public async Task<ActionResult<DisplayMessageDto>> SendMessage(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "messages")] HttpRequest req,
             ILogger log)
         {
@@ -40,8 +40,8 @@ namespace licenta.API
                 var addMessageData = JsonConvert.DeserializeObject<SendMessageDto>(requestBody);
                
                 var added = _messageManager.SendMessage(addMessageData);
-                if (added)
-                    return new OkResult();
+                if (added != null)
+                    return added;
                 
                 var result = new ObjectResult(false)
                 {
@@ -61,7 +61,7 @@ namespace licenta.API
         [FunctionName("GetUserMessages")]
         [OpenApiParameter("userId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
         public ActionResult<List<DisplayMessageDto>> GetUserMessages(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "messages")] HttpRequest req, int userId,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "messages/{userId}")] HttpRequest req, int userId,
             ILogger log)
         {
             try

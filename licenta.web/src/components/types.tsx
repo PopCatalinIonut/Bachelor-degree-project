@@ -32,7 +32,7 @@ export interface AddPost{
 export interface Post extends Omit<AddPost,"item"|"userId">{
     id: number;
     item: SellingItem;  
-    user: PostUserDetails
+    seller: PostUserDetails
 }
 
 export interface SellingItemEncoded extends Omit<AddSellingItem, 'images'> {
@@ -49,4 +49,16 @@ export interface PostUserDetails {
     id: number;
 }
 
+export interface DisplayMessage{
+    id: number;
+    sender: PostUserDetails;
+    receiver: PostUserDetails;
+    text: string;
+    date: Date;
+}
  
+export interface SendMessage{
+    senderId: number;
+    receiverId: number;
+    text: string;
+}

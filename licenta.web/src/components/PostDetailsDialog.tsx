@@ -1,4 +1,4 @@
-import { Fab, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Dialog, DialogContent, Fab, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import { Post } from "./types";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -8,13 +8,21 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/UserSlice";
 import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/MarketplaceSlice";
+import ContactSellerDialog from "./ContactSellerDialog";
+import { useState } from "react";
 
 export default function PostDetailsDialog(post: Post){
     
     const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
     let isWishlisted = user.wishlist.findIndex((x) => x.id === post.id) !== -1
-    
+  
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const handleDialogClose = () =>{
+        setDialogOpen(false);
+    }
+
+    const handleDialogOpen = () =>{ console.log("open click"); setDialogOpen(true)}
     const handleAddToWishlist = async () =>{
         const response = await dispatch(AddItemToWishlist({
              userId: user.id,
@@ -115,7 +123,7 @@ export default function PostDetailsDialog(post: Post){
                 </Grid>
                 <Grid item style={{textAlign:"center", marginTop:30, marginBottom:10}}>
                     {wishlistButton()}
-                    <Fab variant="extended"> Message seller
+                    <Fab variant="extended" onClick={handleDialogOpen}> Message seller
                         <MessageIcon/>
                     </Fab>
                 </Grid>
@@ -127,6 +135,13 @@ export default function PostDetailsDialog(post: Post){
                             </Grid>
                     })}
                 </Grid>
+                <div style={{justifyContent:"center", width:400}}>
+                    <Dialog 
+                        open={dialogOpen} onClose={handleDialogClose}>
+                        <ContactSellerDialog seller={post.seller} userId={user.id} 
+                        dialogClose={() => {return setDialogOpen(false);}}/>
+                    </Dialog>
+                </div>
             </div>
       );
 }
