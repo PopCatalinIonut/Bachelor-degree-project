@@ -1,29 +1,41 @@
-import { Fab, Card, Typography, Grid } from "@material-ui/core";
+import { Fab, Card, Typography, Grid, Dialog } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import React, { useEffect } from "react";
-import { SellingItem } from "./types";
-
-var items: SellingItem[] = [
-   
-]
+import { useState } from "react";
+import { Post } from "./types";
+import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { userWishlistSelector } from "../features/UserSlice/UserSlice";
+import MarketplacePostPreview from "./MarketplacePostPreview";
+import PostDetailsDialog from "./PostDetailsDialog";
 
 export default function WishlistPage(){
-
-    const [wishlistItems, setWishlistItems] = React.useState(<div><Typography>You don't have any items on wishlist yet!</Typography></div>);
-    useEffect(() => {
-        if(items.length !== 0){
-            setWishlistItems(<Grid container spacing={1}>
-                {items.map((item) =>{
-                    return <Grid item sm={4}> <Card><Typography>{item.name}</Typography>
-                        </Card></Grid>
-                })}
-            </Grid>)
-        }
-      },[]);
+    const dispatch = useAppDispatch();
+    let items = useAppSelector(userWishlistSelector)
+    console.log(items)
+    const wishlistItems = () =>{
+        if(items.length === 0)
+            return <div><Typography>You don't have any items on wishlist yet!</Typography></div>
+        else return(
+            <Grid container spacing={1}>
+            {items.map((post) =>{
+                return ( <Grid item xs={4}>
+                            <MarketplacePostPreview post={post} setDialogOpen={handleDialogOpen}/>
+                        </Grid>  )
+            })}</Grid>
+        )
+    }
     
-   
+    const [dialogOpen, setDialogOpen] = useState(false);
+    const [dialogPost, setDialogPost] = useState<Post>();
+    const handleDialogOpen = (post: Post) => {
+        setDialogPost(post);
+        setDialogOpen(true);
+    };
+
+    const handleDialogClose = () =>{
+        setDialogOpen(false);
+    }
     let navigate = useNavigate(); 
     const handleGoHome = () =>{ 
       navigate("/home")
@@ -35,9 +47,22 @@ export default function WishlistPage(){
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-            <Card style={{display: "inline-grid",width:"700px"}} variant="outlined">
-            {wishlistItems}
+            <Card style={{display: "inline-grid",width:"1500px"}} variant="outlined">
+                {wishlistItems()}
             </Card>
+            {(() => {
+                if (dialogPost !== undefined)
+                    return (
+                        <div>
+                            <Dialog
+                                fullWidth  maxWidth="md"  open={dialogOpen}
+                                onClose={handleDialogClose}>
+                                <PostDetailsDialog item={dialogPost.item} user={dialogPost.user} id={dialogPost.id}
+                                description={dialogPost.description} cityLocation={dialogPost.cityLocation}></PostDetailsDialog>
+                            </Dialog>
+                        </div>
+                    );
+            })()}
         </div>
     )
 }

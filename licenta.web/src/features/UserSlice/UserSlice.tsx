@@ -68,6 +68,7 @@ export const userSlice = createSlice({
       },
       initUserWishlist: (state, action: PayloadAction<Post[]>) => {
         state.user.wishlist = action.payload;
+        console.log(action.payload)
       },
       addItemToUserWishlist: (state, action:PayloadAction<Post>) =>{
         state.user.wishlist.push(action.payload);
@@ -101,5 +102,6 @@ export const {
 } = userSlice.actions;
   
 export const userSelector = (state: RootState) => state.userSlice.user;
+export const userWishlistSelector = (state: RootState) =>state.userSlice.user.wishlist
 export default userSlice.reducer;
   
