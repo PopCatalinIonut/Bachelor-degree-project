@@ -6,8 +6,8 @@ import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addItemToMarketplace } from "../features/MarketplaceSlice/MarketplaceSlice";
-import { userSelector } from "../features/UserSlice/UserSlice";
+import { addItemToMarketplace } from "../features/MarketplaceSlice";
+import { userSelector } from "../features/UserSlice";
 const styles = {
 
     typographyFormat: {

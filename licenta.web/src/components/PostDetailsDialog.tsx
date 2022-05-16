@@ -6,8 +6,8 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MessageIcon from '@mui/icons-material/Message';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/UserSlice/UserSlice";
-import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/MarketplaceSlice/MarketplaceSlice";
+import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/UserSlice";
+import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/MarketplaceSlice";
 
 export default function PostDetailsDialog(post: Post){
     

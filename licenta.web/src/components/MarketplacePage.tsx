@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice/MarketplaceSlice";
+import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import SearchIcon from '@mui/icons-material/Search';

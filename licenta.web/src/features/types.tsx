@@ -1,4 +1,4 @@
-import { Post } from "../../components/types";
+import { Post } from "../components/types";
 
 export interface LoggedUserDetails{
     id: number;

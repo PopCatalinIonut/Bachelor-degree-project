@@ -5,7 +5,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from "react";
 import { Post } from "./types";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { userWishlistSelector } from "../features/UserSlice/UserSlice";
+import { userWishlistSelector } from "../features/UserSlice";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import PostDetailsDialog from "./PostDetailsDialog";
 

@@ -2,7 +2,7 @@ import { Button, Card, CardContent, FormControl, Snackbar, TextField, Typography
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
-import { userSignUp } from "../features/UserSlice/UserSlice";
+import { userSignUp } from "../features/UserSlice";
 
 export default function SignUpPage() {
   const [usernameValue, setUsernameValue] = useState("");

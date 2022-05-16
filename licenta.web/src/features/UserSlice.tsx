@@ -4,8 +4,8 @@ import {
     PayloadAction,
   } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../../app/store";
-import { Post } from "../../components/types";
+import { RootState } from "../app/store";
+import { Post } from "../components/types";
 import { SetInitialUserSliceStatePayload } from "./payloads";
 import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "./types";
 
