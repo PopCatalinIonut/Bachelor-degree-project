@@ -4,13 +4,17 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MessageIcon from '@mui/icons-material/Message';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addItemToUserWishlist, userSelector } from "../features/UserSlice/UserSlice";
-import { AddItemToWishlist } from "../features/MarketplaceSlice/MarketplaceSlice";
+import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/UserSlice/UserSlice";
+import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/MarketplaceSlice/MarketplaceSlice";
+
 export default function PostDetailsDialog(post: Post){
     
     const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
+    let isWishlisted = user.wishlist.findIndex((x) => x.id === post.id) !== -1
+    
     const handleAddToWishlist = async () =>{
         const response = await dispatch(AddItemToWishlist({
              userId: user.id,
@@ -19,12 +23,36 @@ export default function PostDetailsDialog(post: Post){
         var message = response.payload as string;
         if(message === "Ok"){
             dispatch(addItemToUserWishlist(post));
+            isWishlisted = (true);
         }else{
             alert("Can not be added");
         }
     }
+
+    const wishlistButton = () =>{
+        if (isWishlisted === false)
+            return (<Fab variant="extended" onClick={handleAddToWishlist}> Add to wishlist
+                        <FavoriteIcon/>
+                    </Fab>)
+        else 
+            return (<Fab variant="extended" onClick={handleRemoveFromWishlist}> Remove from Wishlist
+                        <DeleteIcon/>
+                    </Fab>)
+    }
+
+    const handleRemoveFromWishlist = async() =>{
+        const response = await dispatch(RemoveItemFromWishlist({
+            userId: user.id,
+            postId: post.id
+        }))
+        if(response.payload === "Ok"){
+            dispatch(removeItemFromUserWishlist(post))
+            isWishlisted = (false);
+        }
+    }
+
     return (
-        <div style={{margin: 'auto', width: 900}}>
+            <div style={{margin: 'auto', width: 900}}>
                 <Grid container>
                     <Grid item style={{textAlign:"center"}} xs={12}>
                         <Typography style={{fontWeight:600, fontSize:30}}>{post?.item.name}</Typography>
@@ -51,7 +79,7 @@ export default function PostDetailsDialog(post: Post){
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableCell style={{height:130,textAlign:"center", border: "1px solid"}}>{post?.description}</TableCell>
+                                    <TableCell style={{height:130,textAlign:"center", border: "1px solid"}}>{post.description}</TableCell>
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -65,19 +93,19 @@ export default function PostDetailsDialog(post: Post){
                                             <TableCell component="th" scope="row " style={{textAlign:"center"}}>
                                                 <Typography style={{fontWeight:600}}>Condition</Typography>
                                                 </TableCell>
-                                            <TableCell style={{textAlign:"center"}}>{post?.item.condition}</TableCell>
+                                            <TableCell style={{textAlign:"center"}}>{post.item.condition}</TableCell>
                                         </TableRow>
                                         <TableRow >
                                             <TableCell component="th" scope="row " style={{textAlign:"center"}}>
                                                 <Typography style={{fontWeight:600}}>Size</Typography>
                                             </TableCell>
-                                            <TableCell style={{textAlign:"center"}}>{post?.item.size}</TableCell>
+                                            <TableCell style={{textAlign:"center"}}>{post.item.size}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell component="th" scope="row" style={{textAlign:"center"}}> 
                                                 <Typography style={{fontWeight:600}}>Recommened fit</Typography>
                                             </TableCell>
-                                        <TableCell style={{textAlign:"center"}}>{post?.item.fit}</TableCell>
+                                        <TableCell style={{textAlign:"center"}}>{post.item.fit}</TableCell>
                                         </TableRow>
                                     </TableHead>
                                 </Table>
@@ -86,23 +114,20 @@ export default function PostDetailsDialog(post: Post){
                     </Grid>
                 </Grid>
                 <Grid item style={{textAlign:"center", marginTop:30, marginBottom:10}}>
-                    <Fab variant="extended" onClick={handleAddToWishlist}> Add to wishlist
-                        <FavoriteIcon/>
-                    </Fab>
+                    {wishlistButton()}
                     <Fab variant="extended"> Message seller
                         <MessageIcon/>
                     </Fab>
                 </Grid>
                 <Grid container>
-                    {post?.item.images.map((image) =>{
+                    {post.item.images.map((image) =>{
                         return <Grid item xs={6}> 
                             <div style={{ width: 450, height: 450 , backgroundImage:"url(" + image.link + ")",
                             backgroundSize:"cover", backgroundPosition:"center", display:"flex"}}></div>
                             </Grid>
                     })}
                 </Grid>
-        
-        </div>
+            </div>
       );
 }
 

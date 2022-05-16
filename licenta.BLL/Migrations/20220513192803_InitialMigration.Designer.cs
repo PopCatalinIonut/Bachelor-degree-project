@@ -215,7 +215,7 @@ namespace licenta.BLL.Migrations
             modelBuilder.Entity("licenta.BLL.Models.WishlistPost", b =>
                 {
                     b.HasOne("licenta.BLL.Models.User", null)
-                        .WithMany("WishlistList")
+                        .WithMany("Wishlist")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -230,7 +230,7 @@ namespace licenta.BLL.Migrations
                 {
                     b.Navigation("PostedPosts");
 
-                    b.Navigation("WishlistList");
+                    b.Navigation("Wishlist");
                 });
 #pragma warning restore 612, 618
         }

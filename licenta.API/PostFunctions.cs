@@ -13,6 +13,7 @@ using licenta.BLL.DTOs;
 using licenta.BLL.Managers;
 using licenta.BLL.Helpers;
 using licenta.BLL.Models;
+using Microsoft.OpenApi.Models;
 
 namespace licenta.API
 {
@@ -39,6 +40,38 @@ namespace licenta.API
                
                 var added = _postManager.AddPostToWishlist(addPostData);
                 if (added)
+                    return new OkResult();
+                
+                var result = new ObjectResult(false)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new ObjectResult(e)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+        }
+        
+        [FunctionName("RemoveFromWishlist")]
+        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        [OpenApiParameter("userId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
+        public async Task<ActionResult<Post>> RemovePostFromWishlist(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "posts/wishlist/post/{postId}/user/{userId}")] HttpRequest req, int postId, int userId,
+            ILogger log)
+        {
+            try
+            { 
+                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var removePostData = new WishlistPost { PostId = postId, UserId = userId };
+               
+                var removed = _postManager.RemovePostFromWishlist(removePostData);
+                if (removed)
                     return new OkResult();
                 
                 var result = new ObjectResult(false)

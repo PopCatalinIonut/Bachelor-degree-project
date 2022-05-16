@@ -46,7 +46,6 @@ export const userLogin = createAsyncThunk(
       postedPosts: response.data.postedPosts,
       wishlist: response.data.wishlist
     };
-    console.log(response.data.wishlist)
     return user;
   },
 );
@@ -63,12 +62,18 @@ export const userSlice = createSlice({
         state.user = action.payload.user;
         state.initialized = true;
       },
-      logout: (state, action: PayloadAction<{}>) => {
+      logout: (state) => {
         state.user = { id: 0, loginUsername: "", firstName: "", lastName: "", email: "", postedPosts: [], wishlist: []};
         state.initialized = false;
       },
-      addItemToUserWishlist: (state, action: PayloadAction<Post>) => {
-        state.user.wishlist.push(action.payload)
+      initUserWishlist: (state, action: PayloadAction<Post[]>) => {
+        state.user.wishlist = action.payload;
+      },
+      addItemToUserWishlist: (state, action:PayloadAction<Post>) =>{
+        state.user.wishlist.push(action.payload);
+      },
+      removeItemFromUserWishlist: (state, action:PayloadAction<Post>) =>{
+        state.user.wishlist.splice(state.user.wishlist.findIndex(x => x.id === action.payload.id),1);
       }
     },
     extraReducers: builder => {
@@ -90,7 +95,9 @@ export const userSlice = createSlice({
 export const {
   setInitialState,
   logout,
-  addItemToUserWishlist
+  initUserWishlist,
+  addItemToUserWishlist,
+  removeItemFromUserWishlist
 } = userSlice.actions;
   
 export const userSelector = (state: RootState) => state.userSlice.user;

@@ -32,7 +32,6 @@ export const getAllPosts = createAsyncThunk(
         post.item.condition = enumConverter(Number(post.item.condition))
         posts.push(post);
       })
-      console.log(posts)
       return posts;
     }
   catch (err: any) {
@@ -50,6 +49,19 @@ export const AddItemToWishlist = createAsyncThunk(
           postId: props.postId
         })
        console.log(response.statusText)
+      return "Ok";
+    }catch (err: any) {
+      return rejectWithValue(err.response.data);
+      }
+  }
+)
+
+export const RemoveItemFromWishlist = createAsyncThunk(
+  "features/MarketplaceSlice/removeItemFromWishlist",
+  async(props : AddItemToWishlistPayload, {rejectWithValue}) =>{
+    try{
+         await axios.delete<AddItemToWishlistPayload>("http://localhost:7071/api/posts/wishlist/post/"
+         .concat(props.postId.toString()).concat("/user/").concat(props.userId.toString()));
       return "Ok";
     }catch (err: any) {
       return rejectWithValue(err.response.data);

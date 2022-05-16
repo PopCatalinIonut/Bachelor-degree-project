@@ -3,7 +3,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
-import { userLogin } from "../features/UserSlice/UserSlice";
+import { initUserWishlist, userLogin } from "../features/UserSlice/UserSlice";
 import { LoggedUserDetails } from "../features/UserSlice/types";
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -20,6 +20,10 @@ export default function LoginPage() {
     const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
     try {
       const payload: LoggedUserDetails = unwrapResult(response);
+      console.log(payload);
+      if(payload.wishlist.length > 0 ){
+        dispatch(initUserWishlist(payload.wishlist))
+      }
       navigate("/home");
     } catch (err) {
       setIncorrectCredentials(<div style={{marginTop:"20px",marginBottom:"20px"}}><Typography style={{color:"red"}}>Incorrect username or password</Typography></div>);

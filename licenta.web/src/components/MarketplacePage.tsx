@@ -168,7 +168,6 @@ export default function MarketplacePage(){
             })()}
             </Card>
             {(() => {
-                console.log(dialogPost)
                 if (dialogPost !== undefined)
                     return (
                         <div>

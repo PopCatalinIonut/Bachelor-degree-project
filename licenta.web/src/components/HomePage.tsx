@@ -12,11 +12,11 @@ import { LoggedUserDetails } from "../features/UserSlice/types";
 export default function HomePage() {
 
   const dispatch = useAppDispatch();
-  const userLogged: LoggedUserDetails | null = useAppSelector(userSelector);
-  console.log(userLogged)
+  const userLogged: LoggedUserDetails = useAppSelector(userSelector);
+ 
   let navigate = useNavigate(); 
   const handleLogout = () =>{ 
-    dispatch<any>(logout({}));
+    dispatch<any>(logout());
     navigate("/")
   }
     const handleProfile = () =>{ 

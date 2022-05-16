@@ -126,5 +126,12 @@ namespace licenta.BLL.Managers
             }
 
         }
+
+        public bool RemovePostFromWishlist(WishlistPost removePostData)
+        {
+            var removed = _context.WishlistPosts.Remove(removePostData);
+            _context.SaveChangesAsync();
+            return removed != null;
+        }
     }
 }
