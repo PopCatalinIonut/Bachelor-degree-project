@@ -75,14 +75,15 @@ namespace licenta.BLL.DTOs
 
         public static DisplayMessageDto ConvertMessageToDisplayMessageDto(Message message)
         {
-            return new DisplayMessageDto
+            var newMessage =  new DisplayMessageDto
             {
-                Date = message.Date,
+                Date = message.Date.ToString("dd-MM-yyyy HH:mm:ss"),
                 Id = message.Id,
-                Receiver = message.Receiver,
-                Sender = message.Sender,
+                Receiver = new BaseUser{ FirstName = message.Receiver.FirstName, Id = message.Receiver.Id, LastName = message.Receiver.LastName},
+                Sender = new BaseUser{ FirstName = message.Sender.FirstName, Id = message.Sender.Id, LastName = message.Sender.LastName},
                 Text = message.MessageText
             };
+            return newMessage;
         }
         
     }

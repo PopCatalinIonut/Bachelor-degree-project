@@ -9,6 +9,6 @@ namespace licenta.BLL.DTOs
         public BaseUser Sender { get; set; }
         public BaseUser Receiver { get; set; }
         public string Text { get; set; }
-        public DateTime Date { get; set; }
+        public string Date { get; set; }
     }
 }

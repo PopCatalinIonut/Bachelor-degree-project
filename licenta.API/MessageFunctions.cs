@@ -60,7 +60,7 @@ namespace licenta.API
         
         [FunctionName("GetUserMessages")]
         [OpenApiParameter("userId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
-        public ActionResult<List<DisplayMessageDto>> GetUserMessages(
+        public ActionResult<List<UserConversationDto>> GetUserMessages(
             [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "messages/{userId}")] HttpRequest req, int userId,
             ILogger log)
         {
