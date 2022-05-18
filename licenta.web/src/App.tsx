@@ -6,6 +6,7 @@ import ProfilePage from './components/ProfilePage';
 import AddItemPage from './components/AddItemPage';
 import WishlistPage from './components/WishlistPage';
 import MarketplacePage from './components/MarketplacePage';
+import ChatPage from './components/ChatPage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path='/additem' element={<AddItemPage/>}/>
             <Route path='/wishlist' element={<WishlistPage/>}/>
             <Route path='/marketplace' element={<MarketplacePage/>}/>
+            <Route path='/chat' element={<ChatPage/>}/>
         </Routes>
       </BrowserRouter>
   );

@@ -1,4 +1,4 @@
-import { Post } from "../components/types";
+import { DisplayMessage, Post, PostUserDetails } from "../components/types";
 
 export interface LoggedUserDetails{
     id: number;
@@ -19,4 +19,9 @@ export interface SignupCredentials extends LoginCredentials{
     lastName: string;
     firstName: string;
     email: string;
+}
+
+export interface Conversation {
+    recipient: PostUserDetails;
+    messages: DisplayMessage[];
 }

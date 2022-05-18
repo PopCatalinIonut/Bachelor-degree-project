@@ -19,18 +19,7 @@ export default function HomePage() {
     dispatch<any>(logout());
     navigate("/")
   }
-    const handleProfile = () =>{ 
-    navigate("/profile")
-  }
-  const handleAddItem = () =>{ 
-    navigate("/additem")
-  }
-  const handleWishlist = () =>{
-    navigate("/wishlist")
-  }
-  const handleMarketplace = () =>{
-    navigate("/marketplace")
-  }
+
   return (
     <div style={{textAlign:"center"}}> 
         <div style={{ textAlign:"center"}}>
@@ -47,7 +36,7 @@ export default function HomePage() {
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs ={4}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={handleProfile}>
+                        <Fab variant="extended" size="medium" color="primary" onClick={() =>{navigate('/profile')}}>
                             <PersonIcon />
                             <Typography style={{fontSize:13}}>
                                  Profile
@@ -55,7 +44,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={handleWishlist}>
+                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/wishlist")}}>
                             <FavoriteIcon /> 
                             <Typography style={{fontSize:13}}>
                                 Wishlist
@@ -63,7 +52,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/chat")}}>
                             <ChatIcon />   
                             <Typography style={{fontSize:13}}>
                                 Chat
@@ -81,7 +70,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={handleMarketplace}>
+                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/marketplace")}}>
                             <ShoppingCart /> 
                             <Typography style={{fontSize:13}}>
                             Marketplace
@@ -89,7 +78,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={handleAddItem}>
+                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/additem")}}>
                             <SellIcon />
                             <Typography style={{fontSize:13}}>
                                 Want to sell something?

@@ -1,5 +1,5 @@
 import { DisplayMessage, Post } from "../components/types";
-import { LoggedUserDetails } from "./types";
+import { Conversation, LoggedUserDetails } from "./types";
 
 export interface SetInitialUserSliceStatePayload {
   user: LoggedUserDetails;
@@ -16,5 +16,5 @@ export interface AddItemToWishlistPayload {
 
 
 export interface SetInitialMessageSliceStatePayload {
-  messages: DisplayMessage[]
+  conversations: Conversation[]
 }
