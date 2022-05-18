@@ -1,4 +1,5 @@
-﻿using licenta.BLL.Models;
+﻿using System.Linq;
+using licenta.BLL.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace licenta.BLL.Helpers
@@ -17,12 +18,16 @@ namespace licenta.BLL.Helpers
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller);
-            builder.Entity<Item>();
-            builder.Entity<Post>().HasOne(x => x.Seller);
+            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<Item>().HasMany(x => x.Images);
+            builder.Entity<Post>().HasOne(x => x.Item);
             builder.Entity<ItemImage>();
             builder.Entity<Message>();
             builder.Entity<WishlistPost>().HasKey(x => new { x.PostId, x.UserId });
+            foreach (var foreignKey in builder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                foreignKey.DeleteBehavior = DeleteBehavior.Cascade;
+            }
             base.OnModelCreating(builder);
         }
     }

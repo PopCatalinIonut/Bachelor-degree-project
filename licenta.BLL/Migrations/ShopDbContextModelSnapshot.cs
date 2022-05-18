@@ -14,7 +14,7 @@ namespace licenta.BLL.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "5.0.17");
+                .HasAnnotation("ProductVersion", "5.0.16");
 
             modelBuilder.Entity("licenta.BLL.Models.Item", b =>
                 {
@@ -100,7 +100,6 @@ namespace licenta.BLL.Migrations
             modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CityLocation")
@@ -118,14 +117,9 @@ namespace licenta.BLL.Migrations
                     b.Property<int?>("ItemId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("SellerId")
-                        .HasColumnType("INTEGER");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
-
-                    b.HasIndex("SellerId");
 
                     b.ToTable("Posts");
                 });
@@ -184,11 +178,13 @@ namespace licenta.BLL.Migrations
                 {
                     b.HasOne("licenta.BLL.Models.User", "Receiver")
                         .WithMany()
-                        .HasForeignKey("ReceiverId");
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("licenta.BLL.Models.User", "Sender")
                         .WithMany()
-                        .HasForeignKey("SenderId");
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Receiver");
 
@@ -197,13 +193,16 @@ namespace licenta.BLL.Migrations
 
             modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
-                    b.HasOne("licenta.BLL.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId");
-
                     b.HasOne("licenta.BLL.Models.User", "Seller")
                         .WithMany("PostedPosts")
-                        .HasForeignKey("SellerId");
+                        .HasForeignKey("Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("licenta.BLL.Models.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Item");
 
@@ -213,7 +212,7 @@ namespace licenta.BLL.Migrations
             modelBuilder.Entity("licenta.BLL.Models.WishlistPost", b =>
                 {
                     b.HasOne("licenta.BLL.Models.User", null)
-                        .WithMany("Wishlist")
+                        .WithMany("WishlistList")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -228,7 +227,7 @@ namespace licenta.BLL.Migrations
                 {
                     b.Navigation("PostedPosts");
 
-                    b.Navigation("Wishlist");
+                    b.Navigation("WishlistList");
                 });
 #pragma warning restore 612, 618
         }

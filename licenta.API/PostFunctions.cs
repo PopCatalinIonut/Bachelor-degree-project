@@ -61,7 +61,7 @@ namespace licenta.API
         [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
         [OpenApiParameter("userId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
         [OpenApiRequestBody("application/json", typeof(WishlistPost))]
-        public async Task<ActionResult<Post>> RemovePostFromWishlist(
+        public ActionResult<Post> RemovePostFromWishlist(
             [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "posts/wishlist/post/{postId}/user/{userId}")] HttpRequest req, int postId, int userId,
             ILogger log)
         {
@@ -71,6 +71,65 @@ namespace licenta.API
                
                 var removed = _postManager.RemovePostFromWishlist(removePostData);
                 if (removed)
+                    return new OkResult();
+                
+                var result = new ObjectResult(false)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new ObjectResult(e)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+        }
+        
+        [HttpPost]
+        [FunctionName("UpdatePostStatus")]
+        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
+        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        [OpenApiParameter("status", In = ParameterLocation.Path, Required = true, Type = typeof(bool))]
+        public ActionResult<Post> UpdatePostStatus(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "posts/{postId}/{status}")] HttpRequest req, int postId, bool status,
+            ILogger log)
+        {
+            try
+            { 
+                var updated = _postManager.UpdateActiveStatus(postId, status);
+                if (updated)
+                    return new OkResult();
+                
+                var result = new ObjectResult(false)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+                return result;
+            }
+            catch (Exception e)
+            {
+                return new ObjectResult(e)
+                {
+                    StatusCode = StatusCodes.Status500InternalServerError
+                };
+            }
+        }
+        
+        [HttpPost]
+        [FunctionName("DeletePost")]
+        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
+        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
+        public ActionResult<Post> DeletePost(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "posts/{postId}")] HttpRequest req, int postId,
+            ILogger log)
+        {
+            try
+            { 
+                var deleted = _postManager.DeletePost(postId);
+                if (deleted)
                     return new OkResult();
                 
                 var result = new ObjectResult(false)

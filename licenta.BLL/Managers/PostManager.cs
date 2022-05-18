@@ -133,5 +133,26 @@ namespace licenta.BLL.Managers
             _context.SaveChangesAsync();
             return removed != null;
         }
+
+        public bool UpdateActiveStatus(int postId, bool newActiveStatus)
+        {
+            var post = _context.Posts.FirstOrDefault(x => x.Id == postId);
+            if (post == null) return false;
+            
+            post.IsActive = newActiveStatus;
+            _context.SaveChangesAsync();
+            return true;
+        }
+
+        public bool DeletePost(int postId)
+        {
+            var post = _context.Posts.FirstOrDefault(x => x.Id == postId);
+            if (post == null) return false;
+            
+            _context.Posts.Remove(post);
+            _context.SaveChangesAsync();
+            return true;
+
+        }
     }
 }
