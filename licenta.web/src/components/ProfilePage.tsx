@@ -1,15 +1,18 @@
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, Fab, Grid, Typography } from "@material-ui/core";
+import { Accordion, AccordionDetails, AccordionSummary, Box, Card, CardContent, Fab, Grid, Typography } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from "react";
 import { useAppSelector } from "../app/hooks";
 import { LoggedUserDetails } from "../features/types";
-import { userSelector } from "../features/UserSlice";
+import { userActivePostsSelector,userDisabledPostsSelector, userSelector } from "../features/UserSlice";
+import PersonIcon from '@mui/icons-material/Person';
+import { Post } from "./types";
+import ProfilePostItemPreview from "./ProfilePostPreview";
 const styles = {
     typographyFormat: {
-        padding: "10px 20px",
-        fontSize: "22px",
+        padding: "10px 10px",
+        fontSize: "20px",
         float:"left"
     }as React.CSSProperties
   }
@@ -20,63 +23,74 @@ export default function ProfilePage() {
       navigate("/home")
     }
   
-    const currentUser: LoggedUserDetails | null = useAppSelector(userSelector);
-    
+    const currentUser: LoggedUserDetails = useAppSelector(userSelector);
+    const activePosts: Post[] = useAppSelector(userActivePostsSelector);
+    const disabledPosts: Post[] = useAppSelector(userDisabledPostsSelector);
+
+    const activePostsList = () =>{
+        if (activePosts?.length === 0)
+            return <Typography>You currently have no active posts!</Typography>
+        else 
+            return (activePosts.map((post) =>
+                 <ProfilePostItemPreview post={post} user={currentUser}></ProfilePostItemPreview>
+             ))
+    }
+
+    const disabledPostsList = () =>{
+        if (disabledPosts?.length === 0)
+        return (<Typography>You currently have no disabled posts!</Typography>)
+    else 
+        return (disabledPosts.map((post: Post) => <ProfilePostItemPreview post={post} user={currentUser}/> ))
+    }
+
     return (
         <div style={{textAlign:"center"}}>
             <div style={{textAlign:"center",marginTop: "100px",marginBottom:"20px"}}>
-            <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
+            <Fab onClick={handleGoHome} style={{backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
             
-            <Card style={{display: "inline-grid",width:"500px"}} variant="outlined">
-                <CardContent>
-                    <div style={{display:"inline-block"}}>   
+            <Card style={{display: "inline-grid",width:"700px", padding:0 }} variant="outlined">
                         <Grid container >
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat} noWrap>First name: </Typography>
+                            <Grid item xs={6}>
+                                <PersonIcon style={{width:"250px",height:"250px", float:"right"}}></PersonIcon>
                             </Grid>
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>{currentUser?.firstName} </Typography>
-                            </Grid>
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat} noWrap>Last name: </Typography>
-                            </Grid>
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>{currentUser?.lastName}</Typography>
-                            </Grid>
-                            <Grid item sm={6} >
-                                <Typography style={styles.typographyFormat}>Email:</Typography>
-                            </Grid>
-                            <Grid item sm={6} >
-                                <Typography style={styles.typographyFormat}>{currentUser?.email}</Typography>
-                            </Grid>
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>Username:</Typography>
-                            </Grid>
-                            <Grid item sm={6}>
-                                <Typography style={styles.typographyFormat}>{currentUser?.loginUsername} </Typography>
+                            <Grid item sm={6} style={{marginTop:"25px",float:"left"}}>
+                                <Grid container>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat}>First name: </Typography>
+                                    </Grid>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat}>{currentUser?.firstName} </Typography>
+                                    </Grid>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat} >Last name: </Typography>
+                                    </Grid>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat}>{currentUser?.lastName}</Typography>
+                                    </Grid>
+                                    <Grid item sm={6} >
+                                        <Typography style={styles.typographyFormat}>Email:</Typography>
+                                    </Grid>
+                                    <Grid item sm={6} >
+                                        <Typography style={styles.typographyFormat}>{currentUser?.email}</Typography>
+                                    </Grid>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat}>Username:</Typography>
+                                    </Grid>
+                                    <Grid item sm={6}>
+                                        <Typography style={styles.typographyFormat}>{currentUser?.loginUsername} </Typography>
+                                    </Grid>
+                                </Grid>
                             </Grid>
                         </Grid>
-                        <Accordion style={{marginTop:"30px",marginBottom:"30px"}}>
-                            <AccordionSummary  expandIcon={<ExpandMoreIcon />}  >
-                                <Typography>Your active selling items</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                
-                            </AccordionDetails>
-                        </Accordion>
-                        <Accordion>
-                            <AccordionSummary  expandIcon={<ExpandMoreIcon />}>
-                                <Typography>Your disabled items</Typography>
-                            </AccordionSummary>
-                            <AccordionDetails>
-                                
-                            </AccordionDetails>
-                        </Accordion>
-                  </div>
-              </CardContent>
+                        <Box style={{borderTop:"1px solid"}}>
+                            <Typography style={{marginTop:20,fontWeight:600,marginBottom:20}}>Your active posts</Typography>
+                            {activePostsList()}
+                            <Typography style={{marginTop:20,fontWeight:600,marginBottom:20}}>Your disabled posts</Typography>
+                            {disabledPostsList()}
+                        </Box>
           </Card>
       </div>
     );

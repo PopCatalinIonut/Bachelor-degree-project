@@ -62,11 +62,9 @@ export default function MarketplacePage(){
     const handleDialogOpen = (post:Post) => {
         setDialogPost(
             <div>
-                <Dialog
-                    fullWidth  maxWidth="md"  open={true}
-                    onClose={handleDialogClose}>
-                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id}
-                    description={post.description} cityLocation={post.cityLocation}></PostDetailsDialog>
+                <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
+                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
+                    description={post.description} cityLocation={post.cityLocation}/>
                 </Dialog>
             </div>
         );

@@ -32,7 +32,8 @@ export interface AddPost{
 export interface Post extends Omit<AddPost,"item"|"userId">{
     id: number;
     item: SellingItem;  
-    seller: PostUserDetails
+    seller: PostUserDetails;
+    isActive: boolean;
 }
 
 export interface SellingItemEncoded extends Omit<AddSellingItem, 'images'> {

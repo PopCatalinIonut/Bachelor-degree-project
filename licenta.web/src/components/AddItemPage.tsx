@@ -104,6 +104,8 @@ export default function AddItemPage() {
             locationValue.length === 0 || genreValue.length === 0 || colorValue.length === 0){
             errors+="There are empty fields";
         }
+        if(titleValue.length > 60)
+            errors+="\n Title too long, cannot exceed 60 characters"
         return errors;
       }
     return (

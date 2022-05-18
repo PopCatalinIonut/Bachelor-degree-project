@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../app/store";
 import { Post, PostEncoded } from "../components/types";
-import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload } from "./payloads";
+import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload, UpdatePostActiveStatusPayload } from "./payloads";
 
 export interface MarketplaceConfigurationState {
   posts: Post[];
@@ -39,6 +39,32 @@ export const getAllPosts = createAsyncThunk(
     }
   }
 );
+
+export const UpdatePostActiveStatus = createAsyncThunk(
+  "features/MarketplaceSlice/updatePostActiveStatus",
+  async(props : UpdatePostActiveStatusPayload, {rejectWithValue}) =>{
+    try{
+         const response = await axios.patch<Post>("http://localhost:7071/api/posts/".concat(props.postId.toString().concat("/")+props.status.toString()));
+         console.log(response);
+      return "Ok";
+    }catch (err: any) {
+      return rejectWithValue(err.response.data);
+      }
+  }
+)
+
+export const DeletePost = createAsyncThunk(
+  "features/MarketplaceSlice/deletePost",
+  async(props : number, {rejectWithValue}) =>{
+    try{
+         const response = await axios.delete<Post>("http://localhost:7071/api/posts/".concat(props.toString()));
+         console.log(response);
+      return "Ok";
+    }catch (err: any) {
+      return rejectWithValue(err.response.data);
+      }
+  }
+)
 
 export const AddItemToWishlist = createAsyncThunk(
   "features/MarketplaceSlice/addItemToWishlist",

@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Post, PostUserDetails } from "./types";
-import { Fab, Paper, Grid, Typography, Dialog } from "@material-ui/core";
+import { Fab, Paper, Grid, Typography } from "@material-ui/core";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import OpenInFullIcon from '@mui/icons-material/OpenInFull';
-import ContactSellerDialog from "./ContactSellerDialog";
-
 
 export interface MarketplacePostPreviewProps {
     post: Post;
     dialogClose: (post: Post) => void;
     user: PostUserDetails
-  }
+}
+
 export default function MarketplacePostPreview (props: MarketplacePostPreviewProps){
 
     var post = props.post;

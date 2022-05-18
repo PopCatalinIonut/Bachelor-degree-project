@@ -18,3 +18,8 @@ export interface AddItemToWishlistPayload {
 export interface SetInitialMessageSliceStatePayload {
   conversations: Conversation[]
 }
+
+export interface UpdatePostActiveStatusPayload{
+  postId: number;
+  status: boolean;
+}

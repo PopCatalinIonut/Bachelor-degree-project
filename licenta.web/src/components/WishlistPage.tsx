@@ -59,8 +59,9 @@ export default function WishlistPage(){
                             <Dialog
                                 fullWidth  maxWidth="md"  open={dialogOpen}
                                 onClose={handleDialogClose}>
-                                <PostDetailsDialog item={dialogPost.item} seller={dialogPost.seller} id={dialogPost.id}
-                                description={dialogPost.description} cityLocation={dialogPost.cityLocation}></PostDetailsDialog>
+                                <PostDetailsDialog item={dialogPost.item} seller={dialogPost.seller} 
+                                    cityLocation={dialogPost.cityLocation} id={dialogPost.id}
+                                    description={dialogPost.description} isActive={dialogPost.isActive}/>
                             </Dialog>
                         </div>
                     );

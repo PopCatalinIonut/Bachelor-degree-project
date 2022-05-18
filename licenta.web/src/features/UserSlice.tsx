@@ -6,7 +6,7 @@ import {
 import axios from "axios";
 import { RootState } from "../app/store";
 import { Post } from "../components/types";
-import { SetInitialUserSliceStatePayload } from "./payloads";
+import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "./payloads";
 import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "./types";
 
 export interface LoginSiceConfigurationState {
@@ -75,6 +75,14 @@ export const userSlice = createSlice({
       },
       removeItemFromUserWishlist: (state, action:PayloadAction<Post>) =>{
         state.user.wishlist.splice(state.user.wishlist.findIndex(x => x.id === action.payload.id),1);
+      },
+      updatePostStatus: (state, action:PayloadAction<UpdatePostActiveStatusPayload>) =>{
+        var post = state.user.postedPosts.find(x => x.id === action.payload.postId);
+        if(post!==undefined)
+          post.isActive = action.payload.status;
+      },
+      deletePostReducer: (state, action:PayloadAction<number>) =>{
+        state.user.postedPosts.splice(state.user.postedPosts.findIndex(x => x.id === action.payload),1);
       }
     },
     extraReducers: builder => {
@@ -98,10 +106,14 @@ export const {
   logout,
   initUserWishlist,
   addItemToUserWishlist,
-  removeItemFromUserWishlist
+  removeItemFromUserWishlist,
+  updatePostStatus,
+  deletePostReducer
 } = userSlice.actions;
   
 export const userSelector = (state: RootState) => state.userSlice.user;
-export const userWishlistSelector = (state: RootState) =>state.userSlice.user.wishlist
+export const userWishlistSelector = (state: RootState) => state.userSlice.user.wishlist
+export const userDisabledPostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.isActive === false)
+export const userActivePostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.isActive === true);
 export default userSlice.reducer;
   
