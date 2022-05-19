@@ -1,4 +1,4 @@
-import { Dialog, Fab, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
+import { Dialog, Fab, Grid, Paper, Snackbar, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@material-ui/core";
 import { Post } from "./types";
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -15,6 +15,7 @@ export default function PostDetailsDialog(post: Post){
     
     const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
+    const [snackOpened,setSnackOpened] = useState(false)
     let isWishlisted = user.wishlist.findIndex((x) => x.id === post.id) !== -1
   
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -33,8 +34,18 @@ export default function PostDetailsDialog(post: Post){
             dispatch(addItemToUserWishlist(post));
             isWishlisted = (true);
         }else{
-            alert("Can not be added");
+            setSnackOpened(true)
         }
+    }
+
+    const buttons = () =>{
+        if(post.seller.id !== user.id)
+            return (<div>
+                        {wishlistButton()}
+                        <Fab variant="extended" onClick={handleDialogOpen}> Message seller
+                            <MessageIcon/>
+                        </Fab>
+                    </div>)
     }
 
     const wishlistButton = () =>{
@@ -122,10 +133,7 @@ export default function PostDetailsDialog(post: Post){
                     </Grid>
                 </Grid>
                 <Grid item style={{textAlign:"center", marginTop:30, marginBottom:10}}>
-                    {wishlistButton()}
-                    <Fab variant="extended" onClick={handleDialogOpen}> Message seller
-                        <MessageIcon/>
-                    </Fab>
+                    {buttons()}
                 </Grid>
                 <Grid container>
                     {post.item.images.map((image) =>{
@@ -142,6 +150,10 @@ export default function PostDetailsDialog(post: Post){
                         dialogClose={() => {return setDialogOpen(false);}}/>
                     </Dialog>
                 </div>
+                
+            <Snackbar
+                open={snackOpened} autoHideDuration={3000} message="Cannot be added!"
+                anchorOrigin={{vertical: "top", horizontal: "center"}}/>
             </div>
       );
 }

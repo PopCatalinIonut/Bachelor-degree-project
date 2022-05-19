@@ -74,17 +74,17 @@ export default function MarketplacePage(){
         setDialogPost(<div></div>)
     }
     return (
-        <div style={{textAlign:"center",marginTop:"100px"}}>
+        <div style={{textAlign:"center",marginTop:"100px",width:"fit-content",margin:"150px auto"}}>
              <div style={{textAlign:"center",marginBottom:"20px"}}>
              <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-            <Card style={{border:"1px solid", borderRadius:"50px"}}>
+            <Card style={{border:"1px solid", borderRadius:"50px",minWidth:"200px"}}>
             <div style={{display:"flex",justifyContent:"center"}}>
-                    <FormControl>
+                    <FormControl style={{minWidth:"55px",marginLeft:"40px"}}>
                         <InputLabel>Type</InputLabel>
-                        <Select value={typeValue} autoWidth style={{minWidth:"55px"}}
+                        <Select value={typeValue} autoWidth 
                                 onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
                                     setTypeValue(eventNr);}}>
@@ -93,7 +93,7 @@ export default function MarketplacePage(){
                                     )}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"80px",width:"85px"}}>
+                    <FormControl style={{marginLeft:"60px",minWidth:"85px"}}>
                         <InputLabel >Category</InputLabel>
                         <Select value={categoryValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -106,18 +106,18 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"80px"}}> 
+                    <FormControl style={{marginLeft:"70px",minWidth:"65px"}}> 
                         <InputLabel id="Product type">Genre</InputLabel>
-                        <Select value={genreValue} autoWidth={true} style={{minWidth:"65px"}}
+                        <Select value={genreValue} autoWidth={true}
                             onChange={event => {
                             var eventNr = event.target.value as unknown as string;
-                            setGenreValue(eventNr);
-                            }}>{genreList.map((gender) =>{
-                                return  <MenuItem key={gender} value={gender}> {gender}</MenuItem>
+                            setGenreValue(eventNr)}}>
+                            {genreList.map((gender) =>{
+                                return <MenuItem key={gender} value={gender}> {gender}</MenuItem>
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"80px",width:"50px"}}>
+                    <FormControl style={{marginLeft:"60px",minWidth:"50px"}}>
                         <InputLabel id="Product category">Size</InputLabel>
                         <Select value={sizeValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -138,12 +138,11 @@ export default function MarketplacePage(){
                             })()}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"80px",width:"90px"}}>
+                    <FormControl style={{marginLeft:"60px",minWidth:"90px",marginRight:"20px"}}>
                         <InputLabel id="Product category">Condition</InputLabel>
-                        <Select value={conditionValue} autoWidth onChange={event => {
+                        <Select value={conditionValue} onChange={event => {
                             var eventNr = event.target.value as unknown as string;
-                            setConditionValue(eventNr);
-                            }}>
+                            setConditionValue(eventNr)}}>
                             {conditions.map((item) =>{
                                  return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
@@ -151,15 +150,13 @@ export default function MarketplacePage(){
             </div>
             <div style={{display:"flex",justifyContent:"center",borderBottom:"1px solid",paddingBottom:10}}>
                 <Fab variant="extended" size="medium" onClick={handleApplyFilters} style={{marginTop:20}}> 
-                    <SearchIcon/>
-                    Apply changes
+                    <SearchIcon/> Apply changes
                 </Fab>
                 <Fab variant="extended" size="medium" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
-                    <DeleteIcon/>
-                    Reset filters
+                    <DeleteIcon/> Reset filters
                 </Fab>
             </div>
-            <Box style={{display: "inline-grid",maxWidth:"1600px"}}>
+            <Box style={{display: "inline-grid",maxWidth:"1500px",minWidth:500}}>
             {(() => {
                 if (postsToShow.length === 0)
                     return ( <div ><Typography style={{height:90, marginTop:50}}>No items found!</Typography></div> );
@@ -168,14 +165,12 @@ export default function MarketplacePage(){
                             {postsToShow.map((post) =>{
                                 return ( <div style={{display:"flex", flexDirection:"row", margin:"20px 15px 15px 10px"}}>
                                             <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={user}/>
-                                         </div>)
-                            })}
+                                         </div>)})}
                     </Grid>
                 )
             })()}
             </Box>
             </Card>
-            
             {dialogPost}
         </div>
     )

@@ -16,11 +16,11 @@ export default function WishlistPage(){
         if(items.length === 0)
             return <div><Typography>You don't have any items on wishlist yet!</Typography></div>
         else return(
-            <Grid container spacing={1}>
+            <Grid container spacing={1} style={{justifyContent:"center"}}>
                 {items.map((post) =>{
-                    return ( <Grid item xs={4}>
+                    return ( <div style={{ margin:"20px 15px 15px 10px",display:"flex",flexDirection:"row",}}>
                                 <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={user}/>
-                            </Grid> )
+                            </div> )
                 })}
             </Grid>
         )
@@ -41,13 +41,13 @@ export default function WishlistPage(){
       navigate("/home")
     }
     return (
-        <div style={{textAlign:"center",marginTop:"150px"}}>
+        <div style={{textAlign:"center",borderRadius:"50px",width:"fit-content",margin:"auto",marginTop:"150px"}}>
              <div style={{textAlign:"center",marginBottom:"20px"}}>
-             <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
-                <ArrowBackIcon></ArrowBackIcon>
+                <Fab onClick={handleGoHome} style={{backgroundColor:"#ff3333"}}>
+                    <ArrowBackIcon/>
                 </Fab>
             </div>
-            <Card style={{display: "inline-grid",width:"1500px"}} variant="outlined">
+            <Card style={{display: "inline-grid",maxWidth:"1600px",minWidth:500,border:"1px solid", }}>
                 {wishlistItems()}
             </Card>
             {(() => {

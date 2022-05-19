@@ -51,7 +51,7 @@ export default function ProfilePage() {
                 </Fab>
             </div>
             
-            <Card style={{display: "inline-grid",width:"800px", padding:0 }} variant="outlined">
+            <Card style={{display: "inline-grid",width:"800px", padding:0, border:"1px solid" }} variant="outlined">
                         <Grid container >
                             <Grid item xs={4}>
                                 <PersonIcon style={{width:"240px",height:"240px", float:"right"}}></PersonIcon>
