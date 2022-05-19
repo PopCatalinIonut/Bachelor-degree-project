@@ -62,7 +62,7 @@ export default function HomePage() {
                 </Grid>
                 <Grid container spacing={2} style={{marginTop:"20px"}} justifyContent="space-around">
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary">
+                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/outfitGenerator")}}>
                             <CheckroomIcon /> 
                             <Typography style={{fontSize:13}}>
                                 Looking for an outfit?

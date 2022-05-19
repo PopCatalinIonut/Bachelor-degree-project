@@ -1,10 +1,10 @@
-import { Button, Card, CardContent, Fab, Grid, Input, InputAdornment,  MenuItem, Select, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Select, Snackbar, TextField, Typography } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
+import { itemTypesSelect, categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addItemToMarketplace } from "../features/MarketplaceSlice";
 import { addPostReducer, userSelector } from "../features/UserSlice";
@@ -217,24 +217,24 @@ export default function AddItemPage() {
                                     <Typography style={styles.typographyFormat}>Size:</Typography>
                                 </Grid>
                                 <Grid item sm={10}  style={{marginTop:"10px"}}>
-                                <Select value={sizeValue} style={{float:"left",marginLeft:"5%"}} onChange={event => {
-                                        var eventNr = event.target.value as unknown as string;
-                                        setSizeValue(eventNr);
-                                }}> {(() => {
-                                    if (typeValue === "Footwear"){
-                                        var sizes = footwearSizes.filter((x) => x.genre === genreValue)
-                                        if(sizes.length === 0)
-                                            return;
-                                        else return sizes.map((item) => {
-                                                return <MenuItem key={item.size} value={item.size}> {item.size}</MenuItem>
-                                            })}
-                                    else if(typeValue === "Clothing"){
-                                        return clothingSizes.map((item) => {
-                                            return <MenuItem key={item} value={item}> {item}</MenuItem>
-                                        })
-                                    }else return;
-                                })()}
-                                </Select>
+                                    <Select value={sizeValue} style={{float:"left",marginLeft:"5%"}} onChange={event => {
+                                            var eventNr = event.target.value as unknown as string;
+                                            setSizeValue(eventNr);
+                                    }}> {(() => {
+                                        if (typeValue === "Footwear"){
+                                            var sizes = footwearSizes.filter((x) => x.genre === genreValue)
+                                            if(sizes.length === 0)
+                                                return;
+                                            else return sizes.map((item) => {
+                                                    return <MenuItem key={item.size} value={item.size}> {item.size}</MenuItem>
+                                                })}
+                                        else if(typeValue === "Clothing"){
+                                            return clothingSizes.map((item) => {
+                                                return <MenuItem key={item} value={item}> {item}</MenuItem>
+                                            })
+                                        }else return;
+                                    })()}
+                                    </Select>
                                 </Grid>
                             </Grid>
                             <Grid item xs={6} container style={styles.gridFormat}>
@@ -279,8 +279,8 @@ export default function AddItemPage() {
                                 <Grid item sm={3}>
                                     <Typography style={styles.typographyFormat}>Price:</Typography>
                                 </Grid>
-                                <Grid item sm={9}  style={{marginTop:"10px"}}>
-                                <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                <Grid item sm={9} style={{marginTop:"10px"}}>
+                                    <Input startAdornment={<InputAdornment position="start">$</InputAdornment>}
                                         style={{width:"80px",float:"left",marginLeft:"5%"}} 
                                         onBlur={(event: { currentTarget: { value: string; }; }) => {
                                             setPriceValue(event.currentTarget.value);
@@ -290,15 +290,15 @@ export default function AddItemPage() {
                             <Grid item xs={6} container style={styles.gridFormat}>
                                 <Grid item sm={12}>
                                     <Typography style={styles.typographyFormat}>Color:</Typography>
-                                    <Select value={colorValue} style={{float:"left",marginTop:"10px",marginLeft:"5%"}}
-                                            onChange={event => {
-                                                var eventNr = event.target.value as unknown as string;
-                                                setColorValue(eventNr);
-                                            }}>
-                                    {colors.map((item) =>{
-                                        return <MenuItem key={item} value={item}>{item}</MenuItem>
-                                    })}
-                                    </Select>
+                                        <Select value={colorValue} style={{float:"left",marginTop:"10px",marginLeft:"5%"}}
+                                                onChange={event => {
+                                                    var eventNr = event.target.value as unknown as string;
+                                                    setColorValue(eventNr);
+                                                }}>
+                                        {colors.map((item) =>{
+                                            return <MenuItem key={item} value={item}>{item}</MenuItem>
+                                        })}
+                                        </Select>
                                 </Grid>
                             </Grid>
                             <Grid item xs={6} container style={styles.gridFormat}>
@@ -326,24 +326,25 @@ export default function AddItemPage() {
                                 <Grid item sm={3}>
                                     <Typography style={styles.typographyFormat}>Photos:</Typography>
                                     <label>
-                                    <input type="file" onChange={onImageAdd} className="filetype" style={{display:"none"}}/>
-                                        <Fab color="secondary" size="small" component="span" style={{marginTop:"10px"}}
-                                            aria-label="add"variant="extended">
-                                        <AddIcon />
-                                        </Fab>
+                                        <input type="file" onChange={onImageAdd} className="filetype" style={{display:"none"}}/>
+                                            <Fab color="secondary" size="small" component="span" style={{marginTop:"10px"}}
+                                                aria-label="add"variant="extended">
+                                            <AddIcon />
+                                            </Fab>
                                     </label>
                                 </Grid>
                                 <Grid item sm={9}>
                                     <Grid container>
-                                    {images.map((item,index) =>{
-                                        return <Grid item xs={3} style={{backgroundImage: `url(${URL.createObjectURL(item)})`,backgroundSize:"100% 100%",imageRendering:"-webkit-optimize-contrast",width:"128px", height:"128px"}}>
-                                            <Fab color="secondary" size="small" component="span" 
-                                                style={{float:"right",width:"20px",height:"20px"}}
-                                                variant="extended" onClick={() => {handleDeleteImage(index)}}>
-                                        <DeleteIcon />
-                                        </Fab>
-                                        </Grid>
-                                    })}</Grid>
+                                        {images.map((item,index) =>{
+                                            return <Grid item xs={3} style={{backgroundImage: `url(${URL.createObjectURL(item)})`,backgroundSize:"100% 100%",imageRendering:"-webkit-optimize-contrast",width:"128px", height:"128px"}}>
+                                                        <Fab color="secondary" size="small" component="span" 
+                                                            style={{float:"right",width:"20px",height:"20px"}}
+                                                            variant="extended" onClick={() => {handleDeleteImage(index)}}>
+                                                            <DeleteIcon />
+                                                        </Fab>
+                                                    </Grid>
+                                        })}
+                                    </Grid>
                                 </Grid>
                             </Grid>
                         </Grid>

@@ -7,6 +7,7 @@ import AddItemPage from './components/AddItemPage';
 import WishlistPage from './components/WishlistPage';
 import MarketplacePage from './components/MarketplacePage';
 import ChatPage from './components/ChatPage';
+import OutfitGeneratorPage from './components/OutfitGeneratorPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path='/wishlist' element={<WishlistPage/>}/>
             <Route path='/marketplace' element={<MarketplacePage/>}/>
             <Route path='/chat' element={<ChatPage/>}/>
+            <Route path='/outfitGenerator' element={<OutfitGeneratorPage/>}/>
         </Routes>
       </BrowserRouter>
   );

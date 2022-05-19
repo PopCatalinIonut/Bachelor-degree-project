@@ -1,3 +1,7 @@
+export const outfitSeasonType = ["Summer", "Spring", "Winter", "Fall"]
+
+export const colorPalette = ["Cold", "Warm", "Non-Color"]
+
 export const categoryList = [ "Footwear", "Clothing"]
 
 export const genreList = ["Men", "Women", "Unisex"]
