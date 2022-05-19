@@ -34,7 +34,7 @@ namespace licenta.BLL.Managers
                     Date = Posts.Date,
                     Description = Posts.Description,
                     IsActive = Posts.IsActive,
-                    Item = new Item(Posts.Item.Id,Posts.Item.Name,Posts.Item.Type,Posts.Item.Category,Posts.Item.Genre,
+                    Item = new Item(Posts.Item.Id,Posts.Item.Name,Posts.Item.Brand,Posts.Item.Type,Posts.Item.Category,Posts.Item.Genre,
                         Posts.Item.Size,Posts.Item.Fit,Posts.Item.Condition,Posts.Item.Price,Posts.Item.Images),
                     Seller = Posts.Seller
                 }

@@ -18,7 +18,8 @@ namespace licenta.BLL.DTOs
                 Name = itemToConvert.Name,
                 Size = itemToConvert.Size,
                 Type = itemToConvert.Type,
-                Price = itemToConvert.Price
+                Price = itemToConvert.Price,
+                Brand = itemToConvert.Brand
             };
         }
 
