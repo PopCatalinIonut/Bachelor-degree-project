@@ -7,7 +7,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {itemTypesSelect,categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { addItemToMarketplace } from "../features/MarketplaceSlice";
-import { userSelector } from "../features/UserSlice";
+import { addPostReducer, userSelector } from "../features/UserSlice";
+import { Post } from "./types";
+import { unwrapResult } from "@reduxjs/toolkit";
 const styles = {
 
     typographyFormat: {
@@ -78,24 +80,25 @@ export default function AddItemPage() {
         if(errors.length > 0){
             setSnackOpened(errors);
         }else {
-            var convertedImages = await convertAllImagesToBase64();
-            const response = await dispatch(addItemToMarketplace({
-                item: { name: titleValue, type: typeValue, category: categoryValue,
-                    genre: genreValue, size: sizeValue, fit: fitValue,
-                    condition: conditionValue, price: Number(priceValue),
-                    color: colorValue, images: convertedImages,
-                },
-                description: descriptionValue, cityLocation: locationValue, userId: user.id
-            }))
-            var message = response.payload as string;
-            if(message !== "Ok")
-              setSnackOpened(message);
-            else{
-              setSnackOpened("Item has been successfuly posted!\n Now you will be redirected to home.");
-              setTimeout( () => { navigate("/home") },4000)
-            }
+            try{
+                var convertedImages = await convertAllImagesToBase64();
+                const response = await dispatch(addItemToMarketplace({
+                    item: { name: titleValue, type: typeValue, category: categoryValue,
+                        genre: genreValue, size: sizeValue, fit: fitValue,
+                        condition: conditionValue, price: Number(priceValue),
+                        color: colorValue, images: convertedImages,
+                    },
+                    description: descriptionValue, cityLocation: locationValue, userId: user.id
+                }))
+                const post = unwrapResult(response) as Post
+                setSnackOpened("Item has been successfuly posted!\n Now you will be redirected to home.");
+                dispatch(addPostReducer(post))
+                setTimeout( () => { navigate("/home") },4000)
+                }catch (err) {
+                    setSnackOpened(err as string)
+            } 
         }
-    }
+   }
     const verifyInputs = () =>{
         var errors: string = "";
         if(typeValue.length === 0 || categoryValue.length === 0 || images.length < 2 || 

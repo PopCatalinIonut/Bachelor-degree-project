@@ -96,7 +96,9 @@ namespace licenta.BLL.Migrations
                 name: "Posts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "INTEGER", nullable: false),
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    SellerId = table.Column<int>(type: "INTEGER", nullable: true),
                     ItemId = table.Column<int>(type: "INTEGER", nullable: true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     CityLocation = table.Column<string>(type: "TEXT", nullable: true),
@@ -113,8 +115,8 @@ namespace licenta.BLL.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Posts_Users_Id",
-                        column: x => x.Id,
+                        name: "FK_Posts_Users_SellerId",
+                        column: x => x.SellerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -157,6 +159,11 @@ namespace licenta.BLL.Migrations
                 name: "IX_Posts_ItemId",
                 table: "Posts",
                 column: "ItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Posts_SellerId",
+                table: "Posts",
+                column: "SellerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WishlistPosts_UserId",

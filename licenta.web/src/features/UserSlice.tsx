@@ -83,6 +83,9 @@ export const userSlice = createSlice({
       },
       deletePostReducer: (state, action:PayloadAction<number>) =>{
         state.user.postedPosts.splice(state.user.postedPosts.findIndex(x => x.id === action.payload),1);
+      },
+      addPostReducer: (state, action:PayloadAction<Post>) =>{
+        state.user.postedPosts.push(action.payload);
       }
     },
     extraReducers: builder => {
@@ -108,7 +111,8 @@ export const {
   addItemToUserWishlist,
   removeItemFromUserWishlist,
   updatePostStatus,
-  deletePostReducer
+  deletePostReducer,
+  addPostReducer
 } = userSlice.actions;
   
 export const userSelector = (state: RootState) => state.userSlice.user;

@@ -9,7 +9,7 @@ using licenta.BLL.Helpers;
 namespace licenta.BLL.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20220518213603_InitialMigration")]
+    [Migration("20220519110248_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,6 +102,7 @@ namespace licenta.BLL.Migrations
             modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("CityLocation")
@@ -119,9 +120,14 @@ namespace licenta.BLL.Migrations
                     b.Property<int?>("ItemId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("SellerId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ItemId");
+
+                    b.HasIndex("SellerId");
 
                     b.ToTable("Posts");
                 });
@@ -195,15 +201,14 @@ namespace licenta.BLL.Migrations
 
             modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
-                    b.HasOne("licenta.BLL.Models.User", "Seller")
-                        .WithMany("PostedPosts")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("licenta.BLL.Models.Item", "Item")
                         .WithMany()
                         .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("licenta.BLL.Models.User", "Seller")
+                        .WithMany("PostedPosts")
+                        .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("Item");

@@ -98,7 +98,7 @@ export const addItemToMarketplace = createAsyncThunk(
   "features/MarketplaceSlice/addItemToMarketplace",
   async (post: PostEncoded, { rejectWithValue }) => {
     try{ 
-       await axios.post<Post>("http://localhost:7071/api/posts",
+       const response = await axios.post<Post>("http://localhost:7071/api/posts",
        { item: {
           name: post.item.name,
           type: post.item.type,
@@ -114,8 +114,9 @@ export const addItemToMarketplace = createAsyncThunk(
       cityLocation: post.cityLocation,
       description: post.description,
       userId : post.userId
-    });
-      return "Ok";
+    });    
+    console.log(response.data.id !== null)
+      return response.data;
     }
     catch (err: any) {
     return rejectWithValue(err.response.data);

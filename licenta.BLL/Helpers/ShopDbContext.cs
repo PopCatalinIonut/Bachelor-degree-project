@@ -18,7 +18,7 @@ namespace licenta.BLL.Helpers
         
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller).HasForeignKey(x => x.Id).OnDelete(DeleteBehavior.ClientCascade);
+            builder.Entity<User>().HasMany(x => x.PostedPosts).WithOne(x => x.Seller);
             builder.Entity<Item>().HasMany(x => x.Images);
             builder.Entity<Post>().HasOne(x => x.Item);
             builder.Entity<ItemImage>();

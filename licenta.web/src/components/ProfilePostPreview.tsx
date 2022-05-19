@@ -33,7 +33,7 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
         var images = props.post.item.images;
         if(images.length > 3)
             var images = images.slice(0,3) 
-            return <div style={{flexDirection:"row",display:"flex"}}>
+            return <div style={{flexDirection:"row",display:"flex", padding: 0}}>
                         {images.map((image) =>{
                             return <div style={{ width: 128, height: 128 , backgroundImage:"url(" + image.link + ")",
                                         backgroundSize:"cover", backgroundPosition:"center"}}>
@@ -43,21 +43,21 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
 
     const showButtons = () =>{
         if(props.post.isActive === true)
-        return <Button variant="outlined" size="small" style={{marginRight:30}} 
+        return <Button variant="contained" size="small" style={{marginRight:30}} color="secondary"
                        onClick={() => {handleUpdatePostStatus(false)}} >Disable post</Button>
                 
         else return(<div>
-            <Button variant="outlined" size="small" style={{marginRight:30}} 
+            <Button variant="contained" size="small" style={{marginRight:30}} color="primary" 
                     onClick={() => {handleUpdatePostStatus(true)}}>Activate post</Button>
-            <Button variant="outlined" size="small" style={{marginRight:30}}
+            <Button variant="contained" size="small" style={{marginRight:30}} color="secondary" 
                     onClick={handleDeletePost}>Delete post</Button>
         </div>)
     }
 
     return (
-        <Paper style={{  margin: 'auto', width: 700,maxWidth: 700,padding:0 }} >
-            <Grid container spacing={2} style={{padding:0, marginBottom:20}}>
-                <Grid item xs={7} >
+        <Paper style={{ width: 800,maxWidth: 800,padding:0 }} >
+            <Grid container spacing={2} style={{margin:"auto",padding:0, marginBottom:20}}>
+                <Grid item xs={7} style={{padding:0}} >
                     {showImages()}
                 </Grid>
                 <Grid item xs={5}>
@@ -69,7 +69,9 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
                                 <Typography style={{marginRight:30,marginTop:15}}>
                                 {"$" + props.post.item.price}
                             </Typography>
+                            <div style={{marginTop:10}}>
                             {showButtons()}
+                            </div>
                             </Grid>
                     </Grid>
                 </Grid>

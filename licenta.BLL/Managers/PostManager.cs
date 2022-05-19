@@ -22,8 +22,18 @@ namespace licenta.BLL.Managers
         {
             _context = context;
         }
-        public async Task<bool> AddPost(AddPostDto itemToAdd)
+        public async Task<Post> AddPost(AddPostDto itemToAdd)
         {
+            
+            var post = DtoConverter.ConvertFromAddPostDtoToPost(itemToAdd);
+            var user = _context.Users.FirstOrDefault(x => x.Id == post.Seller.Id);
+            if (user == null) return null;
+            post.Seller = user;
+            _context.Posts.Add(post);
+            await _context.SaveChangesAsync();
+
+            if (post.Id == 0) return null;
+            
             var dir = Path.GetFullPath(@"..\..\..\..\") + "appsettings.json";
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
@@ -47,14 +57,6 @@ namespace licenta.BLL.Managers
             CloudStorageAccount account = new CloudStorageAccount(credentials, true);
             var cloudBlobClient = account.CreateCloudBlobClient();
             var cloudBobContainer = cloudBlobClient.GetContainerReference(blobStorageName); 
-            
-            var post = DtoConverter.ConvertFromAddPostDtoToPost(itemToAdd);
-            var user = _context.Users.FirstOrDefault(x => x.Id == post.Seller.Id);
-            post.Seller = user;
-            _context.Posts.Add(post);
-            await _context.SaveChangesAsync();
-
-            if (post.Id == 0) return false;
             
             var itemId = post.Item.Id;
             var itemImages = new List<ItemImage>();
@@ -83,7 +85,21 @@ namespace licenta.BLL.Managers
             _context.Items.Update(post.Item);
                 
             await _context.SaveChangesAsync();
-            return true;
+            return new Post
+            {
+                Date = post.Date,
+                CityLocation = post.CityLocation,
+                Description = post.Description,
+                Item = post.Item,
+                Id = post.Id,
+                IsActive = post.IsActive,
+                Seller = new User
+                {
+                    FirstName = post.Seller!.FirstName,
+                    LastName = post.Seller.LastName,
+                    Id = post.Seller.Id,
+                }
+            };
 
         }
 

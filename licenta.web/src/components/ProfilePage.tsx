@@ -12,8 +12,8 @@ import ProfilePostItemPreview from "./ProfilePostPreview";
 const styles = {
     typographyFormat: {
         padding: "10px 10px",
-        fontSize: "20px",
-        float:"left"
+        fontSize: "19px",
+        float:"left",
     }as React.CSSProperties
   }
 export default function ProfilePage() {
@@ -51,35 +51,35 @@ export default function ProfilePage() {
                 </Fab>
             </div>
             
-            <Card style={{display: "inline-grid",width:"700px", padding:0 }} variant="outlined">
+            <Card style={{display: "inline-grid",width:"800px", padding:0 }} variant="outlined">
                         <Grid container >
-                            <Grid item xs={6}>
-                                <PersonIcon style={{width:"250px",height:"250px", float:"right"}}></PersonIcon>
+                            <Grid item xs={4}>
+                                <PersonIcon style={{width:"240px",height:"240px", float:"right"}}></PersonIcon>
                             </Grid>
-                            <Grid item sm={6} style={{marginTop:"25px",float:"left"}}>
+                            <Grid item sm={8} style={{marginTop:"25px",float:"left"}}>
                                 <Grid container>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={4}>
                                         <Typography style={styles.typographyFormat}>First name: </Typography>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={8}>
                                         <Typography style={styles.typographyFormat}>{currentUser?.firstName} </Typography>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={4}>
                                         <Typography style={styles.typographyFormat} >Last name: </Typography>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={8}>
                                         <Typography style={styles.typographyFormat}>{currentUser?.lastName}</Typography>
                                     </Grid>
-                                    <Grid item sm={6} >
+                                    <Grid item sm={4} >
                                         <Typography style={styles.typographyFormat}>Email:</Typography>
                                     </Grid>
-                                    <Grid item sm={6} >
+                                    <Grid item sm={8} style={{width:"fit-content",wordWrap:"break-word"}} >
                                         <Typography style={styles.typographyFormat}>{currentUser?.email}</Typography>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={4}>
                                         <Typography style={styles.typographyFormat}>Username:</Typography>
                                     </Grid>
-                                    <Grid item sm={6}>
+                                    <Grid item sm={8}>
                                         <Typography style={styles.typographyFormat}>{currentUser?.loginUsername} </Typography>
                                     </Grid>
                                 </Grid>

@@ -168,24 +168,22 @@ namespace licenta.API
         [FunctionName("AddPost")]
         [OpenApiOperation("add", "posts")]
         [OpenApiRequestBody("application/json", typeof(AddPostDto))]
-        public async Task<ActionResult<string>> AddPost(
+        public async Task<ActionResult<Post>> AddPost(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "posts")] HttpRequest req,
             ILogger log)
         {
             try
             {
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var addPostData = JsonConvert.DeserializeObject<AddPostDto>(requestBody);
 
                 var added = await _postManager.AddPost(addPostData);
-                if (added)
-                    return new OkResult();
-                
-                var result = new ObjectResult(false)
-                {
-                    StatusCode = StatusCodes.Status500InternalServerError
-                };
-                return result;
+                if(added == null)
+                    return new ObjectResult("Cannot be added")
+                    {
+                        StatusCode = StatusCodes.Status500InternalServerError
+                    };
+                return added;
             }
             catch (Exception e)
             {
