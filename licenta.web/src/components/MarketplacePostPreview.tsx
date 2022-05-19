@@ -29,8 +29,8 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
         props.dialogOpen(post);
     }
     return (
-        <Paper style={{  margin: 'auto', width: 350,maxWidth: 350 }} >
-            <Grid container spacing={2}>
+        <Paper style={{  margin: 'auto', width: 350,maxWidth: 350,padding:0}} >
+            <Grid container>
                 <Grid item xs={12}>
                     <div style={{ width: 350, height: 350 , backgroundImage:"url(" + imageToShow.image.link + ")",
                         backgroundSize:"cover", backgroundPosition:"center"}}>
@@ -53,10 +53,10 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
                             <Typography gutterBottom style={{fontWeight:600}} component="div">
                                 {post.item.brand}
                             </Typography>
-                            <Typography style={{marginTop:15}} variant="body2" gutterBottom>
+                            <Typography style={{marginTop:5}} variant="body2" gutterBottom>
                                 {"Size " +post.item.size}
                             </Typography>
-                            <Typography  style={{marginTop:15}}variant="body2">
+                            <Typography  style={{marginTop:5}}variant="body2">
                                 {post.item.condition}
                             </Typography>
                             
@@ -64,10 +64,10 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
                     </Grid>
                     <Grid item xs={12}>
                   <div>
-                  <Typography style={{float:"left",marginLeft:5,marginTop:15}}>
+                  <Typography style={{float:"left",marginLeft:5,marginTop:5}}>
                             {"$" + post.item.price}
                         </Typography>
-                    <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:10}}>
+                    <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
                             <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
                         </Typography>
                       </div>
