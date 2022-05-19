@@ -1,10 +1,5 @@
-import { useState } from "react";
 import { Post, PostUserDetails } from "./types";
-import { Fab, Paper, Grid, Typography, Button } from "@material-ui/core";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import OpenInFullIcon from '@mui/icons-material/OpenInFull';
+import { Paper, Grid, Typography, Button } from "@material-ui/core";
 import { useAppDispatch } from "../app/hooks";
 import { DeletePost, UpdatePostActiveStatus } from "../features/MarketplaceSlice";
 import { deletePostReducer, updatePostStatus }  from "../features/UserSlice";
@@ -32,7 +27,7 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
     const showImages = () =>{
         var images = props.post.item.images;
         if(images.length > 3)
-            var images = images.slice(0,3) 
+            images = images.slice(0,3) 
             return <div style={{flexDirection:"row",display:"flex", padding: 0}}>
                         {images.map((image) =>{
                             return <div style={{ width: 128, height: 128 , backgroundImage:"url(" + image.link + ")",

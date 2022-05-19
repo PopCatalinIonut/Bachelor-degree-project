@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Card, Dialog, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import { Box, Card, Dialog, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
@@ -80,19 +80,20 @@ export default function MarketplacePage(){
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
+            <Card style={{border:"1px solid", borderRadius:"50px"}}>
             <div style={{display:"flex",justifyContent:"center"}}>
-                <Card style={{width:"1200px",marginBottom:"30px"}}>
-                    <FormControl style={{marginLeft:"50px"}}>
+                    <FormControl>
                         <InputLabel>Type</InputLabel>
-                        <Select value={typeValue} autoWidth 
-                             onChange={event => {
-                            var eventNr = event.target.value as unknown as string;
-                            setTypeValue(eventNr);}}>
-                            {categoryList.map((item) => {
-                            return <MenuItem key={item} value={item}> {item}</MenuItem>})}
+                        <Select value={typeValue} autoWidth style={{minWidth:"55px"}}
+                                onChange={event => {
+                                    var eventNr = event.target.value as unknown as string;
+                                    setTypeValue(eventNr);}}>
+                                    {categoryList.map((item) => {
+                                        return <MenuItem key={item} value={item}> {item}</MenuItem>}
+                                    )}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"50px",width:"85px"}}>
+                    <FormControl style={{marginLeft:"80px",width:"85px"}}>
                         <InputLabel >Category</InputLabel>
                         <Select value={categoryValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -105,9 +106,10 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"50px"}}> 
+                    <FormControl style={{marginLeft:"80px"}}> 
                         <InputLabel id="Product type">Genre</InputLabel>
-                        <Select value={genreValue} autoWidth={true} onChange={event => {
+                        <Select value={genreValue} autoWidth={true} style={{minWidth:"65px"}}
+                            onChange={event => {
                             var eventNr = event.target.value as unknown as string;
                             setGenreValue(eventNr);
                             }}>{genreList.map((gender) =>{
@@ -115,7 +117,7 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"50px",width:"50px"}}>
+                    <FormControl style={{marginLeft:"80px",width:"50px"}}>
                         <InputLabel id="Product category">Size</InputLabel>
                         <Select value={sizeValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -136,7 +138,7 @@ export default function MarketplacePage(){
                             })()}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"50px",width:"90px"}}>
+                    <FormControl style={{marginLeft:"80px",width:"90px"}}>
                         <InputLabel id="Product category">Condition</InputLabel>
                         <Select value={conditionValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -145,35 +147,35 @@ export default function MarketplacePage(){
                             {conditions.map((item) =>{
                                  return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
-                        </FormControl>
-                    <div style={{display:"inline-grid", marginLeft: 50}}>
-                    <Fab variant="extended" size="small" onClick={handleApplyFilters}> 
-                        <SearchIcon/>
-                        Apply changes
-                    </Fab>
-                    <Fab variant="extended" size="small" onClick={handleClearFilters}>
-                        <DeleteIcon/>
-                        Reset filters
-                    </Fab>
-                    </div>
-                 
-                </Card>
+                        </FormControl>       
             </div>
-            <Card style={{display: "inline-grid",width:"1500px"}}>
+            <div style={{display:"flex",justifyContent:"center",borderBottom:"1px solid",paddingBottom:10}}>
+                <Fab variant="extended" size="medium" onClick={handleApplyFilters} style={{marginTop:20}}> 
+                    <SearchIcon/>
+                    Apply changes
+                </Fab>
+                <Fab variant="extended" size="medium" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
+                    <DeleteIcon/>
+                    Reset filters
+                </Fab>
+            </div>
+            <Box style={{display: "inline-grid",maxWidth:"1600px"}}>
             {(() => {
-                if (postList.length === 0)
-                    return ( <div><Typography>No items found!</Typography></div> );
+                if (postsToShow.length === 0)
+                    return ( <div ><Typography style={{height:90, marginTop:50}}>No items found!</Typography></div> );
                 else return (
-                    <Grid container spacing={1}>
+                    <Grid container spacing={1} style={{justifyContent:"center"}}>
                             {postsToShow.map((post) =>{
-                                return ( <Grid item xs={4}>
-                                            <MarketplacePostPreview post={post} dialogClose={handleDialogOpen} user={user}/>
-                                        </Grid>  )
+                                return ( <div style={{display:"flex", flexDirection:"row", margin:"20px 15px 15px 10px"}}>
+                                            <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={user}/>
+                                         </div>)
                             })}
                     </Grid>
                 )
             })()}
+            </Box>
             </Card>
+            
             {dialogPost}
         </div>
     )

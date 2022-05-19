@@ -22,9 +22,11 @@ export default function AddItemPage() {
 
     const dispatch = useAppDispatch();
     let navigate = useNavigate(); 
+    
     const handleGoHome = () =>{ 
       navigate("/home")
     }
+
     const [categoryValue, setCategoryValue] = useState("");
     const [typeValue, setTypeValue] = useState("");
     const [genreValue, setGenreValue] = useState("");

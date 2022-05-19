@@ -70,7 +70,7 @@ export const AddItemToWishlist = createAsyncThunk(
   "features/MarketplaceSlice/addItemToWishlist",
   async(props : AddItemToWishlistPayload, {rejectWithValue}) =>{
     try{
-         const response = await axios.post<Post>("http://localhost:7071/api/posts/wishlist",{
+          await axios.post<Post>("http://localhost:7071/api/posts/wishlist",{
           userId: props.userId,
           postId: props.postId
         })

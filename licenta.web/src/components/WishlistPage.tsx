@@ -3,17 +3,15 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useState } from "react";
 import { Post } from "./types";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
+import { useAppSelector } from "../app/hooks";
 import { userSelector, userWishlistSelector } from "../features/UserSlice";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import PostDetailsDialog from "./PostDetailsDialog";
 
 export default function WishlistPage(){
-    const dispatch = useAppDispatch();
     let items = useAppSelector(userWishlistSelector)
     let user = useAppSelector(userSelector)
 
-    console.log(items)
     const wishlistItems = () =>{
         if(items.length === 0)
             return <div><Typography>You don't have any items on wishlist yet!</Typography></div>
@@ -21,7 +19,7 @@ export default function WishlistPage(){
             <Grid container spacing={1}>
                 {items.map((post) =>{
                     return ( <Grid item xs={4}>
-                                <MarketplacePostPreview post={post} dialogClose={handleDialogOpen} user={user}/>
+                                <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={user}/>
                             </Grid> )
                 })}
             </Grid>

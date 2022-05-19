@@ -1,7 +1,6 @@
-import { Accordion, AccordionDetails, AccordionSummary, Box, Card, CardContent, Fab, Grid, Typography } from "@material-ui/core";
+import { Box, Card, Fab, Grid, Typography } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import React from "react";
 import { useAppSelector } from "../app/hooks";
 import { LoggedUserDetails } from "../features/types";
@@ -9,13 +8,14 @@ import { userActivePostsSelector,userDisabledPostsSelector, userSelector } from 
 import PersonIcon from '@mui/icons-material/Person';
 import { Post } from "./types";
 import ProfilePostItemPreview from "./ProfilePostPreview";
+
 const styles = {
     typographyFormat: {
         padding: "10px 10px",
         fontSize: "19px",
         float:"left",
     }as React.CSSProperties
-  }
+}
 export default function ProfilePage() {
 
     let navigate = useNavigate(); 
