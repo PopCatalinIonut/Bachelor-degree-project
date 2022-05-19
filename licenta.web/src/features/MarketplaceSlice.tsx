@@ -101,6 +101,7 @@ export const addItemToMarketplace = createAsyncThunk(
        const response = await axios.post<Post>("http://localhost:7071/api/posts",
        { item: {
           name: post.item.name,
+          brand: post.item.brand,
           type: post.item.type,
           category: post.item.category,
           genre: post.item.genre,

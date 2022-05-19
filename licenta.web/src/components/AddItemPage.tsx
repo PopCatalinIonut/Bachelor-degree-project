@@ -40,7 +40,7 @@ export default function AddItemPage() {
     const [colorValue, setColorValue] = useState("");
     const [snackOpened, setSnackOpened] = useState("");
     const [images, setImages] = useState<Blob[]>([])
-
+    const [brandValue, setBrandValue] = useState("");
     const user = useAppSelector(userSelector)
 
     const convertAllImagesToBase64 =  async () =>{
@@ -88,7 +88,7 @@ export default function AddItemPage() {
                     item: { name: titleValue, type: typeValue, category: categoryValue,
                         genre: genreValue, size: sizeValue, fit: fitValue,
                         condition: conditionValue, price: Number(priceValue),
-                        color: colorValue, images: convertedImages,
+                        color: colorValue, images: convertedImages, brand:brandValue
                     },
                     description: descriptionValue, cityLocation: locationValue, userId: user.id
                 }))

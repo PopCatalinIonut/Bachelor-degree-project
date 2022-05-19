@@ -4,6 +4,7 @@ export interface AddSellingItem {
     category: string;
     genre: string;
     size: string;
+    brand: string;
     fit: string;
     condition: string;
     price: number;
