@@ -2,11 +2,14 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
 import userSlice from '../features/UserSlice'
 import marketplaceSlice from '../features/MarketplaceSlice';
 import messageSlice from '../features/MessageSlice';
+import outfitSlice from '../features/OutfitSlice';
+
 const store = configureStore({
   reducer: {
     userSlice: userSlice,
     marketplaceSlice: marketplaceSlice,
-    messageSlice: messageSlice
+    messageSlice: messageSlice,
+    outfitSlice: outfitSlice
   },
 });
 

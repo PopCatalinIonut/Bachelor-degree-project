@@ -1,10 +1,13 @@
 import { Button, Card, Fab, Grid, Input, InputAdornment, MenuItem, Select, TextField, Typography } from "@material-ui/core";
-import { useAppDispatch } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette } from "../data/itemPropertiesData";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { generateOutfit, outfitSelector } from "../features/OutfitSlice";
+import MarketplacePostPreview from "./MarketplacePostPreview";
+import { userSelector } from "../features/UserSlice";
 
 const clothingSizesWithNone = ["None"].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
@@ -21,10 +24,20 @@ export default function OutfitGeneratorPage(){
     const [colorPaletteValue, setColorPaletteValue] = useState("");
     const [brandValue, setBrandValue] = useState("");
     
+    const outfit = useAppSelector(outfitSelector);
+    const user = useAppSelector(userSelector)
+    console.log(outfit)
     let navigate = useNavigate(); 
 
-    const handleGenerateOutfit = () =>{
-
+    const handleGenerateOutfit = async () =>{
+        var postId = "";
+        if(outfit.length === 1)
+            postId = outfit[0].id.toString();
+        const response = await dispatch(generateOutfit({userId:user.id,brand:brandValue, maximumCost: priceValue,
+            season: outfitSeasonValue, genre: genreValue, shoeSize: shoeSizeValue, clothingSize: clothingSizeValue,
+            colorPalette: colorPaletteValue, postId: postId
+        }))
+        console.log(response.payload)
     }
 
     return (<div style={{textAlign:"center",width:"fit-content",margin:"50px auto"}}>
@@ -33,9 +46,9 @@ export default function OutfitGeneratorPage(){
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-        <Card style={{maxWidth:"1200px",maxHeight:"800px", justifyContent:"center",textAlign:"center"}}>
+        <Card style={{justifyContent:"center",textAlign:"center"}}>
             <Grid container>
-                <Grid item xs={6} container style={{border:"1px solid"}}>
+                <Grid item xs={4} container style={{border:"1px solid"}}>
                     <Grid item sm={9} style={{marginTop:"3%"}}>
                         <Typography >Maximum cost:</Typography>
                     </Grid>
@@ -110,7 +123,7 @@ export default function OutfitGeneratorPage(){
                                     }}> 
                                     {(() => {
                                         return shoeSizesWithBlank.map((item) => {
-                                            return <MenuItem key={item.size} value={item.size}> {item.genre + ": " +item.size}</MenuItem>
+                                            return <MenuItem key={item.size} value={item.size}> {item.genre + "'s " +item.size}</MenuItem>
                                     })
                                 })()}
                             </Select>
@@ -128,8 +141,12 @@ export default function OutfitGeneratorPage(){
                             </ToggleButtonGroup>
                     </Grid>
                 </Grid>
-                <Grid item xs={6} container style={{border:"1px solid"}}>
-                    
+                <Grid item xs={8} container style={{border:"1px solid"}}>
+                    {outfit.map((item) =>{
+                        return (<Grid item xs={12} style={{width:450,height:450}}>
+                                <MarketplacePostPreview post={item} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
+                        </Grid>)
+                    })}
                 </Grid>
             </Grid>
         </Card>
