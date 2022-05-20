@@ -29,52 +29,42 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
         props.dialogOpen(post);
     }
     return (
-        <Paper style={{  margin: 'auto', width: 350,maxWidth: 350,padding:0}} >
-            <Grid container>
-                <Grid item xs={12}>
-                    <div style={{ width: 350, height: 350 , backgroundImage:"url(" + imageToShow.image.link + ")",
-                        backgroundSize:"cover", backgroundPosition:"center"}}>
-                        <Fab onClick={handleImageChangeLeft} style={{width:35 , height:10}} size="small">
+        <Paper style={{width: "inherit",height:"100%"}}>
+            <Grid container style={{width: "inherit",height:"100%" }}>
+                <Grid item xs={12} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
+                        backgroundSize:"cover", backgroundPosition:"center",height:"75%"}}>
+                        <Fab onClick={handleImageChangeLeft} style={{width:"10%" , height:"5%"}}>
                             <ArrowBackIcon/>
                         </Fab>
-                        <Fab onClick={handleImageChangeRight} style={{width:35 , height:10}}>
+                        <Fab onClick={handleImageChangeRight} style={{width:"10%" , height:"5%"}}>
                             <ArrowForwardIcon/>
                         </Fab>
-                    </div>
                 </Grid>
-                <Grid item>
-                <ButtonBase style={{width:350}} onClick={handleOpenDialog}>
-                <Grid item xs={9} sm container>
-                    <Grid item xs container direction="column" >
-                        <Grid item xs >
-                            <Typography gutterBottom style={{fontWeight:600}} component="div">
-                                {post.item.name}
-                            </Typography>
-                            <Typography gutterBottom style={{fontWeight:600}} component="div">
-                                {post.item.brand}
-                            </Typography>
-                            <Typography style={{marginTop:5}} variant="body2" gutterBottom>
-                                {"Size " +post.item.size}
-                            </Typography>
-                            <Typography  style={{marginTop:5}}variant="body2">
-                                {post.item.condition}
-                            </Typography>
-                            
-                        </Grid>
+                <ButtonBase style={{width:"inherit",height:"25%",alignItems:"normal"}} onClick={handleOpenDialog}>   
+                    <Grid item xs={12} sm container style={{height:"inherit"}}>
+                        <Grid item xs container direction="column" >
+                                <Grid item xs >
+                                    <Typography gutterBottom style={{fontWeight:600}} component="div">
+                                        {post.item.name}
+                                    </Typography>
+                                    <Typography gutterBottom style={{fontWeight:600}} component="div">
+                                        {post.item.brand}
+                                    </Typography>
+                                    <Typography style={{marginTop:5}} variant="body2" gutterBottom>
+                                        {"Size " +post.item.size + " - " + post.item.condition}
+                                    </Typography>
+                                </Grid>
+                                <div>
+                                <Typography style={{float:"left",marginLeft:5,marginTop:5}}>
+                                    {"$" + post.item.price}
+                                </Typography>
+                                <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
+                                    <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
+                                </Typography>
+                                </div>
+                            </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                  <div>
-                  <Typography style={{float:"left",marginLeft:5,marginTop:5}}>
-                            {"$" + post.item.price}
-                        </Typography>
-                    <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
-                            <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
-                        </Typography>
-                      </div>
-                    </Grid>
-                </Grid></ButtonBase>
-                </Grid>
-                
+                </ButtonBase>
             </Grid>
         </Paper>
     )

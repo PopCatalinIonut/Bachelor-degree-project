@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PostDetailsDialog from "./PostDetailsDialog";
 import { userSelector } from "../features/UserSlice";
+import MarketplacePostPreviewList from "./MarketplacePostPreviewList";
 
 
 export default function MarketplacePage(){
@@ -57,22 +58,6 @@ export default function MarketplacePage(){
     const handleGoHome = () =>{ 
         navigate("/home")
     };
-    
-    const [dialogPost, setDialogPost] = useState(<div></div>);
-    const handleDialogOpen = (post:Post) => {
-        setDialogPost(
-            <div>
-                <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
-                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
-                    description={post.description} cityLocation={post.cityLocation}/>
-                </Dialog>
-            </div>
-        );
-    };
-
-    const handleDialogClose = () =>{
-        setDialogPost(<div></div>)
-    }
     return (
         <div style={{textAlign:"center",marginTop:"100px",width:"fit-content",margin:"150px auto"}}>
              <div style={{textAlign:"center",marginBottom:"20px"}}>
@@ -161,17 +146,11 @@ export default function MarketplacePage(){
                 if (postsToShow.length === 0)
                     return ( <div ><Typography style={{height:90, marginTop:50}}>No items found!</Typography></div> );
                 else return (
-                    <Grid container spacing={1} style={{justifyContent:"center"}}>
-                            {postsToShow.map((post) =>{
-                                return ( <div style={{display:"flex", flexDirection:"row", margin:"20px 15px 15px 10px"}}>
-                                            <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={user}/>
-                                         </div>)})}
-                    </Grid>
+                    <MarketplacePostPreviewList posts={postsToShow} user={user}></MarketplacePostPreviewList>
                 )
             })()}
             </Box>
             </Card>
-            {dialogPost}
         </div>
     )
 }
