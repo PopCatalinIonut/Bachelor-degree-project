@@ -9,7 +9,7 @@ import { generateOutfit, outfitSelector } from "../features/OutfitSlice";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import { userSelector } from "../features/UserSlice";
 
-const clothingSizesWithNone = ["None"].concat(clothingSizes);
+const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
 
 export default function OutfitGeneratorPage(){
@@ -33,11 +33,21 @@ export default function OutfitGeneratorPage(){
         var postId = "";
         if(outfit.length === 1)
             postId = outfit[0].id.toString();
-        const response = await dispatch(generateOutfit({userId:user.id,brand:brandValue, maximumCost: priceValue,
+        const response = await dispatch(generateOutfit({userId:user.id,brand:brandValue, maximumValue: priceValue,
             season: outfitSeasonValue, genre: genreValue, shoeSize: shoeSizeValue, clothingSize: clothingSizeValue,
             colorPalette: colorPaletteValue, postId: postId
         }))
         console.log(response.payload)
+    }
+
+    const outfitSection = () =>{
+        if(outfit.length > 0)
+        return  outfit.map((item) =>{
+            return (<Grid item xs={12} style={{width:450,height:450}}>
+                    <MarketplacePostPreview post={item} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
+            </Grid>)
+        })
+
     }
 
     return (<div style={{textAlign:"center",width:"fit-content",margin:"50px auto"}}>
@@ -142,11 +152,7 @@ export default function OutfitGeneratorPage(){
                     </Grid>
                 </Grid>
                 <Grid item xs={8} container style={{border:"1px solid"}}>
-                    {outfit.map((item) =>{
-                        return (<Grid item xs={12} style={{width:450,height:450}}>
-                                <MarketplacePostPreview post={item} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
-                        </Grid>)
-                    })}
+                   {outfitSection()}
                 </Grid>
             </Grid>
         </Card>
