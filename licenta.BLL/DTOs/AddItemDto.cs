@@ -12,7 +12,8 @@ namespace licenta.BLL.DTOs
         public string Genre { get; set; }
         public string Size { get; set; }
         public string Fit { get; set; }
-        public Condition Condition { get; set; }
+        public List<string> Colors { get; set; }
+        public string Condition { get; set; }
         public double Price { get; set; }
         public List<string> Images { get; set; }
     }

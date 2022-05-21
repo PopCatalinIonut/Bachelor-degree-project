@@ -12,7 +12,10 @@ namespace licenta.BLL.Helpers
     {
         public ShopDbContext CreateDbContext(string[] args)
         { 
+           
             var dir = Path.GetFullPath(@"..\") + "appsettings.json";
+            if(args.Length > 0 && args[0] == "Dummy")
+                dir = Path.GetFullPath(@"..\..\..\..\licenta.API\")  + "appsettings.json";
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddNewtonsoftJsonFile(dir)
@@ -28,5 +31,6 @@ namespace licenta.BLL.Helpers
             
             return new ShopDbContext(optionsBuilder.Options);
         }
+
     }
 }

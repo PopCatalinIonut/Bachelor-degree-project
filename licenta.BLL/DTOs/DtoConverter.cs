@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using licenta.BLL.Models;
-
 namespace licenta.BLL.DTOs
 {
     public static class DtoConverter
@@ -19,7 +18,8 @@ namespace licenta.BLL.DTOs
                 Size = itemToConvert.Size,
                 Type = itemToConvert.Type,
                 Price = itemToConvert.Price,
-                Brand = itemToConvert.Brand
+                Brand = itemToConvert.Brand,
+                ColorSchema = Utils.Utils.CalculateItemColorSchema(itemToConvert.Colors)
             };
         }
 

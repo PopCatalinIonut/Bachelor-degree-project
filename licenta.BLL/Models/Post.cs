@@ -8,6 +8,7 @@ namespace licenta.BLL.Models
         [Key]
         public int Id { get; set; }
         public User Seller { get; set; }
+        [Required]
         public Item Item { get; set; }
         public DateTime Date { get; set; }
         public string CityLocation { get; set; }

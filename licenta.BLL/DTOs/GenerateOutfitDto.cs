@@ -4,7 +4,7 @@
     {
         public int UserId { get; set; }
         public int PostId { get; set; }
-        public string Brand { get; set; }
+        public string Condition { get; set; }
         public string Season { get; set; }
         public string ShoeSize { get; set; }
         public string ClothingSize { get; set; }

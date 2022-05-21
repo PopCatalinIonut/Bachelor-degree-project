@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace licenta.BLL.Models
 {
     public class Item
     {
-        public Item(int id, string name, string brand, string type, string category, string genre, string size, string fit, Condition condition, double price, List<ItemImage> images)
+        public Item(int id, string name, string brand, string type, string category, string genre, string size, string fit, string condition, double price, List<ItemImage> images)
         {
             Id = id;
             Name = name;
@@ -27,11 +28,19 @@ namespace licenta.BLL.Models
         public string Brand { get; set; }
         public string Type { get; set; }
         public string Category { get; set; }
+
+        [Required]
+        public ColorSchema ColorSchema { get; set; }
         public string Genre { get; set; }
         public string Size { get; set; }
         public string Fit { get; set; }
-        public Condition Condition { get; set; }
+        public string Condition { get; set; }
         public double Price { get; set; }
+
+        [Required]
         public List<ItemImage> Images { get; set; }
+        
+        [ForeignKey("Post")]
+        public int PostId { get; set; }
     }
 }

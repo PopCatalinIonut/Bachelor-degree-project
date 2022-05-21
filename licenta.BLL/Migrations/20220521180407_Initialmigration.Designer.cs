@@ -9,8 +9,8 @@ using licenta.BLL.Helpers;
 namespace licenta.BLL.Migrations
 {
     [DbContext(typeof(ShopDbContext))]
-    [Migration("20220519110248_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220521180407_Initialmigration")]
+    partial class Initialmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,17 +18,52 @@ namespace licenta.BLL.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "5.0.16");
 
+            modelBuilder.Entity("licenta.BLL.Models.ColorSchema", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Colors")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("ContainsCool")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ContainsNonColor")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("ContainsWarm")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("PredominantPalette")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId")
+                        .IsUnique();
+
+                    b.ToTable("ColorSchemas");
+                });
+
             modelBuilder.Entity("licenta.BLL.Models.Item", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Brand")
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Category")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("Condition")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Condition")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Fit")
                         .HasColumnType("TEXT");
@@ -38,6 +73,9 @@ namespace licenta.BLL.Migrations
 
                     b.Property<string>("Name")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<double>("Price")
                         .HasColumnType("REAL");
@@ -49,6 +87,9 @@ namespace licenta.BLL.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId")
+                        .IsUnique();
 
                     b.ToTable("Items");
                 });
@@ -117,15 +158,10 @@ namespace licenta.BLL.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("ItemId")
-                        .HasColumnType("INTEGER");
-
                     b.Property<int?>("SellerId")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
 
                     b.HasIndex("SellerId");
 
@@ -173,6 +209,24 @@ namespace licenta.BLL.Migrations
                     b.ToTable("WishlistPosts");
                 });
 
+            modelBuilder.Entity("licenta.BLL.Models.ColorSchema", b =>
+                {
+                    b.HasOne("licenta.BLL.Models.Item", null)
+                        .WithOne("ColorSchema")
+                        .HasForeignKey("licenta.BLL.Models.ColorSchema", "ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("licenta.BLL.Models.Item", b =>
+                {
+                    b.HasOne("licenta.BLL.Models.Post", null)
+                        .WithOne("Item")
+                        .HasForeignKey("licenta.BLL.Models.Item", "PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("licenta.BLL.Models.ItemImage", b =>
                 {
                     b.HasOne("licenta.BLL.Models.Item", null)
@@ -201,17 +255,10 @@ namespace licenta.BLL.Migrations
 
             modelBuilder.Entity("licenta.BLL.Models.Post", b =>
                 {
-                    b.HasOne("licenta.BLL.Models.Item", "Item")
-                        .WithMany()
-                        .HasForeignKey("ItemId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("licenta.BLL.Models.User", "Seller")
                         .WithMany("PostedPosts")
                         .HasForeignKey("SellerId")
                         .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("Item");
 
                     b.Navigation("Seller");
                 });
@@ -227,7 +274,16 @@ namespace licenta.BLL.Migrations
 
             modelBuilder.Entity("licenta.BLL.Models.Item", b =>
                 {
+                    b.Navigation("ColorSchema")
+                        .IsRequired();
+
                     b.Navigation("Images");
+                });
+
+            modelBuilder.Entity("licenta.BLL.Models.Post", b =>
+                {
+                    b.Navigation("Item")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("licenta.BLL.Models.User", b =>
