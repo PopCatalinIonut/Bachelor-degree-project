@@ -109,8 +109,8 @@ export const addItemToMarketplace = createAsyncThunk(
           fit: post.item.fit,
           condition: post.item.condition,
           price: Number(post.item.price),
-          color: post.item.color,
-          images: post.item.images
+          images: post.item.images,
+          colors: post.item.colors
       },
       cityLocation: post.cityLocation,
       description: post.description,

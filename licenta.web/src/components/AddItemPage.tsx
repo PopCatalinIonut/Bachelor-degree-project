@@ -1,4 +1,4 @@
-import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Select, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Chip, Select, Snackbar, TextField, Typography, FormControl, OutlinedInput, Box } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -10,6 +10,7 @@ import { addItemToMarketplace } from "../features/MarketplaceSlice";
 import { addPostReducer, userSelector } from "../features/UserSlice";
 import { Post } from "./types";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { SelectChangeEvent } from "@mui/material";
 const styles = {
 
     typographyFormat: {
@@ -42,7 +43,7 @@ export default function AddItemPage() {
     const [priceValue, setPriceValue] = useState("");
     const [locationValue, setLocationValue] = useState("");
     const [descriptionValue, setDescriptionValue] = useState("");
-    const [colorValue, setColorValue] = useState("");
+    const [colorsValue, setColorsValue] = useState<string[]>([]);
     const [snackOpened, setSnackOpened] = useState("");
     const [images, setImages] = useState<Blob[]>([])
     const [brandValue, setBrandValue] = useState("");
@@ -93,6 +94,7 @@ export default function AddItemPage() {
     const handleAddItem = async ()  =>{
         
         var errors = verifyInputs();
+        console.log(errors)
         if(errors.length > 0){
             setSnackOpened(errors);
         }else {
@@ -102,7 +104,7 @@ export default function AddItemPage() {
                     item: { name: nameValue, type: typeValue, category: categoryValue,
                         genre: genreValue, size: sizeValue, fit: fitValue,
                         condition: conditionValue, price: Number(priceValue),
-                        color: colorValue, images: convertedImages, brand:brandValue
+                        colors: colorsValue, images: convertedImages, brand:brandValue
                     },
                     description: descriptionValue, cityLocation: locationValue, userId: user.id
                 }))
@@ -119,17 +121,24 @@ export default function AddItemPage() {
         var errors: string = "";
         if(typeValue.length === 0 || categoryValue.length === 0 || images.length === 0 ||  sizeValue.length === 0 || 
             descriptionValue.length === 0 || fitValue.length === 0 || priceValue.length === 0 ||
-            nameValue.length === 0 || locationValue.length === 0 || genreValue.length === 0 || colorValue.length === 0)
+            nameValue.length === 0 || locationValue.length === 0 || genreValue.length === 0 || colorsValue.length === 0)
             errors+="There are empty fields. ";
         
         if(nameValue.length > 60)
             errors+="Name too long, cannot exceed 60 characters. "
         if(images.length < 2)
             errors+="You must upload at least 2 photos. "
-        if(Number(priceValue) <= 0)
+            console.log(parseInt(priceValue))
+        if(isNaN(parseInt(priceValue)))
             errors+="Invalid price. "
         return errors;
-      }
+    }
+    console.log(colorsValue)
+
+    const handleChange = (event: { target: { value: any; }; }) => {
+        console.log(event.target.value)
+        setColorsValue(event.target.value);
+      };
 
     return (
         <div style={{textAlign:"center"}}>
@@ -289,16 +298,20 @@ export default function AddItemPage() {
                             </Grid>
                             <Grid item xs={6} container style={styles.gridFormat}>
                                 <Grid item sm={12}>
-                                    <Typography style={styles.typographyFormat}>Color:</Typography>
-                                        <Select value={colorValue} style={{float:"left",marginTop:"10px",marginLeft:"5%"}}
-                                                onChange={event => {
-                                                    var eventNr = event.target.value as unknown as string;
-                                                    setColorValue(eventNr);
-                                                }}>
-                                        {colors.map((item) =>{
-                                            return <MenuItem key={item} value={item}>{item}</MenuItem>
-                                        })}
-                                        </Select>
+                                    <Typography style={styles.typographyFormat}>Colors:</Typography>
+                                    <Select  multiple value={colorsValue}
+                                        onChange={handleChange}
+                                        renderValue={colorsValue => (
+                                            <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
+                                              {(colorsValue as string[]).map((value) =>  {
+                                               return (<Chip key={value} label={value}/>)}
+                                              )}
+                                            </Box>)}>
+                                        {colors.map((item) => {
+                                        return(<MenuItem key={item} value={item} 
+                                                    disabled={colorsValue.length > 2 && colorsValue.indexOf(item)===-1}>{item}
+                                                </MenuItem>)})}
+                                      </Select>
                                 </Grid>
                             </Grid>
                             <Grid item xs={6} container style={styles.gridFormat}>

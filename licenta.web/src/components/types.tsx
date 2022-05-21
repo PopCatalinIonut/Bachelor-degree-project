@@ -8,7 +8,7 @@ export interface AddSellingItem {
     fit: string;
     condition: string;
     price: number;
-    color: string;
+    colors: string[];
     images: Blob[];
 }
 

@@ -1,6 +1,6 @@
 export const outfitSeasonType = ["Summer", "Spring", "Winter", "Fall"]
 
-export const colorPalette = ["Cold", "Warm", "Non-Color"]
+export const colorPalette = ["Cool", "Warm", "Non-Color"]
 
 export const categoryList = [ "Footwear", "Clothing"]
 
@@ -8,8 +8,8 @@ export const genreList = ["Men", "Women", "Unisex"]
 
 export const clothingSizes = [ "XS" , "S" , "M" , "L" , "XL" , "XXL"]
 
-export const colors =[ "Red", "Orange", "Yellow", "Green", "Cyan","Blue","Purple",
-      "White","Black","Gray","Pink","Brown","Multicolor","Beige","Magenta","Olive"]
+export const colors =[ "Red", "Orange", "Yellow", "Green", "Blue","Purple",
+      "White","Black","Grey","Pink","Brown","Olive", "Silver", "Violet", "Cyan","Gold","Teal"]
 
 export const conditions = [ "New with tags", "New without tags", "New with defects", "Good", "Used"]
 
