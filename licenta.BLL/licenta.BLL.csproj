@@ -8,7 +8,7 @@
     <Folder Include="Helpers\" />
     <Folder Include="Managers\" />
     <Folder Include="Migrations" />
-    <Folder Include="Utils" />
+	<Folder Include="Utils" />
   </ItemGroup>
 
   <ItemGroup>

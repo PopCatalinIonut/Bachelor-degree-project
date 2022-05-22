@@ -107,7 +107,7 @@ namespace licenta.BLL.Managers
         {
             var posts = _context.Posts.Where(x => x.IsActive == true)
                 .Include(x => x.Item)
-                .ThenInclude(item => item.Images)
+                .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
                 .Select(x => new Post
             {
                 Date = x.Date,

@@ -1,0 +1,71 @@
+﻿{
+  "colors":[
+    {
+      "name": "Red",
+      "palette" : "Warm"
+    }, {
+      "name": "Orange",
+      "palette" : "Warm"
+    }, {
+      "name": "Yellow",
+      "palette" : "Warm"
+    }, {
+      "name": "Green",
+      "palette" : "Cool"
+    }, {
+      "name": "Blue",
+      "palette" : "Cool"
+    }, {
+      "name": "Purple",
+      "palette" : "Cool"
+    }, {
+      "name": "White",
+      "palette" : "NonColor"
+    }, {
+      "name": "Black",
+      "palette" : "NonColor"
+    }, {
+      "name": "Grey",
+      "palette" : "NonColor"
+    }, {
+      "name": "Pink",
+      "palette" : "Cool"
+    }, {
+      "name": "Brown",
+      "palette" : "Warm"
+    }, {
+      "name": "Olive",
+      "palette" : "Cool"
+    }, {
+      "name": "Silver",
+      "palette" : "NonColor"
+    }, {
+      "name": "Violet",
+      "palette" : "Cool"
+    }, {
+      "name": "Cyan",
+      "palette" : "Cool"
+    }, {
+      "name": "Gold",
+      "palette" : "Warm"
+    }, {
+      "name": "Teal",
+      "palette" : "Cool"
+    }, {
+      "name": "Peach",
+      "palette" : "Warm"
+    }, {
+      "name": "Cream",
+      "palette" : "Warm"
+    }, {
+      "name": "Lime",
+      "palette" : "Cool"
+    },{
+      "name": "Violet",
+      "palette": "Cool"
+    },{
+      "name": "Mint",
+      "palette": "Cool"
+    }
+  ]
+}
