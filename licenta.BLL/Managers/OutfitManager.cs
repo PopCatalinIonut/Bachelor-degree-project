@@ -36,23 +36,23 @@ namespace licenta.BLL.Managers
                         allPants = allPants.Where(x => x.Item.Category == "Pants").ToList();
                         allTops = allTops.Where(x => x.Item.Category != "T-Shirts").ToList();
                         break;
-                    case "Summer": allFootwear = allFootwear.Where(x => x.Item.Category == "Sneakers").ToList();
+                    case "Summer": allFootwear = allFootwear.Where(x => x.Item.Category != "Boots").ToList();
                         allPants = allPants.Where(x => x.Item.Category == "Shorts").ToList();
                         allTops = allTops.Where(x => x.Item.Category == "T-Shirts").ToList();
                         break;
-                    case "Spring": allFootwear = allFootwear.Where(x => x.Item.Category == "Sneakers").ToList();
+                    case "Spring": allFootwear = allFootwear.Where(x => x.Item.Category != "Slides").ToList();
                         allPants = allPants.Where(x => x.Item.Category == "Pants").ToList();
                         break;
-                    case "Fall":  allFootwear = allFootwear.Where(x => x.Item.Category == "Boots").ToList();
+                    case "Fall":  allFootwear = allFootwear.Where(x => x.Item.Category != "Slides").ToList();
                         allPants = allPants.Where(x => x.Item.Category == "Pants").ToList();
                         allTops = allTops.Where(x => x.Item.Category != "T-Shirts").ToList();
                         break;
                 }
 
             if(!string.IsNullOrEmpty(data.Genre)) {
-               allFootwear = allFootwear.Where(x => x.Item.Genre == data.Genre).ToList();
-               allPants = allPants.Where(x => x.Item.Genre == data.Genre).ToList(); 
-               allTops = allTops.Where(x => x.Item.Genre != data.Genre).ToList();
+               allFootwear = allFootwear.Where(x => x.Item.Genre == data.Genre || x.Item.Genre == "Unisex").ToList();
+               allPants = allPants.Where(x => x.Item.Genre == data.Genre || x.Item.Genre == "Unisex").ToList(); 
+               allTops = allTops.Where(x => x.Item.Genre == data.Genre || x.Item.Genre == "Unisex").ToList();
             }
             
             if (!string.IsNullOrEmpty(data.Condition)) {

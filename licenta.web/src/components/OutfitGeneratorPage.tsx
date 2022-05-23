@@ -1,4 +1,4 @@
-import { Button, Card, Fab, Grid, Input, InputAdornment, MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import { Button, Card, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, TextField, Typography } from "@material-ui/core";
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
@@ -8,6 +8,9 @@ import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { generateOutfit, outfitSelector } from "../features/OutfitSlice";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import { userSelector } from "../features/UserSlice";
+import OutfitGeneratorPostPreview from "./OutfitGeneratorPostPreview";
+import { Post } from "./types";
+import PostDetailsDialog from "./PostDetailsDialog";
 
 const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
@@ -39,28 +42,70 @@ export default function OutfitGeneratorPage(){
         }))
         setOutfit(response.payload)
     }
+    
+    const [dialogPost, setDialogPost] = useState(<div></div>);
+    const handleDialogOpen = (post:Post) => {
+        setDialogPost(
+            <div>
+                <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
+                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
+                    description={post.description} cityLocation={post.cityLocation}/>
+                </Dialog>
+            </div>
+        );
+    };
 
+    const handleDialogClose = () =>{
+        setDialogPost(<div></div>)
+    }
     const outfitSection = () =>{
-       return(<Grid container>
-            {outfit.components.map((comp) =>{
-            if(comp.post !== null && comp.post !==undefined)
-            return (<Grid item xs={6} style={{width:450,height:450}} key={comp.post.id}>
-                <MarketplacePostPreview post={comp.post} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
+        var components = outfit.components
+        return (
+        <Grid container>
+            {(() => {
+                var top = components.find(x => x.type === "Top")
+                console.log(top)
+                if (top !== undefined && top.post !== null){
+                   return <Grid item xs={12} style={{width:550,height:250}} key={top.post.id}>
+                    <OutfitGeneratorPostPreview post={top.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
+                </Grid>}
+                else return <Grid>
+                    <Typography>We couldn't find a top matching your criteria!</Typography>
+                </Grid>
+            })()}
+            {(() => {
+               var pants = components.find(x => x.type === "Pants")
+               console.log(pants)
+               if (pants !== undefined && pants.post !== null){
+                return<Grid item xs={12} style={{width:550,height:250}} key={pants.post.id}>
+                   <OutfitGeneratorPostPreview post={pants.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
+               </Grid>}
+               else return <Grid>
+                   <Typography>We couldn't find some pants matching your criteria!</Typography>
+               </Grid>
+            })()}
+            {(() => {
+              var footwear = components.find(x => x.type === "Footwear")
+              console.log(footwear)
+              if (footwear !== undefined && footwear.post !== null){
+                return <Grid item xs={12} style={{width:550,height:250}} key={footwear.post.id}>
+                  <OutfitGeneratorPostPreview post={footwear.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
+              </Grid>}
+              else return <Grid>
+                  <Typography>We couldn't find sneakers matching your criteria!</Typography>
+              </Grid>
+            })()}
         </Grid>)
-        else return <></>
-        })}
-           </Grid>
-           )
+        
     }
 
-    return (<div style={{textAlign:"center",width:"fit-content",margin:"50px auto"}}>
-         <div style={{textAlign:"center",marginBottom:"20px"}}>
+    return (<div style={{textAlign:"center",width:"fit-content"}}>
+         <div style={{textAlign:"center"}}>
              <Fab onClick={() => {navigate("/home")}} style={{backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-        <Card style={{justifyContent:"center",textAlign:"center"}}>
-            <Grid container>
+            <Grid container sm style={{textAlign:"center",justifyContent:"center"}}>
                 <Grid item xs={4} container style={{border:"1px solid"}}>
                     <Grid item sm={9} style={{marginTop:"3%"}}>
                         <Typography >Maximum cost:</Typography>
@@ -155,13 +200,13 @@ export default function OutfitGeneratorPage(){
                             </ToggleButtonGroup>
                     </Grid>
                 </Grid>
-                <Grid item xs={8} container style={{border:"1px solid"}}>
+                <Grid item xs={8} container style={{border:"1px solid",width:"fit-content",maxWidth:553}}>
                    {outfitSection()}
                 </Grid>
             </Grid>
-        </Card>
         <div style={{marginTop:"1%"}}>
             <Button variant="contained" color="primary" onClick={handleGenerateOutfit}>Generate</Button>
             </div>
+            {dialogPost}
     </div>)
 }
