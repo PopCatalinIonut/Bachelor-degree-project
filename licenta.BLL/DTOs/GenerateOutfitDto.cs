@@ -8,7 +8,7 @@
         public string Season { get; set; }
         public string ShoeSize { get; set; }
         public string ClothingSize { get; set; }
-        public int MaximumValue { get; set; }
+        public double MaximumValue { get; set; }
         public string Genre { get; set; }
         public string ColorPalette { get; set; }
     }

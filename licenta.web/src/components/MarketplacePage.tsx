@@ -32,7 +32,8 @@ export default function MarketplacePage(){
             setPostsToShow(data)
     }
     useEffect(() => {
-        fetchPosts()
+        if(postList.length === 0)
+            fetchPosts()
     },[]);
 
     const handleApplyFilters = () =>{

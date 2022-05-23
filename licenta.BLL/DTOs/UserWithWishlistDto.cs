@@ -12,5 +12,9 @@ namespace licenta.BLL.DTOs
         public List<PostWithUserDetailsDto> PostedPosts { get; set; }
         
         public List<PostWithUserDetailsDto> Wishlist { get; set; }
+
+        public UserWithWishlistDto(int id, string firstName, string lastName) : base(id, firstName, lastName){ }
+        
+        public UserWithWishlistDto(){}
     }
 }

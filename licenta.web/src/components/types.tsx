@@ -69,3 +69,12 @@ export interface SendMessage{
 export interface ColorSchema{
     colors: string[]
 }
+
+export interface Outfit{
+    components: OutfitComponent[];
+}
+
+export interface OutfitComponent{
+    type: string;
+    post: Post | null
+}

@@ -26,7 +26,7 @@ namespace licenta.API
         }
         [FunctionName("GenerateOutfit")]
         [OpenApiRequestBody("application/json", typeof(AddPostDto))]
-        public async Task<ActionResult<List<Post>>> GenerateOutfit(
+        public async Task<ActionResult<ReturnedOutfitDto>> GenerateOutfit(
             [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "outfits")] HttpRequest req,
             ILogger log)
         {

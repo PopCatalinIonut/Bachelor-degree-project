@@ -85,21 +85,8 @@ namespace licenta.BLL.Managers
             _context.Items.Update(post.Item);
                 
             await _context.SaveChangesAsync();
-            return new Post
-            {
-                Date = post.Date,
-                CityLocation = post.CityLocation,
-                Description = post.Description,
-                Item = post.Item,
-                Id = post.Id,
-                IsActive = post.IsActive,
-                Seller = new User
-                {
-                    FirstName = post.Seller!.FirstName,
-                    LastName = post.Seller.LastName,
-                    Id = post.Seller.Id,
-                }
-            };
+            return new Post(post.Id, new User(post.Seller.Id, post.Seller.FirstName, post.Seller.LastName), post.Item,
+                post.Date, post.CityLocation, post.Description, post.IsActive);
 
         }
 
@@ -108,21 +95,7 @@ namespace licenta.BLL.Managers
             var posts = _context.Posts.Where(x => x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
-                .Select(x => new Post
-            {
-                Date = x.Date,
-                CityLocation = x.CityLocation,
-                Description = x.Description,
-                Item = x.Item,
-                Id = x.Id,
-                IsActive = x.IsActive,
-                Seller = new User
-                {
-                    FirstName = x.Seller.FirstName,
-                    LastName = x.Seller.LastName,
-                    Id = x.Seller.Id,
-                }
-            }).ToList();
+                .Select(x => new Post(x.Id,new User(x.Seller.Id,x.Seller.FirstName,x.Seller.LastName),x.Item,x.Date,x.CityLocation,x.Description,x.IsActive)).ToList();
             
             return posts;
         }

@@ -1,6 +1,6 @@
 export const outfitSeasonType = ["Summer", "Spring", "Winter", "Fall"]
 
-export const colorPalette = ["Cool", "Warm", "Non-Color"]
+export const colorPalette = ["Cool", "Warm", "NonColor"]
 
 export const categoryList = [ "Footwear", "Clothing"]
 

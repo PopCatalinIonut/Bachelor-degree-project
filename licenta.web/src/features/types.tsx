@@ -28,8 +28,8 @@ export interface Conversation {
 
 export interface GenerateOutfitProps{
     userId: number;
-    maximumValue?: string;
-    brand?: string;
+    maximumValue?: number;
+    condition?: string;
     season?: string;
     genre?: string;
     clothingSize?: string;

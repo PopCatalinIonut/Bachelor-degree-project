@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette } from "../data/itemPropertiesData";
+import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette, conditions } from "../data/itemPropertiesData";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 import { generateOutfit, outfitSelector } from "../features/OutfitSlice";
 import MarketplacePostPreview from "./MarketplacePostPreview";
@@ -22,32 +22,35 @@ export default function OutfitGeneratorPage(){
     const [clothingSizeValue, setClothingSizeValue] = useState("");
     const [shoeSizeValue, setShoeSizeValue] = useState("");
     const [colorPaletteValue, setColorPaletteValue] = useState("");
-    const [brandValue, setBrandValue] = useState("");
+    const [conditionValue, setConditionValue] = useState("");
     
-    const outfit = useAppSelector(outfitSelector);
+    const [outfit,setOutfit] = useState(useAppSelector(outfitSelector));
     const user = useAppSelector(userSelector)
     console.log(outfit)
     let navigate = useNavigate(); 
 
     const handleGenerateOutfit = async () =>{
-        var postId = "";
-        if(outfit.length === 1)
-            postId = outfit[0].id.toString();
-        const response = await dispatch(generateOutfit({userId:user.id,brand:brandValue, maximumValue: priceValue,
+        var postId = "0";
+        console.log("sending")
+        var priceConverted = !isNaN(+priceValue) === true ? Number(priceValue) : 0
+        const response = await dispatch(generateOutfit({userId:user.id,condition:conditionValue, maximumValue: priceConverted,
             season: outfitSeasonValue, genre: genreValue, shoeSize: shoeSizeValue, clothingSize: clothingSizeValue,
-            colorPalette: colorPaletteValue, postId: postId
+            colorPalette: colorPaletteValue, postId: postId 
         }))
-        console.log(response.payload)
+        setOutfit(response.payload)
     }
 
     const outfitSection = () =>{
-        if(outfit.length > 0)
-        return  outfit.map((item) =>{
-            return (<Grid item xs={12} style={{width:450,height:450}}>
-                    <MarketplacePostPreview post={item} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
-            </Grid>)
-        })
-
+       return(<Grid container>
+            {outfit.components.map((comp) =>{
+            if(comp.post !== null && comp.post !==undefined)
+            return (<Grid item xs={6} style={{width:450,height:450}} key={comp.post.id}>
+                <MarketplacePostPreview post={comp.post} user={user} dialogOpen={() => {}} ></MarketplacePostPreview>
+        </Grid>)
+        else return <></>
+        })}
+           </Grid>
+           )
     }
 
     return (<div style={{textAlign:"center",width:"fit-content",margin:"50px auto"}}>
@@ -70,18 +73,19 @@ export default function OutfitGeneratorPage(){
                             }}/>
                     </Grid>
                     <Grid item xs={12} container style={{marginTop:"7%"}}>
-                        <Grid item xs={8}>
-                            <Typography>Specific brand:</Typography>
+                        <Grid item xs={12}>
+                            <Typography>Condition:</Typography>
                         </Grid>
-                        <Grid item xs={4}>
-                        <TextField style={{width:"150px", float:"left", marginLeft:"-60%",marginTop:"-7%"}}
-                                        onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                            setBrandValue(event.currentTarget.value);
-                                        }}/>
+                        <Grid item xs={12}>
+                        <ToggleButtonGroup color="primary" value={conditionValue} exclusive
+                            onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
+                            {(() =>  
+                            conditions.map((condition) => {
+                                return ( <ToggleButton value={condition}>{condition}</ToggleButton> )
+                            })
+                        )()}
+                        </ToggleButtonGroup>
                         </Grid>
-                      
-                       
-                   
                     </Grid>
                     <Grid item sm={12} container style={{marginTop:"7%"}}>
                         <Grid item xs={12} style={{marginBottom:"1%"}}>

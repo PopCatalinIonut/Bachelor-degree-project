@@ -86,6 +86,20 @@ namespace licenta.BLL.DTOs
             };
             return newMessage;
         }
+
+        public static ReturnedOutfitDto ConvertOutfitToReturnedOutfitDto(Outfit outfit)
+        {
+            List<OutfitComponent> components = new List<OutfitComponent>();
+            foreach(KeyValuePair<string, Post> entry in outfit.Components)
+            {
+               components.Add(new OutfitComponent(entry.Key,entry.Value));
+            }
+
+            return new ReturnedOutfitDto
+            {
+                Components = components
+            };
+        }
         
     }
 }

@@ -13,7 +13,6 @@ export interface MarketplacePostPreviewProps {
 export default function MarketplacePostPreview (props: MarketplacePostPreviewProps){
 
     var post = props.post;
-    console.log(props.post)
     const [imageToShow, setImageToShow] = useState({image:post.item.images[0],counter:0});
 
     const handleImageChangeRight = () =>{

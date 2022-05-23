@@ -11,5 +11,7 @@ namespace licenta.BLL.Models
         
         public List<WishlistPost> WishlistList { get; set; }
 
+        public User(int id, string firstName, string lastName) : base(id, firstName, lastName) { }
+        public User(){}
     }
 }
