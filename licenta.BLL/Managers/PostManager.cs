@@ -123,6 +123,7 @@ namespace licenta.BLL.Managers
                     Id = x.Seller.Id,
                 }
             }).ToList();
+            
             return posts;
         }
 
