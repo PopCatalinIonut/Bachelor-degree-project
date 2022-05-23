@@ -8,8 +8,8 @@ export const genreList = ["Men", "Women", "Unisex"]
 
 export const clothingSizes = [ "XS" , "S" , "M" , "L" , "XL" , "XXL"]
 
-export const colors =[ "Red", "Orange", "Yellow", "Green", "Blue","Purple",
-      "White","Black","Grey","Pink","Brown","Olive", "Silver", "Violet", "Cyan","Gold","Teal"]
+export const colors =[ "Red", "Orange", "Yellow", "Green", "Blue","Purple","Peach","Cream","Lime","Violet","Mint",
+      "White","Black","Grey","Pink","Brown","Olive", "Silver", "Cyan","Gold","Teal"]
 
 export const conditions = [ "New with tags", "New without tags", "New with defects", "Good", "Used"]
 
@@ -147,7 +147,7 @@ export const footwearSizes = [
 ]
 export const itemTypesSelect = [
     {
-      name: "Casual shoes",
+      name: "Boots",
       category: "Footwear"
     },
     {
@@ -163,10 +163,6 @@ export const itemTypesSelect = [
       category: "Clothing"
     },
     {
-      name: "Shirts",
-      category: "Clothing"
-    },
-    {
       name: "T-Shirts",
       category: "Clothing"
     },
@@ -176,6 +172,14 @@ export const itemTypesSelect = [
     },
     {
       name: "Pants",
+      category: "Clothing"
+    },
+    {
+      name: "Hoodies",
+      category: "Clothing"
+    },
+    {
+      name: "Sweatshirts",
       category: "Clothing"
     }
   ];

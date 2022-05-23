@@ -1,16 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Card, Dialog, Fab, FormControl, Grid, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import { Box, Card, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-import MarketplacePostPreview from "./MarketplacePostPreview";
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
-import PostDetailsDialog from "./PostDetailsDialog";
 import { userSelector } from "../features/UserSlice";
 import MarketplacePostPreviewList from "./MarketplacePostPreviewList";
 
@@ -30,7 +27,7 @@ export default function MarketplacePage(){
     const [postsToShow, setPostsToShow] = useState<Post[]>(postList);
     const fetchPosts = async () =>{
         const response = await dispatch(getAllPosts())
-        const data = unwrapResult(response) as Post[];
+        const data = response.payload as Post[]
         if(data.length !== 0)
             setPostsToShow(data)
     }

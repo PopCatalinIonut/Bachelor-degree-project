@@ -12,7 +12,8 @@ export interface AddSellingItem {
     images: Blob[];
 }
 
-export interface SellingItem extends Omit<AddSellingItem,"images"> {
+export interface SellingItem extends Omit<AddSellingItem,"images"|"colors"> {
+  colorSchema: ColorSchema;
   images: ItemImage[];
   id: number;
 }
@@ -63,4 +64,8 @@ export interface SendMessage{
     senderId: number;
     receiverId: number;
     text: string;
+}
+
+export interface ColorSchema{
+    colors: string[]
 }

@@ -4,7 +4,6 @@ import { Fab, Paper, Grid, Typography, ButtonBase } from "@material-ui/core";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-
 export interface MarketplacePostPreviewProps {
     post: Post;
     dialogOpen: (post: Post) => void;
@@ -14,6 +13,7 @@ export interface MarketplacePostPreviewProps {
 export default function MarketplacePostPreview (props: MarketplacePostPreviewProps){
 
     var post = props.post;
+    console.log(props.post)
     const [imageToShow, setImageToShow] = useState({image:post.item.images[0],counter:0});
 
     const handleImageChangeRight = () =>{
@@ -28,17 +28,19 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
     const handleOpenDialog = () =>{
         props.dialogOpen(post);
     }
+    
     return (
         <Paper style={{width: "inherit",height:"100%"}}>
             <Grid container style={{width: "inherit",height:"100%" }}>
                 <Grid item xs={12} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
                         backgroundSize:"cover", backgroundPosition:"center",height:"75%"}}>
-                        <Fab onClick={handleImageChangeLeft} style={{width:"10%" , height:"5%"}}>
+                            <Fab onClick={handleImageChangeLeft} style={{width:"10%" , height:"5%"}}>
                             <ArrowBackIcon/>
                         </Fab>
                         <Fab onClick={handleImageChangeRight} style={{width:"10%" , height:"5%"}}>
                             <ArrowForwardIcon/>
                         </Fab>
+                       
                 </Grid>
                 <ButtonBase style={{width:"inherit",height:"25%",alignItems:"normal"}} onClick={handleOpenDialog}>   
                     <Grid item xs={12} sm container style={{height:"inherit"}}>

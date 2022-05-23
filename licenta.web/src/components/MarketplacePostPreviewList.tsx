@@ -11,7 +11,6 @@ export interface MarketplacePostPreviewListProps{
 
 export default function MarketplacePostPreviewList(props: MarketplacePostPreviewListProps){
 
-    
     const [dialogPost, setDialogPost] = useState(<div></div>);
     const handleDialogOpen = (post:Post) => {
         setDialogPost(
@@ -31,7 +30,7 @@ export default function MarketplacePostPreviewList(props: MarketplacePostPreview
         <Grid container spacing={1} style={{justifyContent:"center"}} >
             {props.posts.map((post) =>{
                 return ( <div style={{display:"flex", flexDirection:"row", margin:"20px 10px 15px 10px",justifyContent:"center", width: 350,maxWidth: 350,height:550,padding:0}}>
-                            <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={props.user}/>
+                            <MarketplacePostPreview post={post} dialogOpen={handleDialogOpen} user={props.user} key={post.id}/>
                             </div>)})}
                             
         {dialogPost}
