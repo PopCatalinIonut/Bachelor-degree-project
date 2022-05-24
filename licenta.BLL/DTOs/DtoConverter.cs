@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using licenta.BLL.Models;
 namespace licenta.BLL.DTOs
 {
@@ -89,16 +90,10 @@ namespace licenta.BLL.DTOs
 
         public static ReturnedOutfitDto ConvertOutfitToReturnedOutfitDto(Outfit outfit)
         {
-            List<OutfitComponent> components = new List<OutfitComponent>();
-            foreach(KeyValuePair<string, Post> entry in outfit.Components)
-            {
-               components.Add(new OutfitComponent(entry.Key,entry.Value));
-            }
+            var components = outfit.Components
+                .Select(entry => new OutfitComponent(entry.Key, entry.Value)).ToList();
 
-            return new ReturnedOutfitDto
-            {
-                Components = components
-            };
+            return new ReturnedOutfitDto { Components = components };
         }
         
     }

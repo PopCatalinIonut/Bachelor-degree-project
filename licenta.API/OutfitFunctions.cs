@@ -35,9 +35,9 @@ namespace licenta.API
                 var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 var data = JsonConvert.DeserializeObject<GenerateOutfitDto>(requestBody);
 
-                var posts = _outfitManager.GenerateOutfit(data);
+                var outfit = _outfitManager.GenerateOutfit(data);
             
-                return posts;
+                return outfit;
             }
             catch (Exception e)
             {

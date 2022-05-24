@@ -69,8 +69,8 @@
         "size":"42 EU",
         "fit":"43 EU",
         "ColorSchema": {
-          "colors": ["Yellow","White","Black"],
-          "predominantPalette": "NonColor",
+          "colors": ["Yellow","Grey"],
+          "predominantPalette": "Mixed",
           "containsWarm": "true",
           "containsCool": "false",
           "containsNonColor": "true"
@@ -104,7 +104,6 @@
         "condition":"Good",
         "price":260,
         "images":[
-          {"link":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmPKRe8KF5R2iVqksG3GxNPvdO3AOyMnQP0Q&usqp=CAU"},
           {"link":"https://images.squarespace-cdn.com/content/v1/532313ece4b08487acaec7a2/1577989922278-GLGRWZYENPE2NNNJW37G/ENJPa6TWsAAxU4c.jpeg"},
           {"link":"https://www.modern-notoriety.com/wp-content/uploads/2020/01/nike-air-max-97-lucky-green-CI3708-300-5.jpg"},
           {"link":"https://img.stadiumgoods.com/nike-nike-air-max-97-lucky-green_15949767_29576742_1000.jpg"},
@@ -751,8 +750,8 @@
         "size":"42 EU",
         "fit":"42.5 EU",
         "ColorSchema": {
-          "colors":  ["Brown","Black","White"],
-          "predominantPalette": "NonColor",
+          "colors":  ["Brown","Black"],
+          "predominantPalette": "Mixed",
           "containsWarm": "true",
           "containsCool": "false",
           "containsNonColor": "true"
@@ -1703,32 +1702,6 @@
           "type":"Clothing",
           "category":"Pants",
           "genre":"Men",
-          "size":"L",
-          "fit":"L",
-          "ColorSchema": {
-            "colors": ["Red"],
-            "predominantPalette": "Warm",
-            "containsWarm": true,
-            "containsCool": false,
-            "containsNonColor": false
-          },
-          "condition":"New without tags",
-          "price":90,
-          "images":[
-            {"link":"https://static.footshop.com/583588-full_product/129754.jpg"},
-            {"link":"https://p1.akcdn.net/full/920145402.nike-pantaloni-nike-jordan-essentials-men-s-fleece-pants-rosu-l.jpg"},
-            {"link":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2F7WtITVL5TO3uM6CrsmrZrlHIGomLk8H12Q4unPjjZi3SpxY7-iDarYXGsZ0pYsB2ew&usqp=CAU"},
-            {"link":"https://media.finishline.com/i/finishline/DA9820_687_M1?$default$&w=671&&h=671&bg=rgb(237,237,237)"}]},
-          "date":"2022-05-19T14:05:58.4715802",
-          "cityLocation":"Seini",
-          "description":"dm me for more info",
-          "isActive":true},
-        {"item":
-        {"name":"Jordan Essentials Fleece Pants",
-          "brand":"Jordan",
-          "type":"Clothing",
-          "category":"Pants",
-          "genre":"Men",
           "size":"XL",
           "fit":"L",
           "ColorSchema": {
@@ -2146,7 +2119,7 @@
           "category":"Pants",
           "genre":"Women",
           "size":"M",
-          "fit":"m",
+          "fit":"M",
           "ColorSchema": {
             "colors": ["Violet"],
             "predominantPalette": "Cool",
@@ -3381,7 +3354,7 @@
             "containsCool": true,
             "containsNonColor": false
           },
-          "condition":"Use",
+          "condition":"Used",
           "price":80,
           "images":[
             {"link":"https://static.footshop.com/676768/194554.jpg"},
@@ -3931,7 +3904,7 @@
             "containsCool": false,
             "containsNonColor": true
           },
-          "condition":"New withot tags",
+          "condition":"New without tags",
           "price":120,
           "images":[
             {"link":"https://static.footshop.com/688759/175024.jpg"},
@@ -4820,7 +4793,7 @@
           "containsCool": true,
           "containsNonColor": false
         },
-        "condition":"Usedd",
+        "condition":"Used",
         "price":40,
         "images":[
           {"link":"https://www.futbolemotion.com/imagesarticulos/166003/medianas/camiseta-nike-nsw-swoosh-league-rough-green-0.jpg"},
@@ -5109,7 +5082,7 @@
           "containsCool": false,
           "containsNonColor": true
         },
-        "condition":"Use",
+        "condition":"Used",
         "price":55,
         "images":[
           {"link":"https://static.footshop.com/661069/182530.jpg"},
@@ -5305,7 +5278,7 @@
           "containsCool": true,
           "containsNonColor": true
         },
-        "condition":"Use",
+        "condition":"Used",
         "price":45,
         "images":[
           {"link":"https://static.footshop.com/681412/154615.jpg"},

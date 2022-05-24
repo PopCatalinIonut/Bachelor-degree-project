@@ -13,15 +13,12 @@ namespace licenta.BLL.Models
 
         public Outfit(){}
 
-        public void AddPostToOutfit(Post post)
-        {
-            switch (post.Item.Type)
-            {
+        public void AddPostToOutfit(Post post) {
+            switch (post.Item.Type) {
                 case "Footwear": Components["Footwear"] = post;
                     break;
                 case "Clothing":
-                    switch (post.Item.Category)
-                    {
+                    switch (post.Item.Category) {
                         case "Shorts" or "Pants":
                             Components["Pants"] = post;
                             break;
@@ -43,6 +40,21 @@ namespace licenta.BLL.Models
             Post = post;
             Type = type;
         }
-        
+
+        public static string GetTypeOfItem(Item item)
+        {
+            if (item.Type == "Footwear")
+                return "Footwear";
+            switch (item.Category)
+            {
+                case "Pants" or "Shorts":
+                    return "Pants";
+                case "Hoodies":
+                case "T-Shirts":
+                case "Sweatshirts":
+                    return "Top";
+            };
+             return "";
+        }
     }
 }

@@ -67,5 +67,114 @@
       "name": "Mint",
       "palette": "Cool"
     }
-  ]
+  ],
+  "conditions": [
+    {
+      "type": "New with tags",
+      "rank": "1"
+    }, {
+      "type": "New without tags",
+      "rank": "2"
+    }, {
+      "type": "New with defects",
+      "rank": "3"
+    }, {
+      "type": "Good",
+      "rank": "4"
+    }, {
+      "type": "Used",
+      "rank": "5"
+    }
+  ],
+  "footwearSizes": [ {
+    "size":"35 EU",
+    "rank": 1
+  },{
+    "size":"35.5 EU",
+    "rank": 2
+  },{
+    "size":"36 EU",
+    "rank": 3
+  },{
+    "size":"36.5 EU",
+    "rank": 4
+  },{
+    "size":"37 EU",
+    "rank": 5
+  },{
+    "size":"37.5 EU",
+    "rank": 6
+  },{
+    "size":"38 EU",
+    "rank": 7
+  },{
+    "size":"38.5 EU",
+    "rank": 8
+  },{
+    "size":"39 EU",
+    "rank": 9
+  },{
+    "size":"39.5 EU",
+    "rank": 10
+  },{
+    "size":"40 EU",
+    "rank": 11
+  },{
+    "size":"40.5 EU", 
+    "rank": 11
+  },{
+    "size":"41 EU", 
+    "rank": 12
+  },{
+    "size":"41.5 EU",
+    "rank": 13
+  },{
+    "size":"42 EU",
+    "rank": 14
+  }, {
+    "size":"42.5 EU",
+    "rank": 15
+  },{
+    "size":"43 EU",
+    "rank": 16
+  },{
+    "size":"43.5 EU",
+    "rank": 17
+  },{
+    "size":"44 EU",
+    "rank": 18
+  },{
+    "size":"44.5 EU",
+    "rank": 19
+  },{
+    "size":"45 EU",
+    "rank": 20
+  },{
+    "size":"46 EU",
+    "rank": 21
+  },{
+    "size":"47 EU",
+    "rank": 22
+  },{
+    "size":"48 EU",
+    "rank": 23
+  },{
+    "size":"49 EU",
+    "rank": 24
+  }
+  ],
+  "clothingSizes": [
+    {"size":"XS",
+      "rank": 1 
+    }, {"size":"S",
+      "rank": 2
+    }, {"size":"M",
+      "rank": 3
+    }, {"size":"L",
+      "rank": 4
+    }, {"size":"XL",
+      "rank": 5
+    }, {"size":"XXL",
+      "rank": 6
+    }]
 }
