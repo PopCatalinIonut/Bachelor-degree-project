@@ -70,21 +70,40 @@ namespace licenta.BLL.Utils
             return pointsOfSimilarity/totalPointsAvailable;
         }
 
-        public static Post CalculateDiffsForPost(Post p, List<Post> posts)
+        public static Post CalculateDiffsForPost(Post p, List<Post> posts, double price = double.MaxValue)
         {
+            Console.WriteLine(p.ToString());
             var over7 = 0;
             var random = new Random();
             var diffs = new Dictionary<Post,double>();
-            posts.ForEach(x =>
+            var postsCopy = new List<Post>(posts);
+            postsCopy.ForEach(x =>
             {
                 diffs[x] = CalculateSimilarity(p.Item, x.Item);
                 if (diffs[x] > 0.75)
                     over7++;
             });
-            if (over7 == 0) 
-                return diffs.OrderByDescending(x => x.Value).FirstOrDefault().Key;
-            var ordered = diffs.OrderByDescending(x => x.Value);
-            return ordered.ElementAt(random.Next(0, over7-1)).Key;
+            diffs = new Dictionary<Post, double>(diffs.OrderByDescending(x => x.Value));
+            while (diffs.Count > 0)
+            {
+                Console.WriteLine("Counter " + diffs.Count);
+                if (over7 == 0)
+                {
+                    if (diffs.First().Key.Item.Price + p.Item.Price <= price)
+                        return diffs.FirstOrDefault().Key;
+                    diffs.Remove(diffs.First().Key);
+                }
+                else
+                {
+                    var post = diffs.ElementAt(random.Next(0, over7 - 1)).Key;
+                    if (post.Item.Price + p.Item.Price <= price)
+                        return post;
+                    diffs.Remove(post);
+                    over7--;
+                }
+            }
+
+            return null;
         }
 
         private static double CalculateColorSchemaSimilarity(ColorSchema firstSchema, ColorSchema secondSchema)

@@ -19,7 +19,6 @@ namespace licenta.BLL.Managers
 
         public ReturnedOutfitDto GenerateOutfit(GenerateOutfitDto data)
         {
-            var random = new Random();
             var outfit = new Outfit();
             
             var allFootwear = _context.Posts.Where((x) => x.Item.Type == "Footwear" && 
@@ -97,6 +96,8 @@ namespace licenta.BLL.Managers
                 allTops = allTops.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette).ToList();
             }
 
+            var maximumPrice = data.MaximumValue != 0 ? data.MaximumValue : double.MaxValue;
+            
             if (data.PostId != 0) {
                 var post = _context.Posts.Where(x => x.Id == data.PostId)
                     .Include(x => x.Item).ThenInclude(x => x.Images)
@@ -104,71 +105,143 @@ namespace licenta.BLL.Managers
                 if (post != null)
                 {
                     outfit.AddPostToOutfit(post);
-                    CalculateOutfit(post, allFootwear, allPants, allTops, outfit);
+                    CalculateOutfit(allFootwear, allPants, allTops, outfit,post,maximumPrice);
                     return DtoConverter.ConvertOutfitToReturnedOutfitDto(outfit);
                 }
             }
             
-            var tries = new[]{false,false,false};
-            var done = false;
-            while (tries.Contains(false) && done == false) {
-                var starter = random.Next(0, 2);
-                switch (starter) {
-                    case 0 when tries[0] == false: {
-                        if (allFootwear.Count == 0) { tries[0] = true; break; }
-                        var item = allFootwear[random.Next(0, allFootwear.Count - 1)];
-                        CalculateOutfit(item,allFootwear,allPants,allTops,outfit);
-                        outfit.Components["Footwear"] = item;
-                        done = true;
-                        break;
-                    }
-                    case 1 when tries[1] == false: {
-                        if (allPants.Count == 0) { tries[1] = true; break; }
-                        var item = allPants[random.Next(0, allPants.Count - 1)];
-                        CalculateOutfit(item,allFootwear,allPants,allTops,outfit);
-                        outfit.Components["Pants"] = item;
-                        done = true;
-                        break;
-                    }
-                    case 2 when tries[2] == false: {
-                        if (allTops.Count == 0) { tries[2] = true; break; }
-                        var item = allTops[random.Next(0, allTops.Count - 1)];
-                        CalculateOutfit(item,allFootwear,allPants,allTops,outfit);
-                        outfit.Components["Top"] = item;
-                        done = true;
-                        break;
-                    }
-                }
-            }
+            CalculateOutfit(allFootwear,allPants,allTops,outfit,null,maximumPrice);
             return DtoConverter.ConvertOutfitToReturnedOutfitDto(outfit);
         }
 
-        private static void CalculateOutfit(Post post, List<Post> footwearPosts, List<Post> pantsPosts,
-            List<Post> topPosts, Outfit outfit)
+        private static void CalculateOutfit(List<Post> footwearPosts, List<Post> pantsPosts,
+            List<Post> topPosts, Outfit outfit,Post post, double maximumPrice = double.MaxValue)
+        {
+            var random = new Random();
+            
+            var remaining = new[]{footwearPosts.Count == 0,pantsPosts.Count == 0,topPosts.Count == 0};
+            while (remaining.Contains(false))
+            {
+                var starter = random.Next(0, 2);
+                switch (starter)
+                {
+                    case 0 when footwearPosts.Count > 0:
+                    {
+                        var item = footwearPosts[random.Next(0, footwearPosts.Count - 1)];
+                        var succes = CalculatePosibilities(item,outfit,footwearPosts: footwearPosts, topPosts: topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                        if (succes == false)
+                        {
+                            footwearPosts.Remove(item);
+                            if (footwearPosts.Count == 0)
+                                remaining[0] = true;
+                        }
+                        else return;
+                        break;
+                    }
+                    case 1 when pantsPosts.Count > 0:
+                    {
+                        var item = pantsPosts[random.Next(0, pantsPosts.Count - 1)];
+                        var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, topPosts:topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                        if (succes == false)
+                        {
+                            pantsPosts.Remove(item);
+                            if (pantsPosts.Count == 0)
+                                remaining[1] = true;
+                        }
+                        else return;
+                        break;
+                    }
+                    case 2 when topPosts.Count > 0:
+                    {
+                        var item = topPosts[random.Next(0, topPosts.Count - 1)];
+                        var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, pantsPosts:pantsPosts, topPosts:topPosts,maximumPrice:maximumPrice);
+                        if (succes == false)
+                        {
+                            footwearPosts.Remove(item);
+                            if (footwearPosts.Count == 0)
+                                remaining[2] = true;
+                        }
+                        else return;
+                        break;
+                    }
+                }
+            }
+           
+        }
+
+        private static bool CalculatePosibilities(Post post, Outfit outfit, List<Post> footwearPosts,
+            List<Post> pantsPosts , List<Post> topPosts, double maximumPrice = double.MaxValue)
         {
             var postType = OutfitComponent.GetTypeOfItem(post.Item);
-            switch (postType)
+
+            var random = new Random();
+            while (true)
             {
-                case "Footwear":
+                Console.WriteLine(pantsPosts.Count + " " + footwearPosts.Count +"  " + topPosts.Count);
+                if (pantsPosts.Count <= 0 || footwearPosts.Count<=0 || topPosts.Count <= 0) return false;
+                switch (postType)
                 {
-                    outfit.Components["Pants"] = Utils.Utils.CalculateDiffsForPost(post, pantsPosts);
-                    outfit.Components["Top"] = Utils.Utils.CalculateDiffsForPost(post, topPosts);
-                    break;
-                }
-                case "Pants":
-                {
-                    outfit.Components["Footwear"] = Utils.Utils.CalculateDiffsForPost(post, footwearPosts);
-                    outfit.Components["Top"] = Utils.Utils.CalculateDiffsForPost(post, topPosts);
-                    break;
-                }
-                case "Top":
-                {
-                    outfit.Components["Footwear"] = Utils.Utils.CalculateDiffsForPost(post, footwearPosts);
-                    outfit.Components["Pants"] = Utils.Utils.CalculateDiffsForPost(post, pantsPosts);
-                    break;
+                    case "Footwear" :
+                    {
+                        var item = footwearPosts[random.Next(0, footwearPosts.Count - 1)];
+                        var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice - item.Item.Price);
+                        var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - item.Item.Price);
+                        if (topPost == null || pantsPost == null)
+                        {
+                            footwearPosts.Remove(item);
+                            if (footwearPosts.Count == 0)
+                                return false;
+                            break;
+                        }
+
+                        outfit.Components["Pants"] = pantsPost;
+                        outfit.Components["Top"] = topPost;
+                        outfit.Components["Footwear"] = item;
+                        return true;
+
+                    }
+                    case "Pants" :
+                    {
+                        var item = pantsPosts[random.Next(0, pantsPosts.Count - 1)];
+                        var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice - item.Item.Price);
+                        var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - item.Item.Price);
+                        if (topPost == null || footwearPost == null)
+                        {
+                            pantsPosts.Remove(item);
+                            if (pantsPosts.Count == 0)
+                                return false; 
+                            break;
+                        }
+
+                        outfit.Components["Pants"] = item;
+                        outfit.Components["Top"] = topPost;
+                        outfit.Components["Footwear"] = footwearPost;
+                        return true;
+
+                    }
+                    case "Top":
+                    {
+                        var item = topPosts[random.Next(0, topPosts.Count - 1)];
+                        var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice - item.Item.Price);
+                        var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice - item.Item.Price);
+                        if (footwearPost == null || pantsPost == null)
+                        {
+                            topPosts.Remove(item);
+                            if (footwearPosts.Count == 0)
+                                return false;
+                            break;
+                        }
+
+                        outfit.Components["Pants"] = pantsPost;
+                        outfit.Components["Top"] = item;
+                        outfit.Components["Footwear"] = footwearPost;
+                        return true;
+                    }
                 }
             }
         }
+
+
 
     }
 }

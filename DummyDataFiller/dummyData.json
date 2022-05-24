@@ -2119,7 +2119,7 @@
           "category":"Pants",
           "genre":"Women",
           "size":"M",
-          "fit":"M",
+          "fit":"M ",
           "ColorSchema": {
             "colors": ["Violet"],
             "predominantPalette": "Cool",

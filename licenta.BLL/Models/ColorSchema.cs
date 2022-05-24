@@ -15,7 +15,14 @@ namespace licenta.BLL.Models
             ContainsNonColor = containsNonColor;
         }
 
-        public ColorSchema(List<string> colors) { Colors = colors; }
+        public ColorSchema(List<string> colors)
+        {
+            Colors = colors;
+            PredominantPalette = "";
+            ContainsCool = false;
+            ContainsWarm = false;
+            ContainsNonColor = false;
+        }
 
         public ColorSchema(){}
         [Key]
