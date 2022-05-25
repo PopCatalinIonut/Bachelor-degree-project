@@ -22,21 +22,21 @@ namespace licenta.BLL.Managers
             var outfit = new Outfit();
             
             var allFootwear = _context.Posts.Where((x) => x.Item.Type == "Footwear" && 
-                 (x.Item.Category == "Sneakers" || x.Item.Category == "Slides" || x.Item.Category == "Boots"))
+                 (x.Item.Category == "Sneakers" || x.Item.Category == "Slides" || x.Item.Category == "Boots") && x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
                 .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
                     x.Date, x.CityLocation, x.Description, x.IsActive)).ToList();
             
             var allPants = _context.Posts
-                .Where((x) => x.Item.Type == "Clothing" && (x.Item.Category == "Shorts" || x.Item.Category == "Pants"))
+                .Where((x) => x.Item.Type == "Clothing" && (x.Item.Category == "Shorts" || x.Item.Category == "Pants") && x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
                 .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
                     x.Date, x.CityLocation, x.Description, x.IsActive)).ToList();
             
             var allTops = _context.Posts.Where((x) => x.Item.Type == "Clothing" &&
-                 (x.Item.Category == "Sweatshirts" || x.Item.Category == "Hoodies" || x.Item.Category == "T-Shirts"))
+                 (x.Item.Category == "Sweatshirts" || x.Item.Category == "Hoodies" || x.Item.Category == "T-Shirts") && x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
                 .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
@@ -120,46 +120,108 @@ namespace licenta.BLL.Managers
             var random = new Random();
             var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
             
-            while (remaining.Contains(true))
+            if (post != null)
             {
-                var starter = random.Next(0, 3);
-                switch (starter)
+                var finished = false;
+                var postType = OutfitComponent.GetTypeOfItem(post.Item);
+                while(finished == false &&pantsPosts.Count > 0 && footwearPosts.Count > 0 && topPosts.Count > 0)
+                    switch (postType)
+                    {
+                        case "Footwear":
+                        {
+                            var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice);
+                            if (pantsPost == null) return;
+                            
+                            var newPrice = maximumPrice - pantsPost.Item.Price;
+                            var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts, newPrice);
+                            if (topPost != null)
+                            {
+                                outfit.Components["Pants"] = pantsPost;
+                                outfit.Components["Top"] = topPost;
+                                outfit.Components["Footwear"] = post;
+                                finished = true;
+                            }
+                            else pantsPosts.Remove(pantsPost);
+                            break;
+                        }
+
+                        case "Pants":
+                        {
+                            var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice);
+                            if (footwearPost == null) return;
+                            
+                            var newPrice = maximumPrice - footwearPost.Item.Price;
+                            var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - newPrice);
+                            if (topPost != null)
+                            {
+                                outfit.Components["Pants"] = post;
+                                outfit.Components["Top"] = topPost;
+                                outfit.Components["Footwear"] = footwearPost;
+                                finished = true;
+                            }
+                            else footwearPosts.Remove(footwearPost);
+                            break;
+                        }
+                        case "Top":
+                        {
+                            var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice);
+                            if (pantsPost == null) return;
+
+                            var newPrice = maximumPrice - pantsPost.Item.Price;
+                            var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,newPrice);
+                            if (footwearPost != null)
+                            {
+                                outfit.Components["Pants"] = pantsPost;
+                                outfit.Components["Top"] = post;
+                                outfit.Components["Footwear"] = footwearPost;
+                                finished = true;
+                            }
+                            else pantsPosts.Remove(pantsPost);
+                            break;
+                        }
+                    }
+            }
+            else
+                while (remaining.Contains(true))
                 {
-                    case 0 when footwearPosts.Count > 0:
+                    var starter = random.Next(0, 3);
+                    switch (starter)
                     {
-                        var item = footwearPosts[random.Next(0, footwearPosts.Count)];
-                        var succes = CalculatePosibilities(item,outfit,footwearPosts: footwearPosts, topPosts: topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
-                        if (succes) return;
+                        case 0 when footwearPosts.Count > 0:
+                        {
+                            var item = footwearPosts[random.Next(0, footwearPosts.Count)];
+                            var succes = CalculatePosibilities(item,outfit,footwearPosts: footwearPosts, topPosts: topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                            if (succes) return;
                         
-                        footwearPosts.Remove(item);
-                        if (footwearPosts.Count == 0)
-                            remaining[0] = false;
-                        break;
-                    }
-                    case 1 when pantsPosts.Count > 0:
-                    {
-                        var item = pantsPosts[random.Next(0, pantsPosts.Count)];
-                        var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, topPosts:topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
-                        if (succes) return;
+                            footwearPosts.Remove(item);
+                            if (footwearPosts.Count == 0)
+                                remaining[0] = false;
+                            break;
+                        }
+                        case 1 when pantsPosts.Count > 0:
+                        {
+                            var item = pantsPosts[random.Next(0, pantsPosts.Count)];
+                            var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, topPosts:topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                            if (succes) return;
                         
-                        pantsPosts.Remove(item);
-                        if (pantsPosts.Count == 0)
-                            remaining[1] = false;
-                        break;
-                    }
-                    case 2 when topPosts.Count > 0:
-                    {
-                        var item = topPosts[random.Next(0, topPosts.Count)];
-                        var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, pantsPosts:pantsPosts, topPosts:topPosts,maximumPrice:maximumPrice);
-                        if (succes) return;
+                            pantsPosts.Remove(item);
+                            if (pantsPosts.Count == 0)
+                                remaining[1] = false;
+                            break;
+                        }
+                        case 2 when topPosts.Count > 0:
+                        {
+                            var item = topPosts[random.Next(0, topPosts.Count)];
+                            var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, pantsPosts:pantsPosts, topPosts:topPosts,maximumPrice:maximumPrice);
+                            if (succes) return;
                         
-                        topPosts.Remove(item);
-                        if (topPosts.Count == 0)
-                            remaining[2] = false;
-                        break;
+                            topPosts.Remove(item);
+                            if (topPosts.Count == 0)
+                                remaining[2] = false;
+                            break;
+                        }
                     }
                 }
-            }
            
         }
 
