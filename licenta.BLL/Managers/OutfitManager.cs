@@ -115,53 +115,47 @@ namespace licenta.BLL.Managers
         }
 
         private static void CalculateOutfit(List<Post> footwearPosts, List<Post> pantsPosts,
-            List<Post> topPosts, Outfit outfit,Post post, double maximumPrice = double.MaxValue)
+            List<Post> topPosts, Outfit outfit,Post post, double maximumPrice)
         {
             var random = new Random();
+            var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
             
-            var remaining = new[]{footwearPosts.Count == 0,pantsPosts.Count == 0,topPosts.Count == 0};
-            while (remaining.Contains(false))
+            while (remaining.Contains(true))
             {
-                var starter = random.Next(0, 2);
+                var starter = random.Next(0, 3);
                 switch (starter)
                 {
                     case 0 when footwearPosts.Count > 0:
                     {
-                        var item = footwearPosts[random.Next(0, footwearPosts.Count - 1)];
+                        var item = footwearPosts[random.Next(0, footwearPosts.Count)];
                         var succes = CalculatePosibilities(item,outfit,footwearPosts: footwearPosts, topPosts: topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
-                        if (succes == false)
-                        {
-                            footwearPosts.Remove(item);
-                            if (footwearPosts.Count == 0)
-                                remaining[0] = true;
-                        }
-                        else return;
+                        if (succes) return;
+                        
+                        footwearPosts.Remove(item);
+                        if (footwearPosts.Count == 0)
+                            remaining[0] = false;
                         break;
                     }
                     case 1 when pantsPosts.Count > 0:
                     {
-                        var item = pantsPosts[random.Next(0, pantsPosts.Count - 1)];
+                        var item = pantsPosts[random.Next(0, pantsPosts.Count)];
                         var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, topPosts:topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
-                        if (succes == false)
-                        {
-                            pantsPosts.Remove(item);
-                            if (pantsPosts.Count == 0)
-                                remaining[1] = true;
-                        }
-                        else return;
+                        if (succes) return;
+                        
+                        pantsPosts.Remove(item);
+                        if (pantsPosts.Count == 0)
+                            remaining[1] = false;
                         break;
                     }
                     case 2 when topPosts.Count > 0:
                     {
-                        var item = topPosts[random.Next(0, topPosts.Count - 1)];
+                        var item = topPosts[random.Next(0, topPosts.Count)];
                         var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, pantsPosts:pantsPosts, topPosts:topPosts,maximumPrice:maximumPrice);
-                        if (succes == false)
-                        {
-                            footwearPosts.Remove(item);
-                            if (footwearPosts.Count == 0)
-                                remaining[2] = true;
-                        }
-                        else return;
+                        if (succes) return;
+                        
+                        topPosts.Remove(item);
+                        if (topPosts.Count == 0)
+                            remaining[2] = false;
                         break;
                     }
                 }
@@ -170,26 +164,31 @@ namespace licenta.BLL.Managers
         }
 
         private static bool CalculatePosibilities(Post post, Outfit outfit, List<Post> footwearPosts,
-            List<Post> pantsPosts , List<Post> topPosts, double maximumPrice = double.MaxValue)
+            List<Post> pantsPosts , List<Post> topPosts, double maximumPrice)
         {
             var postType = OutfitComponent.GetTypeOfItem(post.Item);
 
+            var pantsPostsCopy = new List<Post>(pantsPosts);
+            var footwearPostsCopy = new List<Post>(footwearPosts);
+            var topPostsCopy = new List<Post>(topPosts);
             var random = new Random();
             while (true)
             {
-                Console.WriteLine(pantsPosts.Count + " " + footwearPosts.Count +"  " + topPosts.Count);
-                if (pantsPosts.Count <= 0 || footwearPosts.Count<=0 || topPosts.Count <= 0) return false;
+                if (pantsPostsCopy.Count == 0 || footwearPostsCopy.Count == 0 || topPostsCopy.Count == 0) return false;
                 switch (postType)
                 {
                     case "Footwear" :
                     {
-                        var item = footwearPosts[random.Next(0, footwearPosts.Count - 1)];
-                        var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice - item.Item.Price);
-                        var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - item.Item.Price);
+                        var item = footwearPostsCopy[random.Next(0, footwearPostsCopy.Count)];
+                        var newPrice = maximumPrice - item.Item.Price;
+                        var pantsPost = Utils.Utils.CalculateDiffsForPost(item, pantsPostsCopy,newPrice);
+                        if(pantsPost != null) 
+                            newPrice -= pantsPost.Item.Price;
+                        var topPost = Utils.Utils.CalculateDiffsForPost(item, topPostsCopy, newPrice);
                         if (topPost == null || pantsPost == null)
                         {
-                            footwearPosts.Remove(item);
-                            if (footwearPosts.Count == 0)
+                            footwearPostsCopy.Remove(item);
+                            if (footwearPostsCopy.Count == 0)
                                 return false;
                             break;
                         }
@@ -198,17 +197,20 @@ namespace licenta.BLL.Managers
                         outfit.Components["Top"] = topPost;
                         outfit.Components["Footwear"] = item;
                         return true;
-
+                       
                     }
                     case "Pants" :
                     {
-                        var item = pantsPosts[random.Next(0, pantsPosts.Count - 1)];
-                        var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice - item.Item.Price);
-                        var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - item.Item.Price);
+                        var item = pantsPostsCopy[random.Next(0, pantsPostsCopy.Count)];
+                        var newPrice = maximumPrice - item.Item.Price;
+                        var footwearPost = Utils.Utils.CalculateDiffsForPost(item, footwearPostsCopy,newPrice);
+                        if(footwearPost != null) 
+                            newPrice -= footwearPost.Item.Price;
+                        var topPost = Utils.Utils.CalculateDiffsForPost(item, topPostsCopy,newPrice);
                         if (topPost == null || footwearPost == null)
                         {
-                            pantsPosts.Remove(item);
-                            if (pantsPosts.Count == 0)
+                            pantsPostsCopy.Remove(item);
+                            if (pantsPostsCopy.Count == 0)
                                 return false; 
                             break;
                         }
@@ -221,13 +223,16 @@ namespace licenta.BLL.Managers
                     }
                     case "Top":
                     {
-                        var item = topPosts[random.Next(0, topPosts.Count - 1)];
-                        var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice - item.Item.Price);
-                        var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice - item.Item.Price);
+                        var item = topPostsCopy[random.Next(0, topPostsCopy.Count)];
+                        var newPrice = maximumPrice - item.Item.Price;
+                        var pantsPost = Utils.Utils.CalculateDiffsForPost(item, pantsPostsCopy,newPrice);    
+                        if(pantsPost != null) 
+                            newPrice -= pantsPost.Item.Price;
+                        var footwearPost = Utils.Utils.CalculateDiffsForPost(item, footwearPostsCopy,newPrice);
                         if (footwearPost == null || pantsPost == null)
                         {
-                            topPosts.Remove(item);
-                            if (footwearPosts.Count == 0)
+                            topPostsCopy.Remove(item);
+                            if (footwearPostsCopy.Count == 0)
                                 return false;
                             break;
                         }

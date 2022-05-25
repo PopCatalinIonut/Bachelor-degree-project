@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using licenta.BLL.Models;
 using Newtonsoft.Json;
 
@@ -13,8 +11,6 @@ namespace licenta.BLL.Utils
     {
         private static Dictionary<string,List<string>> ColorsDictionary { get; set; }
         private static Dictionary<string, int> ConditionDictionary { get; set; }
-        private static Dictionary<string, int> FootwearSizes { get; set; }
-
         private static Dictionary<string, int> ClothingSizes { get; set; }
         public static ColorSchema CalculateItemColorSchema(List<string> colors)
         {
@@ -70,37 +66,31 @@ namespace licenta.BLL.Utils
             return pointsOfSimilarity/totalPointsAvailable;
         }
 
-        public static Post CalculateDiffsForPost(Post p, List<Post> posts, double price = double.MaxValue)
+        public static Post CalculateDiffsForPost(Post p, List<Post> posts, double price)
         {
-            Console.WriteLine(p.ToString());
-            var over7 = 0;
+            
+            var aboveLimit = 0;
             var random = new Random();
-            var diffs = new Dictionary<Post,double>();
-            var postsCopy = new List<Post>(posts);
-            postsCopy.ForEach(x =>
+            var similarities = new Dictionary<Post,double>();
+            posts.ForEach(x =>
             {
-                diffs[x] = CalculateSimilarity(p.Item, x.Item);
-                if (diffs[x] > 0.75)
-                    over7++;
+                similarities[x] = CalculateSimilarity(p.Item, x.Item);
+                if (similarities[x] > 0.7)
+                    aboveLimit++;
             });
-            diffs = new Dictionary<Post, double>(diffs.OrderByDescending(x => x.Value));
-            while (diffs.Count > 0)
+            similarities = new Dictionary<Post, double>(similarities.OrderByDescending(x => x.Value));
+            while (similarities.Count > 0)
             {
-                Console.WriteLine("Counter " + diffs.Count);
-                if (over7 == 0)
-                {
-                    if (diffs.First().Key.Item.Price + p.Item.Price <= price)
-                        return diffs.FirstOrDefault().Key;
-                    diffs.Remove(diffs.First().Key);
-                }
-                else
-                {
-                    var post = diffs.ElementAt(random.Next(0, over7 - 1)).Key;
-                    if (post.Item.Price + p.Item.Price <= price)
-                        return post;
-                    diffs.Remove(post);
-                    over7--;
-                }
+                if (aboveLimit == 0)
+                    return null;
+           
+                var post = similarities.ElementAt(random.Next(0, aboveLimit)).Key;
+                if (post.Item.Price + p.Item.Price <= price)
+                    return post;
+
+                similarities.Remove(post);
+                aboveLimit--;
+                
             }
 
             return null;
@@ -127,14 +117,13 @@ namespace licenta.BLL.Utils
         }
         static Utils()
         {
-            string propsFileLocation
-                = Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.Parent.FullName + @"\"+ "ItemProperties.json";
+            var propsFileLocation
+                = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName + @"\"+ "ItemProperties.json";
             var text = File.ReadAllText(propsFileLocation);
             var itemProperties = JsonConvert.DeserializeObject<ItemProperties>(text);
             ColorsDictionary = new Dictionary<string, List<string>>();
             ConditionDictionary = new Dictionary<string, int>();
             ClothingSizes = new Dictionary<string, int>();
-            FootwearSizes = new Dictionary<string, int>();
             itemProperties.Colors.ForEach((color) =>
             {
                 if(ColorsDictionary.ContainsKey(color.Palette))
@@ -142,7 +131,6 @@ namespace licenta.BLL.Utils
                 else ColorsDictionary.Add(color.Palette,new List<string>{color.Name});
             });
             itemProperties.Conditions.ForEach((condition) => ConditionDictionary[condition.Type] = condition.Rank);
-            itemProperties.FootwearSizes.ForEach((size) => FootwearSizes[size.Size] = size.Rank);
             itemProperties.ClothingSizes.ForEach((size) => ClothingSizes[size.Size] = size.Rank);
         }
     }
