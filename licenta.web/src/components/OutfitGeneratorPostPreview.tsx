@@ -4,15 +4,21 @@ import { Fab, Paper, Grid, Typography, ButtonBase } from "@material-ui/core";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import { useAppDispatch } from "../app/hooks";
+import { removeItemFromGenerator } from "../features/OutfitSlice";
 export interface MarketplacePostPreviewProps {
     post: Post;
     dialogOpen: (post: Post) => void;
-    user: PostUserDetails
+    user: PostUserDetails;
+    isDeletable: boolean;
 }
 
 export default function OutfitGeneratorPostPreview (props: MarketplacePostPreviewProps){
 
     var post = props.post;
+    
+    const dispatch = useAppDispatch();
     const [imageToShow, setImageToShow] = useState({image:post.item.images[0],counter:0});
 
     const handleImageChangeRight = () =>{
@@ -24,23 +30,34 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
             setImageToShow({image:post.item.images[imageToShow.counter-1],counter:imageToShow.counter-1})
     }
 
+    const hanleRemoveFromGenerator = () =>{
+        dispatch(removeItemFromGenerator(props.post.id))
+    }
+
     const handleOpenDialog = () =>{
         props.dialogOpen(post);
     }
-    
-    
     return (
         <Paper style={{width: "inherit",height:"100%"}}>
             <Grid container style={{width: "inherit",height:"100%" }}>
                 <Grid item xs={6} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
-                        backgroundSize:"cover", backgroundPosition:"center"}}>
-                            <Fab onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
-                            <ArrowBackIcon/>
-                        </Fab>
-                        <Fab onClick={handleImageChangeRight} style={{width:"15%" , height:"5%"}}>
-                            <ArrowForwardIcon/>
-                        </Fab>
-                </Grid>
+                    backgroundSize:"cover", backgroundPosition:"center"}}>
+                    <Fab onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
+                         <ArrowBackIcon/>
+                    </Fab>
+                    <Fab onClick={handleImageChangeRight} style={{width:"15%" , height:"5%"}}>
+                         <ArrowForwardIcon/>
+                    </Fab>
+                   
+                </Grid> <div style={{position:"relative",left:-40}}>
+                    {(() =>  {
+                             if(props.isDeletable === true)
+                             return  <Fab onClick={hanleRemoveFromGenerator} style={{width:"150%" , height:"5%", background:"red"}}>
+                             <DeleteOutlineOutlinedIcon/>
+                         </Fab>}
+                     )()}
+                  
+                    </div>
                 <Grid item xs={6} sm container style={{position:"relative"}}>
                     <ButtonBase style={{width:"inherit",display:"inline-block"}} onClick={handleOpenDialog}>   
                         <Grid item xs container direction="column" >
@@ -69,5 +86,5 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
                 </Grid>
             </Grid>
         </Paper>
-    )
+    );
 }

@@ -1,23 +1,27 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../app/store";
-import { Outfit, Post } from "../components/types";
+import { Outfit, OutfitComponent, Post } from "../components/types";
 import { GenerateOutfitProps } from "./types";
 
 export interface OutfitConfigurationState {
     outfit: Outfit;
+    itemToGenerateWith: OutfitComponent;
     initialized: boolean;
+    succes: boolean;
   }
 
   const initialState: OutfitConfigurationState = {
     initialized: false,
+    itemToGenerateWith: {post:null,type:""},
     outfit: {components: [{type:"Footwear",post:null},{type:"Pants",post:null},{type:"Top",post:null}]},
+    succes: false
 };
 
 
 export const generateOutfit = createAsyncThunk(
     "features/OutfitSlice/generateOutfit",
-    async(props: GenerateOutfitProps) =>{
+    async(props: GenerateOutfitProps, {rejectWithValue}) =>{
       try{
         const response = await axios.post<Outfit>("http://localhost:7071/api/outfits",{
             userId: props.userId,
@@ -32,11 +36,12 @@ export const generateOutfit = createAsyncThunk(
           }
         );
         var outfit: Outfit = response.data;
+        console.log(outfit)
         return outfit;
       }
-    catch (err: any) {
-      return err.response.data;
-      }
+      catch (err: any) {
+        return rejectWithValue(err.response.data);
+        }
     }
   );
 
@@ -45,44 +50,76 @@ export const outfitSlice = createSlice({
     initialState,
     reducers: {
       addItemToGenerator: (state, action:PayloadAction<Post>) =>{
-        var item = action.payload.item
-        switch (item.type)
+        var itemToAdd = {post: action.payload,type:""};
+        switch (action.payload.item.type)
         {
-            case "Footwear": 
-                var component = state.outfit.components.find(x => x.type === "Footwear");
-                  if(component!==undefined) 
+          case "Footwear": 
+            var component = state.outfit.components.find(x => x.type === "Footwear");
+              if(component!==undefined) {
+                console.log("added item in slice")
+                component.post = action.payload;
+                itemToAdd.type = "Footwear";
+              }
+            break;
+          case "Clothing":
+            switch (action.payload.item.category)
+            {
+              case "Shorts" || "Pants":
+                var component = state.outfit.components.find(x => x.type === "Pants");
+                if(component!==undefined) {
                   component.post = action.payload;
-                break;
-            case "Clothing":
-                switch (item.category)
-                {
-                    case "Shorts" || "Pants":
-                      var component = state.outfit.components.find(x => x.type === "Pants");
-                      if(component!==undefined) component.post = action.payload;
-                        break;
-                    case "Hoodies" || "T-Shirts" || "Sweatshirts":
-                      var component = state.outfit.components.find(x => x.type === "Top");
-                      if(component!==undefined) component.post = action.payload;
-                        break;
+                  itemToAdd.type = "Pants"
                 }
-                break;
+                  break;
+              case "Hoodies" || "T-Shirts" || "Sweatshirts":
+                var component = state.outfit.components.find(x => x.type === "Top");
+                if(component!==undefined) {
+                  component.post = action.payload;
+                  itemToAdd.type = "Top"
+                }
+                  break;
+              }
+            break;
         }
-        console.log("added")
-        console.log(action.payload)
+        state.itemToGenerateWith = itemToAdd;
+      }, removeItemFromGenerator: (state, action:PayloadAction<number>) =>{
+        state.itemToGenerateWith =  {post:null,type:""};
+        state.outfit.components.forEach((x) =>{
+          if(x.post?.id === action.payload)
+            x.post = null;
+        })
       }
     },
     extraReducers: builder => {
       builder
         .addCase(generateOutfit.fulfilled, (state, action) => {
-          state.outfit = action.payload;
+          var itemsGeneratedWithSucces = 0;
+          action.payload.components.forEach((c) => {
+            if(c.post !==null) 
+              itemsGeneratedWithSucces++
+          })
+          if(itemsGeneratedWithSucces > 1)
+            {
+              Object.assign(  state.outfit = action.payload);
+              state.succes = true;
+            }
+          else {
+            state.outfit.components.forEach((x) => {
+            if(x.post !== null && state.itemToGenerateWith.post?.id !== x.post.id)
+                x.post = null;
+            })
+            state.succes = false}
         })
     },
   });
 
 export const {
-    addItemToGenerator
+    addItemToGenerator,
+    removeItemFromGenerator
 } = outfitSlice.actions;
 
 
 export const outfitSelector = (state: RootState) => state.outfitSlice.outfit;
+export const itemToGenerateWithSelector = (state:RootState) => state.outfitSlice.itemToGenerateWith;
+export const succesSelector = (state:RootState) => state.outfitSlice.succes
 export default outfitSlice.reducer

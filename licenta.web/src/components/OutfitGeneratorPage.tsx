@@ -1,16 +1,16 @@
-import { Button, Card, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, TextField, Typography } from "@material-ui/core";
+import { Button, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@material-ui/core";
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette, conditions } from "../data/itemPropertiesData";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { generateOutfit, outfitSelector } from "../features/OutfitSlice";
-import MarketplacePostPreview from "./MarketplacePostPreview";
+import { generateOutfit, itemToGenerateWithSelector, outfitSelector, succesSelector } from "../features/OutfitSlice";
 import { userSelector } from "../features/UserSlice";
 import OutfitGeneratorPostPreview from "./OutfitGeneratorPostPreview";
-import { Post } from "./types";
+import { Outfit, OutfitComponent, Post, PostUserDetails } from "./types";
 import PostDetailsDialog from "./PostDetailsDialog";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
@@ -26,110 +26,90 @@ export default function OutfitGeneratorPage(){
     const [shoeSizeValue, setShoeSizeValue] = useState("");
     const [colorPaletteValue, setColorPaletteValue] = useState("");
     const [conditionValue, setConditionValue] = useState("");
-    
-    const [outfit,setOutfit] = useState(useAppSelector(outfitSelector));
+    const [snackOpened, setSnackOpened] = useState(false);
+    const [firstOpen, setFirstOpen] = useState(0);
+
+    const outfit: Outfit = useAppSelector(outfitSelector);
+    var selectedItem = useAppSelector(itemToGenerateWithSelector);
     const user = useAppSelector(userSelector)
-    console.log(outfit)
+    const succes = useAppSelector(succesSelector)
+
     let navigate = useNavigate(); 
 
     const handleGenerateOutfit = async () =>{
-        var postId = "0";
-        console.log("sending")
-        var priceConverted = !isNaN(+priceValue) === true ? Number(priceValue) : 0
-        const response = await dispatch(generateOutfit({userId:user.id,condition:conditionValue, maximumValue: priceConverted,
-            season: outfitSeasonValue, genre: genreValue, shoeSize: shoeSizeValue, clothingSize: clothingSizeValue,
-            colorPalette: colorPaletteValue, postId: postId 
-        }))
-        setOutfit(response.payload)
+        try{
+            var priceConverted = !isNaN(+priceValue) === true ? Number(priceValue) : 0
+            var postId = selectedItem.post !== null ? selectedItem.post.id : 0;
+            const response = await dispatch(generateOutfit({userId:user.id,condition:conditionValue, maximumValue: priceConverted,
+                season: outfitSeasonValue, genre: genreValue, shoeSize: shoeSizeValue, clothingSize: clothingSizeValue,
+                colorPalette: colorPaletteValue, postId: postId.toString()
+            }))
+            if(response.payload !== undefined)
+                setFirstOpen(firstOpen+1)
+        }catch (err) {
+            console.log(err)
+            setSnackOpened(true);
+          }
     }
-    
-    const [dialogPost, setDialogPost] = useState(<div></div>);
-    const handleDialogOpen = (post:Post) => {
-        setDialogPost(
-            <div>
-                <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
-                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
-                    description={post.description} cityLocation={post.cityLocation}/>
-                </Dialog>
-            </div>
-        );
-    };
 
-    const handleDialogClose = () =>{
-        setDialogPost(<div></div>)
-    }
     const outfitSection = () =>{
-        var components = outfit.components
-        return (
-        <Grid container>
-            {(() => {
-                var top = components.find(x => x.type === "Top")
-                console.log(top)
-                if (top !== undefined && top.post !== null){
-                   return <Grid item xs={12} style={{width:550,height:250}} key={top.post.id}>
-                    <OutfitGeneratorPostPreview post={top.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
-                </Grid>}
-                else return <Grid>
-                    <Typography>We couldn't find a top matching your criteria!</Typography>
-                </Grid>
-            })()}
-            {(() => {
-               var pants = components.find(x => x.type === "Pants")
-               console.log(pants)
-               if (pants !== undefined && pants.post !== null){
-                return<Grid item xs={12} style={{width:550,height:250}} key={pants.post.id}>
-                   <OutfitGeneratorPostPreview post={pants.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
-               </Grid>}
-               else return <Grid>
-                   <Typography>We couldn't find some pants matching your criteria!</Typography>
-               </Grid>
-            })()}
-            {(() => {
-              var footwear = components.find(x => x.type === "Footwear")
-              console.log(footwear)
-              if (footwear !== undefined && footwear.post !== null){
-                return <Grid item xs={12} style={{width:550,height:250}} key={footwear.post.id}>
-                  <OutfitGeneratorPostPreview post={footwear.post} user={user} dialogOpen={handleDialogOpen} ></OutfitGeneratorPostPreview>
-              </Grid>}
-              else return <Grid>
-                  <Typography>We couldn't find sneakers matching your criteria!</Typography>
-              </Grid>
-            })()}
-        </Grid>)
+        var components: OutfitComponent[] = [];
+        components = outfit.components
+        var containsElements = false;
+        components.forEach(x => x.post!==null ? containsElements = true : 0)
+
+        if(firstOpen !== 0 )  {
+            if(succes === false && selectedItem.post === null && containsElements === false)
+            return (<div>
+                        <Typography style={{fontWeight:900}}> We couln't find an outfit matching your criteria! </Typography>
+                        <Typography style={{fontWeight:900}}> Try removing some filters. </Typography>
+                        <ErrorOutlineOutlinedIcon style={{height:150,width:150}}/>
+                    </div>)
+            else 
+            return (<div>
+                        <ShowItem post={components.find(x => x.type === "Top")} type={"Top"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                        <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen} ></ShowItem>
+                        <ShowItem post={components.find(x => x.type === "Footwear")} type={"Footwear"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                    </div>)
+        }else 
+                return  <div>
+                            <ShowItem post={components.find(x => x.type === "Top")} type={"Top"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                            <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                            <ShowItem post={components.find(x => x.type === "Footwear")} type={"Footwear"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                        </div>
         
     }
-
-    return (<div style={{textAlign:"center",width:"fit-content"}}>
+    return (<div style={{textAlign:"center"}}>
          <div style={{textAlign:"center"}}>
              <Fab onClick={() => {navigate("/home")}} style={{backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
             <Grid container sm style={{textAlign:"center",justifyContent:"center"}}>
-                <Grid item xs={4} container style={{border:"1px solid"}}>
+                <Grid item xs={6} container style={{border:"1px solid",maxWidth:553}}>
                     <Grid item sm={9} style={{marginTop:"3%"}}>
                         <Typography >Maximum cost:</Typography>
                     </Grid>
                     <Grid item sm={3}>
-                    <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                            style={{width:"70px",float:"left",marginLeft:"-90%",marginTop:"2%"}} 
-                            onBlur={(event: { currentTarget: { value: string; }; }) => {
-                                setPriceValue(event.currentTarget.value);
-                            }}/>
+                        <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                                style={{width:"70px",float:"left",marginLeft:"-90%",marginTop:"2%"}} 
+                                onBlur={(event: { currentTarget: { value: string; }; }) => {
+                                    setPriceValue(event.currentTarget.value);
+                                }}/>
                     </Grid>
                     <Grid item xs={12} container style={{marginTop:"7%"}}>
                         <Grid item xs={12}>
-                            <Typography>Condition:</Typography>
+                            <Typography>Condition</Typography>
                         </Grid>
                         <Grid item xs={12}>
-                        <ToggleButtonGroup color="primary" value={conditionValue} exclusive
-                            onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
-                            {(() =>  
-                            conditions.map((condition) => {
-                                return ( <ToggleButton value={condition}>{condition}</ToggleButton> )
-                            })
-                        )()}
-                        </ToggleButtonGroup>
+                            <ToggleButtonGroup color="primary" value={conditionValue} exclusive
+                                onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
+                                    {(() =>  
+                                    conditions.map((condition) => {
+                                        return ( <ToggleButton style={{fontSize:12}} value={condition}>{condition}</ToggleButton> )
+                                    })
+                                    )()}
+                            </ToggleButtonGroup>
                         </Grid>
                     </Grid>
                     <Grid item sm={12} container style={{marginTop:"7%"}}>
@@ -137,13 +117,13 @@ export default function OutfitGeneratorPage(){
                             <Typography >Interested in a special season? </Typography>
                         </Grid>
                         <Grid item xs={12}>
-                        <ToggleButtonGroup color="primary" value={outfitSeasonValue} exclusive
-                            onChange={(event: React.MouseEvent<HTMLElement>, newType: string) =>{setOutfitSeasonValue(newType)}}>
-                            {(() =>  
-                                outfitSeasonType.map((season) => {
-                                    return ( <ToggleButton value={season}>{season}</ToggleButton> )
-                                })
-                            )()}
+                            <ToggleButtonGroup color="primary" value={outfitSeasonValue} exclusive
+                                onChange={(event: React.MouseEvent<HTMLElement>, newType: string) =>{setOutfitSeasonValue(newType)}}>
+                                    {(() =>  
+                                        outfitSeasonType.map((season) => {
+                                            return ( <ToggleButton style={{fontSize:12}} value={season}>{season}</ToggleButton> )
+                                        })
+                                    )()}
                             </ToggleButtonGroup>
                         </Grid>
                     </Grid>  
@@ -152,10 +132,8 @@ export default function OutfitGeneratorPage(){
                         <ToggleButtonGroup color="primary" value={genreValue} exclusive
                             onChange={(event: React.MouseEvent<HTMLElement>, newGenre: string) =>{setGenreValue(newGenre)}}>
                             {(() =>  
-                            genreList.map((genre) => {
-                                return ( <ToggleButton value={genre}>{genre}</ToggleButton> )
-                            })
-                        )()}
+                            genreList.map((genre) => {return (<ToggleButton style={{fontSize:12}} value={genre}>{genre}</ToggleButton>)})
+                            )()}
                         </ToggleButtonGroup>
                     </Grid>
                     <Grid item xs={12} style={{marginTop:"7%"}}>
@@ -168,8 +146,8 @@ export default function OutfitGeneratorPage(){
                                     {(() => {
                                         return clothingSizesWithNone.map((item) => {
                                             return <MenuItem key={item} value={item}> {item}</MenuItem>
-                                    })
-                                })()}
+                                        })
+                                    })()}
                             </Select>
                         </Typography>
                     </Grid>
@@ -183,8 +161,8 @@ export default function OutfitGeneratorPage(){
                                     {(() => {
                                         return shoeSizesWithBlank.map((item) => {
                                             return <MenuItem key={item.size} value={item.size}> {item.genre + "'s " +item.size}</MenuItem>
-                                    })
-                                })()}
+                                        })
+                                    })()}
                             </Select>
                         </Typography>
                     </Grid>
@@ -194,19 +172,62 @@ export default function OutfitGeneratorPage(){
                                 onChange={(event: React.MouseEvent<HTMLElement>, newColor: string) =>{setColorPaletteValue(newColor)}}>
                                 {(() =>  
                                 colorPalette.map((cp) => {
-                                    return ( <ToggleButton value={cp}>{cp}</ToggleButton> )
-                                })
-                            )()}
+                                    return ( <ToggleButton style={{fontSize:12}} value={cp}>{cp}</ToggleButton> )
+                                    })
+                                )()}
                             </ToggleButtonGroup>
                     </Grid>
                 </Grid>
-                <Grid item xs={8} container style={{border:"1px solid",width:"fit-content",maxWidth:553}}>
+                <Grid item xs={6} container style={{border:"1px solid",width:"fit-content",maxWidth:553,display:"grid",alignContent:"center"}}>
                    {outfitSection()}
                 </Grid>
             </Grid>
-        <div style={{marginTop:"1%"}}>
+        <div>
             <Button variant="contained" color="primary" onClick={handleGenerateOutfit}>Generate</Button>
-            </div>
-            {dialogPost}
+        </div>
+        <Snackbar
+          open={snackOpened} autoHideDuration={3000} message="There was an error"
+          anchorOrigin={{vertical: "top", horizontal: "center"}}/>
     </div>)
+}
+
+export interface ShowItemProps{
+    post: OutfitComponent | undefined,
+    type: string,
+    user: PostUserDetails,
+    selectedItem: OutfitComponent,
+    firstOpen: number
+}
+
+export function ShowItem(props: ShowItemProps){  
+    const [dialogPost, setDialogPost] = useState(<div></div>);
+
+    const handleDialogOpen = (post:Post | null) => {
+        if(post !== null)
+            setDialogPost(
+                <div>
+                    <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
+                        <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
+                        description={post.description} cityLocation={post.cityLocation}/>
+                    </Dialog>
+                </div>
+            );
+    };
+
+    const handleDialogClose = () =>{ setDialogPost(<div></div>) }
+        console.log(props)
+        if (props.post !== undefined && props.post.post !== null ){console.log("shoul show item")
+            return (<Grid item xs={12} style={{width:550,height:250}} key={props.post.post.id}>
+                        <OutfitGeneratorPostPreview post={props.post.post} user={props.user}  isDeletable={props.selectedItem.post?.id === props.post.post.id}
+                            dialogOpen={handleDialogOpen}/>
+                        {dialogPost}
+                    </Grid>)}
+         else 
+            if(props.selectedItem.post !== null && props.selectedItem.type !== props.type && props.firstOpen !== 0) 
+                return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+                            <Typography style={{fontWeight:900}}>We couldn't find any top matching your criteria!</Typography>
+                        </Grid>)
+         else 
+         return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+                </Grid>)
 }
