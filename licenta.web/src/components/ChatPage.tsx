@@ -1,4 +1,5 @@
-import { Box, Card, createStyles, Fab, Grid, makeStyles, TextField, Theme, Typography } from "@material-ui/core";
+import { Box, Card, createStyles, Fab, Grid, TextField, Theme, Typography } from "@mui/material";
+import { makeStyles } from "@mui/styles"
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import { getUserMessages, conversationsSelector, sendMessage, currentConversationSelector } from "../features/MessageSlice";
@@ -9,8 +10,9 @@ import { useNavigate } from "react-router-dom";
 import ButtonBase from '@mui/material/ButtonBase';
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
+
 const useStyles = makeStyles((theme: Theme) =>
-createStyles({
+({
     leftSide: {
         textAlign:"left",
         float:"left",

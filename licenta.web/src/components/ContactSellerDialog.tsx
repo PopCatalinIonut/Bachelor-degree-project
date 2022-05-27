@@ -1,4 +1,4 @@
-import { Fab, Grid, Paper, TextField, Typography, Snackbar } from "@material-ui/core";
+import { Fab, Grid, Paper, TextField, Typography, Snackbar } from "@mui/material";
 import { DisplayMessage, PostUserDetails } from "./types";
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from "react";

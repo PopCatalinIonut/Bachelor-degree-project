@@ -1,4 +1,4 @@
-import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Chip, Select, Snackbar, TextField, Typography, FormControl, OutlinedInput, Box } from "@material-ui/core";
+import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Chip, Select, Snackbar, TextField, Typography, FormControl, OutlinedInput, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
@@ -10,7 +10,6 @@ import { addItemToMarketplace } from "../features/MarketplaceSlice";
 import { addPostReducer, userSelector } from "../features/UserSlice";
 import { Post } from "./types";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { SelectChangeEvent } from "@mui/material";
 const styles = {
 
     typographyFormat: {

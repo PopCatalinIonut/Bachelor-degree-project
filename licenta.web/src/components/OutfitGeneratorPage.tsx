@@ -1,4 +1,4 @@
-import { Button, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@material-ui/core";
+import { Button, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ export default function OutfitGeneratorPage(){
     const [shoeSizeValue, setShoeSizeValue] = useState("");
     const [colorPaletteValue, setColorPaletteValue] = useState("");
     const [conditionValue, setConditionValue] = useState("");
-    const [snackOpened, setSnackOpened] = useState(false);
+    const [errorSnackOpened, setErrorSnackOpened] = useState(false);
     const [firstOpen, setFirstOpen] = useState(0);
 
     const outfit: Outfit = useAppSelector(outfitSelector);
@@ -46,12 +46,12 @@ export default function OutfitGeneratorPage(){
             }))
             if(response.payload !== undefined)
                 setFirstOpen(firstOpen+1)
+                
         }catch (err) {
             console.log(err)
-            setSnackOpened(true);
+            setErrorSnackOpened(true);
           }
     }
-
     const outfitSection = () =>{
         var components: OutfitComponent[] = [];
         components = outfit.components
@@ -60,23 +60,23 @@ export default function OutfitGeneratorPage(){
 
         if(firstOpen !== 0 )  {
             if(succes === false && selectedItem.post === null && containsElements === false)
-            return (<div>
-                        <Typography style={{fontWeight:900}}> We couln't find an outfit matching your criteria! </Typography>
-                        <Typography style={{fontWeight:900}}> Try removing some filters. </Typography>
-                        <ErrorOutlineOutlinedIcon style={{height:150,width:150}}/>
-                    </div>)
+                return (<div>
+                            <Typography style={{fontWeight:900}}> We couln't find an outfit matching your criteria! </Typography>
+                            <Typography style={{fontWeight:900}}> Try removing some filters. </Typography>
+                            <ErrorOutlineOutlinedIcon style={{height:150,width:150}}/>
+                        </div>)
             else 
-            return (<div>
-                        <ShowItem post={components.find(x => x.type === "Top")} type={"Top"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
-                        <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen} ></ShowItem>
-                        <ShowItem post={components.find(x => x.type === "Footwear")} type={"Footwear"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
-                    </div>)
-        }else 
-                return  <div>
+                return (<div>
                             <ShowItem post={components.find(x => x.type === "Top")} type={"Top"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
-                            <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                            <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen} ></ShowItem>
                             <ShowItem post={components.find(x => x.type === "Footwear")} type={"Footwear"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
-                        </div>
+                        </div>)
+        }else 
+            return  <div>
+                        <ShowItem post={components.find(x => x.type === "Top")} type={"Top"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                        <ShowItem post={components.find(x => x.type === "Pants")} type={"Pants"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                        <ShowItem post={components.find(x => x.type === "Footwear")} type={"Footwear"} user={user} selectedItem={selectedItem} firstOpen={firstOpen}></ShowItem>
+                    </div>
         
     }
     return (<div style={{textAlign:"center"}}>
@@ -85,60 +85,54 @@ export default function OutfitGeneratorPage(){
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-            <Grid container sm style={{textAlign:"center",justifyContent:"center"}}>
+            <Grid container sm style={{textAlign:"center",justifyContent:"center", minHeight:750}}>
                 <Grid item xs={6} container style={{border:"1px solid",maxWidth:553}}>
-                    <Grid item sm={9} style={{marginTop:"3%"}}>
-                        <Typography >Maximum cost:</Typography>
-                    </Grid>
-                    <Grid item sm={3}>
+                    <Grid item xs={12} style={{marginTop:"3%",display:"flex",textAlign:"center",justifyContent:"center"}}>
+                        <Typography style={{paddingTop:15}}>Budget:</Typography>
                         <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                style={{width:"70px",float:"left",marginLeft:"-90%",marginTop:"2%"}} 
+                                style={{width:"70px",marginLeft:"3%",height:20,marginTop:"3%"}} 
                                 onBlur={(event: { currentTarget: { value: string; }; }) => {
                                     setPriceValue(event.currentTarget.value);
                                 }}/>
                     </Grid>
-                    <Grid item xs={12} container style={{marginTop:"7%"}}>
+                    <Grid item xs={12} container>
                         <Grid item xs={12}>
                             <Typography>Condition</Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <ToggleButtonGroup color="primary" value={conditionValue} exclusive
+                            <ToggleButtonGroup color="primary" value={conditionValue} exclusive style={{maxWidth:350,fontSize:10}}
                                 onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
                                     {(() =>  
                                     conditions.map((condition) => {
-                                        return ( <ToggleButton style={{fontSize:12}} value={condition}>{condition}</ToggleButton> )
+                                        return ( <ToggleButton style={{fontSize:13}} value={condition}>{condition}</ToggleButton> )
                                     })
                                     )()}
                             </ToggleButtonGroup>
                         </Grid>
                     </Grid>
-                    <Grid item sm={12} container style={{marginTop:"7%"}}>
+                    <Grid item sm={12} container>
                         <Grid item xs={12} style={{marginBottom:"1%"}}>
-                            <Typography >Interested in a special season? </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
+                            <Typography>Specified season</Typography>
                             <ToggleButtonGroup color="primary" value={outfitSeasonValue} exclusive
                                 onChange={(event: React.MouseEvent<HTMLElement>, newType: string) =>{setOutfitSeasonValue(newType)}}>
                                     {(() =>  
                                         outfitSeasonType.map((season) => {
-                                            return ( <ToggleButton style={{fontSize:12}} value={season}>{season}</ToggleButton> )
+                                            return ( <ToggleButton style={{fontSize:13}} value={season}>{season}</ToggleButton> )
                                         })
                                     )()}
                             </ToggleButtonGroup>
                         </Grid>
                     </Grid>  
-                    <Grid item xs={12} style={{marginTop:"7%"}}>
+                    <Grid item xs={12}>
                         <Typography>Specified genre </Typography>
                         <ToggleButtonGroup color="primary" value={genreValue} exclusive
                             onChange={(event: React.MouseEvent<HTMLElement>, newGenre: string) =>{setGenreValue(newGenre)}}>
                             {(() =>  
-                            genreList.map((genre) => {return (<ToggleButton style={{fontSize:12}} value={genre}>{genre}</ToggleButton>)})
+                            genreList.map((genre) => {return (<ToggleButton style={{fontSize:13}} value={genre}>{genre}</ToggleButton>)})
                             )()}
                         </ToggleButtonGroup>
                     </Grid>
-                    <Grid item xs={12} style={{marginTop:"7%"}}>
+                    <Grid item xs={12}>
                         <Typography>Clothing size:   
-                            <Select value={clothingSizeValue} style={{marginLeft:"5%"}} 
+                            <Select value={clothingSizeValue} style={{marginLeft:"3%"}} 
                                     onChange={event => {
                                         var eventNr = event.target.value as unknown as string;
                                         setClothingSizeValue(eventNr);
@@ -151,28 +145,28 @@ export default function OutfitGeneratorPage(){
                             </Select>
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} style={{marginTop:"7%"}}>
+                    <Grid item xs={12}>
                         <Typography>Shoe size:   
-                            <Select value={shoeSizeValue} style={{marginLeft:"5%"}} 
+                            <Select value={shoeSizeValue} style={{marginLeft:"3%"}} 
                                     onChange={event => {
                                         var eventNr = event.target.value as unknown as string;
                                         setShoeSizeValue(eventNr);
                                     }}> 
                                     {(() => {
                                         return shoeSizesWithBlank.map((item) => {
-                                            return <MenuItem key={item.size} value={item.size}> {item.genre + "'s " +item.size}</MenuItem>
+                                            return <MenuItem key={item.size} value={item.size}> {item.genre + " " +item.size}</MenuItem>
                                         })
                                     })()}
                             </Select>
                         </Typography>
                     </Grid>
-                    <Grid item xs={12} style={{marginTop:"7%"}}>
-                        <Typography> Color palette: </Typography>
+                    <Grid item xs={12}>
+                        <Typography> Color palette </Typography>
                             <ToggleButtonGroup color="primary" value={colorPaletteValue} exclusive
                                 onChange={(event: React.MouseEvent<HTMLElement>, newColor: string) =>{setColorPaletteValue(newColor)}}>
                                 {(() =>  
                                 colorPalette.map((cp) => {
-                                    return ( <ToggleButton style={{fontSize:12}} value={cp}>{cp}</ToggleButton> )
+                                    return ( <ToggleButton style={{fontSize:13}} value={cp}>{cp}</ToggleButton> )
                                     })
                                 )()}
                             </ToggleButtonGroup>
@@ -186,8 +180,9 @@ export default function OutfitGeneratorPage(){
             <Button variant="contained" color="primary" onClick={handleGenerateOutfit}>Generate</Button>
         </div>
         <Snackbar
-          open={snackOpened} autoHideDuration={3000} message="There was an error"
+          open={errorSnackOpened} autoHideDuration={3000} message="There was an error"
           anchorOrigin={{vertical: "top", horizontal: "center"}}/>
+      
     </div>)
 }
 
@@ -215,19 +210,18 @@ export function ShowItem(props: ShowItemProps){
     };
 
     const handleDialogClose = () =>{ setDialogPost(<div></div>) }
-        console.log(props)
-        if (props.post !== undefined && props.post.post !== null ){console.log("shoul show item")
-            return (<Grid item xs={12} style={{width:550,height:250}} key={props.post.post.id}>
-                        <OutfitGeneratorPostPreview post={props.post.post} user={props.user}  isDeletable={props.selectedItem.post?.id === props.post.post.id}
-                            dialogOpen={handleDialogOpen}/>
-                        {dialogPost}
-                    </Grid>)}
-         else 
-            if(props.selectedItem.post !== null && props.selectedItem.type !== props.type && props.firstOpen !== 0) 
-                return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
-                            <Typography style={{fontWeight:900}}>We couldn't find any top matching your criteria!</Typography>
-                        </Grid>)
-         else 
-         return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+    
+    if (props.post !== undefined && props.post.post !== null )
+        return (<Grid item xs={12} style={{width:550,height:250}} key={props.post.post.id}>
+                    <OutfitGeneratorPostPreview post={props.post.post} user={props.user}  isDeletable={props.selectedItem.post?.id === props.post.post.id}
+                        dialogOpen={handleDialogOpen}/>
+                    {dialogPost}
                 </Grid>)
+    else if(props.selectedItem.post !== null && props.selectedItem.type !== props.type && props.firstOpen !== 0) 
+            return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+                        <Typography style={{fontWeight:900}}>We couldn't find any top matching your criteria!</Typography>
+                    </Grid>)
+        else 
+        return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+            </Grid>)
 }

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Post, PostUserDetails } from "./types";
-import { Fab, Paper, Grid, Typography, ButtonBase } from "@material-ui/core";
+import { Fab, Paper, Grid, Typography, ButtonBase } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';

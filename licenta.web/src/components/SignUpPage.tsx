@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, FormControl, Snackbar, TextField, Typography } from "@material-ui/core";
+import { Button, Card, CardContent, FormControl, Snackbar, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";

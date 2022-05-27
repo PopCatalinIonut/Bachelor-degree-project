@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Card, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@material-ui/core";
+import { Box, Card, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";

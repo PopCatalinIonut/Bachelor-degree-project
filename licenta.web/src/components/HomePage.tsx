@@ -1,8 +1,8 @@
-import { Button, CardContent, Card, Typography, Fab, Grid } from "@material-ui/core";
+import { Button, CardContent, Card, Typography, Fab, Grid } from "@mui/material";
 import { useNavigate} from "react-router-dom";
-import PersonIcon from '@material-ui/icons/Person';
-import ShoppingCart from '@material-ui/icons/ShoppingCart'
-import ChatIcon from '@material-ui/icons/Chat';
+import PersonIcon from '@mui/icons-material/Person';
+import ShoppingCart from '@mui/icons-material/ShoppingCart'
+import ChatIcon from '@mui/icons-material/Chat';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';

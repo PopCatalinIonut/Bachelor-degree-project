@@ -1,4 +1,4 @@
-import { Dialog, Grid } from "@material-ui/core";
+import { Dialog, Grid } from "@mui/material";
 import { useState } from "react";
 import MarketplacePostPreview from "./MarketplacePostPreview";
 import PostDetailsDialog from "./PostDetailsDialog";

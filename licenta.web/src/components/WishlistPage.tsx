@@ -1,4 +1,4 @@
-import { Fab, Card, Typography } from "@material-ui/core";
+import { Fab, Card, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useAppSelector } from "../app/hooks";

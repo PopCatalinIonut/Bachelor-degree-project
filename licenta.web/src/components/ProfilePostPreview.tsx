@@ -1,5 +1,5 @@
 import { Post, PostUserDetails } from "./types";
-import { Paper, Grid, Typography, Button } from "@material-ui/core";
+import { Paper, Grid, Typography, Button } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { DeletePost, UpdatePostActiveStatus } from "../features/MarketplaceSlice";
 import { deletePostReducer, updatePostStatus }  from "../features/UserSlice";
