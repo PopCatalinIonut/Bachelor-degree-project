@@ -1458,8 +1458,8 @@
           "condition":"New with tags",
           "price":90,
           "images":[
-            {"link":"https://static.footshop.com/498307-full_product/124207.jpg"},
             {"link":"https://static.footshop.com/496801/124213.jpg"},
+            {"link":"https://static.footshop.com/498307-full_product/124207.jpg"},
             {"link":"https://cdn.skatedeluxe.com/images/product_images/200px2x/121296-1-CarharttWIP-RuckSingleKneeMillington.jpg"},
             {"link":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTz8vwIHTW1H4RINeN_UtlGM1Uk7lsc7pwjAw&usqp=CAU"}]},
           "date":"2022-05-19T14:05:58.4715802",
@@ -1766,7 +1766,6 @@
           "condition":"New with tags",
           "price":80,
           "images":[
-            {"link":"https://static.footshop.com/622777/168550.jpg"},
             {"link":"https://static.footshop.com/622780-full_product/168550.jpg"},
             {"link":"https://static.footshop.com/622783/168550.jpg"},
             {"link":"https://media.jdsports.com/i/jdsports/BV2737_326_M4?$Main_onModel_new$&bg=rgb(237,237,237)"}]},
@@ -4592,8 +4591,8 @@
         "size":"M",
         "fit":"S",
         "ColorSchema": {
-          "colors": ["Green","White"],
-          "predominantPalette": "Mixed",
+          "colors": ["Mint"],
+          "predominantPalette": "Cool",
           "containsWarm":false ,
           "containsCool": true,
           "containsNonColor": true

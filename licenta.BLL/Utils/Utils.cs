@@ -45,21 +45,13 @@ namespace licenta.BLL.Utils
         private static double CalculateSimilarity(Item firstItem, Item secondItem)
         {
             var pointsOfSimilarity = 0d;
-            var totalPointsAvailable = 70d;
+            var totalPointsAvailable = 100d;
 
             var conditionDifference =
                 Math.Abs(ConditionDictionary[firstItem.Condition] - ConditionDictionary[secondItem.Condition]);
             pointsOfSimilarity += conditionDifference == 0 ? 10 : 10 - (conditionDifference * 2.5);
 
-            if (firstItem.Type == "Clothing" && secondItem.Type == "Clothing"){
-                var sizeDifference = Math.Abs(ClothingSizes[firstItem.Size] - ClothingSizes[secondItem.Size]);
-                var fitDifference = Math.Abs(ClothingSizes[firstItem.Fit] - ClothingSizes[secondItem.Fit]);
-                
-                totalPointsAvailable += 35;
-                pointsOfSimilarity += sizeDifference == 0 ? 15 : 15 - ((sizeDifference/ ClothingSizes.Count) * 15);
-                pointsOfSimilarity += fitDifference == 0 ? 20 : 20 - ((fitDifference / ClothingSizes.Count) * 20);
-            }
-
+            pointsOfSimilarity += 30 * CalculateItemTypesSimilarity(firstItem, secondItem);
             if (firstItem.Genre == "Unisex" || secondItem.Genre == "Unisex")
                 pointsOfSimilarity += 10;
             else if (firstItem.Genre == secondItem.Genre)
@@ -68,6 +60,80 @@ namespace licenta.BLL.Utils
             return pointsOfSimilarity/totalPointsAvailable;
         }
 
+        private static double CalculateItemTypesSimilarity(Item firstItem, Item secondItem)
+        {
+            var pointsOfSimilarity = 0d;
+            var totalPointsAvailable = 30d;
+            if (firstItem.Type == "Footwear" || secondItem.Type == "Footwear")
+            {
+                if (secondItem.Type == "Footwear")
+                    (firstItem, secondItem) = (secondItem, firstItem);
+                
+                switch (firstItem.Category)
+                {
+                    case "Boots":
+                    {
+                        if (secondItem.Category is "Hoodies" or "Sweatshirt" or "Pants")
+                            pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "T-Shirts")
+                            pointsOfSimilarity += 5;
+                        break;
+                    }
+                    case "Slides":
+                    {
+                        if (secondItem.Category is "T-Shirts" or "Shorts")
+                            pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "Sweatshirts")
+                            pointsOfSimilarity += 9;
+                        else if (secondItem.Category is "Hoodies" or "Pants")
+                            pointsOfSimilarity += 3;
+                        break;
+                    }
+                    case "Sneakers":
+                    {
+                        pointsOfSimilarity += 15;
+                        break;
+                    }
+                }
+            }
+            else if (firstItem.Type == "Clothing" && secondItem.Type == "Clothing")
+            {
+                if (OutfitComponent.GetTypeOfItem(firstItem) == "Top")
+                    (firstItem, secondItem) = (secondItem, firstItem);
+
+                switch (firstItem.Category)
+                {
+                    case "Shorts":
+                    {
+                        if (secondItem.Category is "T-Shirts")
+                            pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "Sweatshirts")
+                            pointsOfSimilarity += 9;
+                        else if (secondItem.Category is "Hoodies")
+                            pointsOfSimilarity += 3;
+                        break;
+                    }
+                    case "Pants":
+                    {
+                        if (secondItem.Category is "Sweatshirts" or "Hoodies")
+                            pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "T-Shirts")
+                            pointsOfSimilarity += 5;
+                        break;
+                    }
+                }
+                
+                var sizeDifference = Math.Abs(ClothingSizes[firstItem.Size] - ClothingSizes[secondItem.Size]);
+                var fitDifference = Math.Abs(ClothingSizes[firstItem.Fit] - ClothingSizes[secondItem.Fit]);
+                
+                totalPointsAvailable += 35;
+                pointsOfSimilarity += sizeDifference == 0 ? 15 : 15 - ((sizeDifference/ ClothingSizes.Count) * 15);
+                pointsOfSimilarity += fitDifference == 0 ? 20 : 20 - ((fitDifference / ClothingSizes.Count) * 20);
+            }
+
+            return pointsOfSimilarity / totalPointsAvailable;
+        }
+            
         private static Dictionary<Post,double> CalculateSimilaritiesForPost(List<Post> toCompareWith, List<Post> toPickFrom)
         {
             var similarities = new Dictionary<Post,double>();
@@ -137,7 +203,7 @@ namespace licenta.BLL.Utils
             var pointsOfSimilarity = 0;
             var totalPointsAvailable = 15d;
 
-            if(firstSchema.Colors.Count < secondSchema.Colors.Count)
+            if(firstSchema.Colors.Count > secondSchema.Colors.Count)
                 (firstSchema.Colors , secondSchema.Colors) = (secondSchema.Colors, firstSchema.Colors);
             pointsOfSimilarity += firstSchema.ContainsCool == secondSchema.ContainsCool ? 5 : 0;
             pointsOfSimilarity += firstSchema.ContainsWarm == secondSchema.ContainsWarm ? 5 : 0;
@@ -145,9 +211,9 @@ namespace licenta.BLL.Utils
             
             firstSchema.Colors.ForEach((color) =>
             {
-                totalPointsAvailable += 10;
+                totalPointsAvailable += 5;
                 if (secondSchema.Colors.Contains(color))
-                    pointsOfSimilarity += 10;
+                    pointsOfSimilarity += 5;
             });
             return pointsOfSimilarity/totalPointsAvailable;
         }
