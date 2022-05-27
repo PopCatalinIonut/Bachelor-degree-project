@@ -98,19 +98,12 @@ namespace licenta.BLL.Managers
 
             var maximumPrice = data.MaximumValue != 0 ? data.MaximumValue : double.MaxValue;
             
-            if (data.PostId != 0) {
-                var post = _context.Posts.Where(x => x.Id == data.PostId)
-                    .Include(x => x.Item).ThenInclude(x => x.Images)
-                    .Include(x => x.Item.ColorSchema).FirstOrDefault();
-                if (post != null)
-                {
-                    outfit.AddPostToOutfit(post);
-                    CalculateOutfit(allFootwear, allPants, allTops, outfit,post,maximumPrice);
-                    return DtoConverter.ConvertOutfitToReturnedOutfitDto(outfit);
-                }
-            }
             
-            CalculateOutfit(allFootwear,allPants,allTops,outfit,null,maximumPrice);
+            var post = _context.Posts.Where(x => x.Id == data.PostId)
+            .Include(x => x.Item).ThenInclude(x => x.Images)
+            .Include(x => x.Item.ColorSchema).FirstOrDefault();
+
+            CalculateOutfit(allFootwear,allPants,allTops,outfit,post,maximumPrice);
             return DtoConverter.ConvertOutfitToReturnedOutfitDto(outfit);
         }
 
@@ -118,72 +111,29 @@ namespace licenta.BLL.Managers
             List<Post> topPosts, Outfit outfit,Post post, double maximumPrice)
         {
             var random = new Random();
-            var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
             
             if (post != null)
             {
-                var finished = false;
                 var postType = OutfitComponent.GetTypeOfItem(post.Item);
-                while(finished == false &&pantsPosts.Count > 0 && footwearPosts.Count > 0 && topPosts.Count > 0)
-                    switch (postType)
-                    {
-                        case "Footwear":
-                        {
-                            var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice);
-                            if (pantsPost == null) return;
-                            
-                            var newPrice = maximumPrice - pantsPost.Item.Price;
-                            var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts, newPrice);
-                            if (topPost != null)
-                            {
-                                outfit.Components["Pants"] = pantsPost;
-                                outfit.Components["Top"] = topPost;
-                                outfit.Components["Footwear"] = post;
-                                finished = true;
-                            }
-                            else pantsPosts.Remove(pantsPost);
-                            break;
-                        }
-
-                        case "Pants":
-                        {
-                            var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,maximumPrice);
-                            if (footwearPost == null) return;
-                            
-                            var newPrice = maximumPrice - footwearPost.Item.Price;
-                            var topPost = Utils.Utils.CalculateDiffsForPost(post, topPosts,maximumPrice - newPrice);
-                            if (topPost != null)
-                            {
-                                outfit.Components["Pants"] = post;
-                                outfit.Components["Top"] = topPost;
-                                outfit.Components["Footwear"] = footwearPost;
-                                finished = true;
-                            }
-                            else footwearPosts.Remove(footwearPost);
-                            break;
-                        }
-                        case "Top":
-                        {
-                            var pantsPost = Utils.Utils.CalculateDiffsForPost(post, pantsPosts,maximumPrice);
-                            if (pantsPost == null) return;
-
-                            var newPrice = maximumPrice - pantsPost.Item.Price;
-                            var footwearPost = Utils.Utils.CalculateDiffsForPost(post, footwearPosts,newPrice);
-                            if (footwearPost != null)
-                            {
-                                outfit.Components["Pants"] = pantsPost;
-                                outfit.Components["Top"] = post;
-                                outfit.Components["Footwear"] = footwearPost;
-                                finished = true;
-                            }
-                            else pantsPosts.Remove(pantsPost);
-                            break;
-                        }
-                    }
-            }
-            else
-                while (remaining.Contains(true))
+                switch (postType)
                 {
+                    case "Footwear":
+                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, topPosts, pantsPosts, maximumPrice, outfit);
+                        break;
+
+                    case "Pants":
+                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, topPosts, footwearPosts, maximumPrice, outfit);
+                        break;
+
+                    case "Top":
+                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, footwearPosts, pantsPosts, maximumPrice, outfit);
+                        break;
+                }
+            }
+            else {
+                var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
+                while (remaining.Contains(true)) {
+                    
                     var starter = random.Next(0, 3);
                     switch (starter)
                     {
@@ -194,8 +144,7 @@ namespace licenta.BLL.Managers
                             if (succes) return;
                         
                             footwearPosts.Remove(item);
-                            if (footwearPosts.Count == 0)
-                                remaining[0] = false;
+                            if (footwearPosts.Count == 0) remaining[0] = false;
                             break;
                         }
                         case 1 when pantsPosts.Count > 0:
@@ -205,8 +154,7 @@ namespace licenta.BLL.Managers
                             if (succes) return;
                         
                             pantsPosts.Remove(item);
-                            if (pantsPosts.Count == 0)
-                                remaining[1] = false;
+                            if (pantsPosts.Count == 0) remaining[1] = false;
                             break;
                         }
                         case 2 when topPosts.Count > 0:
@@ -216,15 +164,13 @@ namespace licenta.BLL.Managers
                             if (succes) return;
                         
                             topPosts.Remove(item);
-                            if (topPosts.Count == 0)
-                                remaining[2] = false;
+                            if (topPosts.Count == 0) remaining[2] = false;
                             break;
                         }
                     }
                 }
-           
+            }
         }
-
         private static bool CalculatePosibilities(Post post, Outfit outfit, List<Post> footwearPosts,
             List<Post> pantsPosts , List<Post> topPosts, double maximumPrice)
         {
@@ -239,76 +185,45 @@ namespace licenta.BLL.Managers
                 if (pantsPostsCopy.Count == 0 || footwearPostsCopy.Count == 0 || topPostsCopy.Count == 0) return false;
                 switch (postType)
                 {
-                    case "Footwear" :
+                    case "Footwear":
                     {
                         var item = footwearPostsCopy[random.Next(0, footwearPostsCopy.Count)];
-                        var newPrice = maximumPrice - item.Item.Price;
-                        var pantsPost = Utils.Utils.CalculateDiffsForPost(item, pantsPostsCopy,newPrice);
-                        if(pantsPost != null) 
-                            newPrice -= pantsPost.Item.Price;
-                        var topPost = Utils.Utils.CalculateDiffsForPost(item, topPostsCopy, newPrice);
-                        if (topPost == null || pantsPost == null)
-                        {
-                            footwearPostsCopy.Remove(item);
-                            if (footwearPostsCopy.Count == 0)
-                                return false;
-                            break;
-                        }
+                        var pantsPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item, pantsPostsCopy,topPostsCopy, maximumPrice,outfit);
 
-                        outfit.Components["Pants"] = pantsPost;
-                        outfit.Components["Top"] = topPost;
-                        outfit.Components["Footwear"] = item;
-                        return true;
-                       
+                        if (pantsPost) return true;
+                        
+                        footwearPostsCopy.Remove(item);
+                        if (footwearPostsCopy.Count == 0) return false;
+                        
+                        break;
                     }
                     case "Pants" :
                     {
                         var item = pantsPostsCopy[random.Next(0, pantsPostsCopy.Count)];
-                        var newPrice = maximumPrice - item.Item.Price;
-                        var footwearPost = Utils.Utils.CalculateDiffsForPost(item, footwearPostsCopy,newPrice);
-                        if(footwearPost != null) 
-                            newPrice -= footwearPost.Item.Price;
-                        var topPost = Utils.Utils.CalculateDiffsForPost(item, topPostsCopy,newPrice);
-                        if (topPost == null || footwearPost == null)
-                        {
-                            pantsPostsCopy.Remove(item);
-                            if (pantsPostsCopy.Count == 0)
-                                return false; 
-                            break;
-                        }
+                        var footwearPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item,topPostsCopy, footwearPostsCopy,maximumPrice,outfit);
 
-                        outfit.Components["Pants"] = item;
-                        outfit.Components["Top"] = topPost;
-                        outfit.Components["Footwear"] = footwearPost;
-                        return true;
+                        if (footwearPost) return true;
+                        
+                        pantsPostsCopy.Remove(item);
+                        if (pantsPostsCopy.Count == 0) return false; 
+                        
+                        break;
 
                     }
                     case "Top":
                     {
                         var item = topPostsCopy[random.Next(0, topPostsCopy.Count)];
-                        var newPrice = maximumPrice - item.Item.Price;
-                        var pantsPost = Utils.Utils.CalculateDiffsForPost(item, pantsPostsCopy,newPrice);    
-                        if(pantsPost != null) 
-                            newPrice -= pantsPost.Item.Price;
-                        var footwearPost = Utils.Utils.CalculateDiffsForPost(item, footwearPostsCopy,newPrice);
-                        if (footwearPost == null || pantsPost == null)
-                        {
-                            topPostsCopy.Remove(item);
-                            if (footwearPostsCopy.Count == 0)
-                                return false;
-                            break;
-                        }
+                        var pantsPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item,footwearPostsCopy, pantsPostsCopy, maximumPrice,outfit);
 
-                        outfit.Components["Pants"] = pantsPost;
-                        outfit.Components["Top"] = item;
-                        outfit.Components["Footwear"] = footwearPost;
-                        return true;
+                        if (pantsPost) return true;
+                        
+                        topPostsCopy.Remove(item);
+                        if (footwearPostsCopy.Count == 0) return false;
+                        
+                        break;
                     }
                 }
             }
         }
-
-
-
     }
 }

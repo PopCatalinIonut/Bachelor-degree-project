@@ -45,12 +45,11 @@ namespace licenta.BLL.Utils
         private static double CalculateSimilarity(Item firstItem, Item secondItem)
         {
             var pointsOfSimilarity = 0d;
-            var totalPointsAvailable = 100d;
+            var totalPointsAvailable = 70d;
 
             var conditionDifference =
                 Math.Abs(ConditionDictionary[firstItem.Condition] - ConditionDictionary[secondItem.Condition]);
-            pointsOfSimilarity += conditionDifference == 0 ? 20 : 20 - ((conditionDifference / ConditionDictionary.Count) * 20);
-            pointsOfSimilarity += firstItem.Brand == secondItem.Brand ? 5 : 0;
+            pointsOfSimilarity += conditionDifference == 0 ? 10 : 10 - (conditionDifference * 2.5);
 
             if (firstItem.Type == "Clothing" && secondItem.Type == "Clothing"){
                 var sizeDifference = Math.Abs(ClothingSizes[firstItem.Size] - ClothingSizes[secondItem.Size]);
@@ -61,41 +60,78 @@ namespace licenta.BLL.Utils
                 pointsOfSimilarity += fitDifference == 0 ? 20 : 20 - ((fitDifference / ClothingSizes.Count) * 20);
             }
 
-            pointsOfSimilarity += firstItem.Genre == secondItem.Genre ? 30 : 0;
+            if (firstItem.Genre == "Unisex" || secondItem.Genre == "Unisex")
+                pointsOfSimilarity += 10;
+            else if (firstItem.Genre == secondItem.Genre)
+                pointsOfSimilarity += 15;
             pointsOfSimilarity += 45 * CalculateColorSchemaSimilarity(firstItem.ColorSchema, secondItem.ColorSchema);
             return pointsOfSimilarity/totalPointsAvailable;
         }
 
-        public static Post CalculateDiffsForPost(Post p, List<Post> posts, double price)
+        private static Dictionary<Post,double> CalculateSimilaritiesForPost(List<Post> toCompareWith, List<Post> toPickFrom)
         {
-            
-            var aboveLimit = 0;
-            var random = new Random();
             var similarities = new Dictionary<Post,double>();
-            posts.ForEach(x =>
+            toPickFrom.ForEach(x =>
             {
-                similarities[x] = CalculateSimilarity(p.Item, x.Item);
-                if (similarities[x] > 0.7)
-                    aboveLimit++;
+                similarities.Add(x,0);
+                toCompareWith.ForEach(y =>
+                {
+                    similarities[x] += CalculateSimilarity(x.Item, y.Item);
+                });
+                similarities[x] /= toCompareWith.Count;
             });
             similarities = new Dictionary<Post, double>(similarities.OrderByDescending(x => x.Value));
-            while (similarities.Count > 0)
+            return similarities;
+        }
+
+        private static Post CalculateDiffsAndPostForPost(List<Post> toCompareWith, List<Post> toPickFrom, double price)
+        {
+            var similarities = CalculateSimilaritiesForPost(toCompareWith, toPickFrom);
+            return GetPostBySimilarityList(similarities, toCompareWith, price);
+        }
+
+        public static bool GenerateOutfitWithStarterBacktr(Post starter, List<Post> toCompareWith1,
+            List<Post> toCompareWith2, double maximumPrice, Outfit outfit)
+        {
+            
+            var similarities = CalculateSimilaritiesForPost(new List<Post>() { starter }, toCompareWith1);
+            while (similarities.First().Value > 0.7)
             {
-                if (aboveLimit == 0)
-                    return null;
-           
+                var secondItem = GetPostBySimilarityList(similarities, new List<Post>() { starter }, maximumPrice);
+                if (secondItem == null) return false;
+
+                var thirdItem = CalculateDiffsAndPostForPost(new List<Post>() { starter, secondItem }, toCompareWith2,
+                    maximumPrice);
+                
+                if (thirdItem == null)
+                    similarities.Remove(secondItem);
+                else
+                {
+                    outfit.Components[OutfitComponent.GetTypeOfItem(starter.Item)] = starter;
+                    outfit.Components[OutfitComponent.GetTypeOfItem(secondItem.Item)] = secondItem;
+                    outfit.Components[OutfitComponent.GetTypeOfItem(thirdItem.Item)] = thirdItem;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static Post GetPostBySimilarityList(Dictionary<Post, double> similarities, List<Post> toCompareWith, double maximumPrice)
+        { 
+            
+            var aboveLimit = similarities.Count(x => x.Value > 0.70);
+            var random = new Random();
+            while (similarities.Count > 0 && aboveLimit > 0)
+            {
                 var post = similarities.ElementAt(random.Next(0, aboveLimit)).Key;
-                if (post.Item.Price + p.Item.Price <= price)
+                if (post.Item.Price + toCompareWith.Sum(x => x.Item.Price) <= maximumPrice)
                     return post;
 
                 similarities.Remove(post);
                 aboveLimit--;
-                
             }
-
             return null;
         }
-
         private static double CalculateColorSchemaSimilarity(ColorSchema firstSchema, ColorSchema secondSchema)
         {
             var pointsOfSimilarity = 0;
@@ -126,8 +162,7 @@ namespace licenta.BLL.Utils
             ClothingSizes = new Dictionary<string, int>();
             itemProperties.Colors.ForEach((color) =>
             {
-                if(ColorsDictionary.ContainsKey(color.Palette))
-                    ColorsDictionary[color.Palette].Add(color.Name);
+                if(ColorsDictionary.ContainsKey(color.Palette)) ColorsDictionary[color.Palette].Add(color.Name);
                 else ColorsDictionary.Add(color.Palette,new List<string>{color.Name});
             });
             itemProperties.Conditions.ForEach((condition) => ConditionDictionary[condition.Type] = condition.Rank);
