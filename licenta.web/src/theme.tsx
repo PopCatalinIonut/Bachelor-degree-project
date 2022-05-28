@@ -12,11 +12,13 @@ const theme = createTheme ({
   },
     components:{
       MuiButton: {
-          styleOverrides:{
-            root:{
-              
+        variants:[{
+            props: { size: 'large' },
+            style: {
+              padding:"5px 12px",
+              minWidth:100
             },
-            }
+          },]
         }
       ,
       MuiToggleButton:{
@@ -51,6 +53,38 @@ const theme = createTheme ({
           }
         }
       },
+      MuiFab:{
+        variants:[{
+          props: { size: 'large' },
+          style: {
+            padding:"25px 10px",
+            minWidth:130
+          },
+        },]
+        
+      },
+      MuiInputLabel:{
+        styleOverrides:{
+          root:{
+            color:"black",
+            fontSize:17,
+          }
+        }
+      },
+     MuiOutlinedInput:{
+       styleOverrides:{
+         "notchedOutline":{
+           border:"2px solid",
+           borderRadius:"1.5rem 1.5rem 1.5rem 1.5rem",
+         }
+       }
+     },
+     MuiInputBase:{
+       styleOverrides:{
+         root:{
+         }
+       }
+     }
     }
     }
   );

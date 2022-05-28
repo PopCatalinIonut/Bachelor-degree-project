@@ -9,6 +9,8 @@ import SellIcon from '@mui/icons-material/Sell';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, userSelector } from "../features/UserSlice";
 import { LoggedUserDetails } from "../features/types";
+import logo from "../assets/logo_cropped.png"
+import login_background from "../assets/background.png"
 export default function HomePage() {
 
   const dispatch = useAppDispatch();
@@ -21,22 +23,23 @@ export default function HomePage() {
   }
 
   return (
-    <div style={{textAlign:"center"}}> 
-        <div style={{ textAlign:"center"}}>
-            <Typography style={{marginTop:"50px", fontWeight:800, fontSize:30, marginLeft:"100px"}}> 
-                Welcome {userLogged?.firstName} to the streetwear revolution!
-                <Button style={{float:"right"}} variant="contained" color="primary" onClick={handleLogout}>
+    <div style={{width:"-webkit-fill-available",height:"100vh"}}>
+    <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={login_background}></img>
+    <div style={{float:"right", position:"absolute",right:10,top:10}}>
+    <Button  variant="contained" color="primary" onClick={handleLogout}>
                     Log out
                 </Button>
-            </Typography>
+    </div>
+  <div style={{position:"absolute",bottom:"60%",left:"50%",transform:"translate(-50%,50%)"}}> 
+    <div style={{textAlign:"center"}}> 
+               
            
-        </div>
-       
-        <Card style={{display: "inline-grid",marginTop: "150px" }} variant="outlined">
+        <Card style={{display: "inline-grid",marginTop: "150px",border:"2px solid",
+        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem" ,background:'rgba(0, 0, 0, 0.8)'}} variant="outlined">
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs ={4}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() =>{navigate('/profile')}}>
+                        <Fab variant="extended" size="large" color="primary" onClick={() =>{navigate('/profile')}}>
                             <PersonIcon />
                             <Typography style={{fontSize:13}}>
                                  Profile
@@ -44,7 +47,7 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/wishlist")}}>
+                        <Fab variant="extended" size="large" color="primary" onClick={() => {navigate("/wishlist")}}>
                             <FavoriteIcon /> 
                             <Typography style={{fontSize:13}}>
                                 Wishlist
@@ -52,17 +55,17 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/chat")}}>
-                            <ChatIcon />   
+                        <Fab variant="extended" size="large" color="primary" onClick={() => {navigate("/marketplace")}}>
+                            <ShoppingCart /> 
                             <Typography style={{fontSize:13}}>
-                                Chat
+                            Marketplace
                             </Typography>
                         </Fab>
                     </Grid>
                 </Grid>
                 <Grid container spacing={2} style={{marginTop:"20px"}} justifyContent="space-around">
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/outfitGenerator")}}>
+                        <Fab variant="extended" size="large" color="primary" onClick={() => {navigate("/outfitGenerator")}}>
                             <CheckroomIcon /> 
                             <Typography style={{fontSize:13}}>
                                 Looking for an outfit?
@@ -70,15 +73,15 @@ export default function HomePage() {
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/marketplace")}}>
-                            <ShoppingCart /> 
+                        <Fab variant="extended" size="large" color="primary" onClick={() => {navigate("/chat")}}>
+                            <ChatIcon />   
                             <Typography style={{fontSize:13}}>
-                            Marketplace
+                                Chat
                             </Typography>
                         </Fab>
                     </Grid>
                     <Grid item xs={4} md={3}>
-                        <Fab variant="extended" size="medium" color="primary" onClick={() => {navigate("/additem")}}>
+                        <Fab variant="extended" size="large" color="primary" onClick={() => {navigate("/additem")}}>
                             <SellIcon />
                             <Typography style={{fontSize:13}}>
                                 Want to sell something?
@@ -88,6 +91,6 @@ export default function HomePage() {
                 </Grid>
             </CardContent>
         </Card>
-    </div>
+    </div></div></div>
   );
 }

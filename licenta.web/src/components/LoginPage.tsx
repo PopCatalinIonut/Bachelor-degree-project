@@ -6,7 +6,7 @@ import { initUserWishlist, userLogin } from "../features/UserSlice";
 import { LoggedUserDetails } from "../features/types";
 import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
 import logo from "../assets/logo_cropped.png"
-import login_background from "../assets/login_background.jpg"
+import login_background from "../assets/background.png"
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -34,13 +34,13 @@ export default function LoginPage() {
 
   }
   return (
-    <div style={{width:"-webkit-fill-available",height:"98vh"}}>
-      <img style={{width:"-webkit-fill-available",height:"98vh"}} src={login_background}></img>
+    <div style={{width:"-webkit-fill-available",height:"100vh"}}>
+      <img style={{width:"-webkit-fill-available",height:"100vh"}} src={login_background}></img>
     <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
       <Card style={{display: "inline-grid", textAlign:"center",width:"350px",marginTop:"-5%",border:"2px solid",
-        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem"}} variant="outlined">
+        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",backgroundColor:'rgba(255, 255, 255, 0.95)'}} variant="outlined">
         <CardContent style={{padding:0}}> 
-          <img src={logo} style={{height:250, width:350}} ></img>
+          <img src={logo} style={{height:136, width:200}} ></img>
           <Grid container>
             <Grid item xs={12}>
               <div style={{ display: "inline-grid"}}>
@@ -63,7 +63,7 @@ export default function LoginPage() {
                         Log in
                 </Button>
               </div>
-              <Typography style={{marginTop:"20px",marginBottom:"2%"}}>Don't have an account?
+              <Typography style={{marginTop:"20px",marginBottom:"2%", fontWeight:600}}>Don't have an account?
                       <Button type="button" variant="contained" color="primary" style={{ marginLeft:"20px"}}
                       onClick={handleSignup}> Sign up</Button>
               </Typography>

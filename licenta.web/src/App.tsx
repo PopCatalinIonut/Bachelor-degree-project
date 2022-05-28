@@ -8,7 +8,7 @@ import WishlistPage from './components/WishlistPage';
 import MarketplacePage from './components/MarketplacePage';
 import ChatPage from './components/ChatPage';
 import OutfitGeneratorPage from './components/OutfitGeneratorPage';
-
+import "./global.css"
 function App() {
   return (
       <BrowserRouter>
