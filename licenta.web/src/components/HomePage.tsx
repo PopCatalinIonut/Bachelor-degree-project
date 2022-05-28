@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from "../app/hooks";
 import { logout, userSelector } from "../features/UserSlice";
 import { LoggedUserDetails } from "../features/types";
 import logo from "../assets/logo_cropped.png"
-import login_background from "../assets/background.png"
+import background_image from "../assets/background.png"
 export default function HomePage() {
 
   const dispatch = useAppDispatch();
@@ -24,7 +24,7 @@ export default function HomePage() {
 
   return (
     <div style={{width:"-webkit-fill-available",height:"100vh"}}>
-    <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={login_background}></img>
+    <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
     <div style={{float:"right", position:"absolute",right:10,top:10}}>
     <Button  variant="contained" color="primary" onClick={handleLogout}>
                     Log out
@@ -35,7 +35,7 @@ export default function HomePage() {
                
            
         <Card style={{display: "inline-grid",marginTop: "150px",border:"2px solid",
-        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem" ,background:'rgba(0, 0, 0, 0.8)'}} variant="outlined">
+        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem" ,background:'rgba(255, 255, 255, 0.6)'}} variant="outlined">
             <CardContent>
                 <Grid container spacing={2}>
                     <Grid item xs ={4}>

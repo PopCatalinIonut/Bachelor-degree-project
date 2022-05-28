@@ -1,6 +1,6 @@
-
-import { purple,red } from '@mui/material/colors';
+import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material';
+
 const theme = createTheme ({
     palette: {
     primary: {
@@ -35,7 +35,7 @@ const theme = createTheme ({
         styleOverrides:{
           root:{
             fontFamily: "inherit",
-            fontSize:"19px"
+            fontSize:"20px"
           }
         }
       },
@@ -79,12 +79,6 @@ const theme = createTheme ({
          }
        }
      },
-     MuiInputBase:{
-       styleOverrides:{
-         root:{
-         }
-       }
-     }
     }
     }
   );

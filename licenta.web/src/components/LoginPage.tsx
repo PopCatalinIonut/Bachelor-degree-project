@@ -6,7 +6,7 @@ import { initUserWishlist, userLogin } from "../features/UserSlice";
 import { LoggedUserDetails } from "../features/types";
 import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
 import logo from "../assets/logo_cropped.png"
-import login_background from "../assets/background.png"
+import background_image from "../assets/background.png"
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export default function LoginPage() {
   }
   return (
     <div style={{width:"-webkit-fill-available",height:"100vh"}}>
-      <img style={{width:"-webkit-fill-available",height:"100vh"}} src={login_background}></img>
+      <img style={{width:"-webkit-fill-available",height:"100vh"}} src={background_image}></img>
     <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
       <Card style={{display: "inline-grid", textAlign:"center",width:"350px",marginTop:"-5%",border:"2px solid",
         borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",backgroundColor:'rgba(255, 255, 255, 0.95)'}} variant="outlined">
