@@ -10,6 +10,8 @@ import { addItemToMarketplace } from "../features/MarketplaceSlice";
 import { addPostReducer, userSelector } from "../features/UserSlice";
 import { Post } from "./types";
 import { unwrapResult } from "@reduxjs/toolkit";
+import background_image from "../assets/background.png"
+
 const styles = {
 
     typographyFormat: {
@@ -139,14 +141,15 @@ export default function AddItemPage() {
         setColorsValue(event.target.value);
       };
 
-    return (
-        <div style={{textAlign:"center"}}>
-            <div style={{textAlign:"center",marginBottom:"20px"}}>
-             <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
-                <ArrowBackIcon></ArrowBackIcon>
-                </Fab>
-            </div>
-            <Card style={{display: "inline-grid",width:"800px",border:"1px solid"}} variant="outlined">
+    return (<div style={{width:"-webkit-fill-available",height:"100vh"}}>
+                <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
+            <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+                <div style={{textAlign:"center"}}>
+                    <Fab onClick={handleGoHome} style={{backgroundColor:"#ff3333"}} size="medium">
+                        <ArrowBackIcon></ArrowBackIcon>
+                    </Fab>
+                </div>
+            <Card style={{display: "inline-grid",width:"800px",border:"1px solid",background:'rgba(255, 255, 255, 0.95)'}} variant="outlined">
                     <div style={{display:"inline-block"}}>
                         <Grid container spacing={1}>
                             <Grid item xs={6} container  style={styles.gridFormat}>
@@ -154,7 +157,7 @@ export default function AddItemPage() {
                                     <Typography style={styles.typographyFormat} noWrap>Name: </Typography>
                                 </Grid>
                                 <Grid item sm={9}>
-                                    <TextField variant="standard" style={{float:"left",width:250}}
+                                    <TextField variant="standard" style={{float:"left",width:250,marginTop:5}}
                                     onBlur={(event: { currentTarget: { value: string; }; }) => {
                                         setNameValue(event.currentTarget.value);
                                     }}/>
@@ -165,7 +168,7 @@ export default function AddItemPage() {
                                     <Typography style={styles.typographyFormat} noWrap>Brand: </Typography>
                                 </Grid>
                                 <Grid item sm={9}>
-                                    <TextField variant="standard" style={{float:"left",width:150,marginLeft:"20px"}}
+                                    <TextField variant="standard" style={{float:"left",width:150,marginTop:5}}
                                     onBlur={(event: { currentTarget: { value: string; }; }) => {
                                         setBrandValue(event.currentTarget.value);
                                     }}/>
@@ -201,7 +204,7 @@ export default function AddItemPage() {
                                     <Typography style={styles.typographyFormat}>Genre:</Typography>
                                 </Grid>
                                 <Grid item xs={9} style={{display:"flex"}}>
-                                    <Select value={genreValue} style={{marginTop:"10px",marginLeft:"10%",height:30}}
+                                    <Select value={genreValue} style={{marginTop:"10px",height:30}}
                                             onChange={event => {
                                                 var eventNr = event.target.value as unknown as string;
                                                 setGenreValue(eventNr);
@@ -273,7 +276,7 @@ export default function AddItemPage() {
                                     <Typography style={styles.typographyFormat}>Condition:</Typography>
                                 </Grid>
                                 <Grid item sm={10}  style={{marginTop:"10px"}}>
-                                    <Select value={conditionValue} style={{float:"left",marginLeft:"30%"}}
+                                    <Select value={conditionValue} style={{float:"left",marginLeft:"25%"}}
                                             onChange={event => {
                                                 var eventNr = event.target.value as unknown as string;
                                                 setConditionValue(eventNr);}}>
@@ -289,7 +292,7 @@ export default function AddItemPage() {
                                 </Grid>
                                 <Grid item sm={9} style={{marginTop:"10px"}}>
                                     <Input startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                                        style={{width:"80px",float:"left",marginLeft:"5%"}} 
+                                        style={{width:"80px",float:"left"}} 
                                         onBlur={(event: { currentTarget: { value: string; }; }) => {
                                             setPriceValue(event.currentTarget.value);
                                         }}/>
@@ -299,7 +302,7 @@ export default function AddItemPage() {
                                 <Grid item sm={12}>
                                     <Typography style={styles.typographyFormat}>Colors:</Typography>
                                     <Select  multiple value={colorsValue}
-                                        onChange={handleChange}
+                                        onChange={handleChange} style={{marginTop:15}}
                                         renderValue={colorsValue => (
                                             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
                                               {(colorsValue as string[]).map((value) =>  {
@@ -324,11 +327,11 @@ export default function AddItemPage() {
                                 </Grid>
                             </Grid>
                             <Grid item xs={12} container style={styles.gridFormat}>
-                                <Grid item sm={3}>
+                                <Grid item sm={2}>
                                     <Typography style={styles.typographyFormat}>Description:</Typography>
                                 </Grid>
-                                <Grid item sm={9} >
-                                    <TextField variant="outlined" multiline rows={4} style={{width:"600px",float:"left"}}
+                                <Grid item sm={10} >
+                                    <TextField variant="outlined" multiline rows={4} style={{width:"600px",marginLeft:35}}
                                         onBlur={(event: { currentTarget: { value: string; }; }) => {
                                             setDescriptionValue(event.currentTarget.value);
                                         }}/>
@@ -365,7 +368,7 @@ export default function AddItemPage() {
                 <Snackbar open={snackOpened.length !== 0 ? true : false} autoHideDuration={3000} message={snackOpened}
                     anchorOrigin={{vertical: "top", horizontal: "center"}} onClose={() => setSnackOpened("")}/>  
           </Card>
-      </div>
+      </div></div>
     );
   }
 

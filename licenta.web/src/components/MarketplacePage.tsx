@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Card, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Card, CardContent, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Post } from "./types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
@@ -10,7 +10,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userSelector } from "../features/UserSlice";
 import MarketplacePostPreviewList from "./MarketplacePostPreviewList";
-
+import background_image from "../assets/background.png"
 
 export default function MarketplacePage(){
 
@@ -57,17 +57,20 @@ export default function MarketplacePage(){
         navigate("/home")
     };
     return (
-        <div style={{textAlign:"center",marginTop:"100px",width:"fit-content",margin:"150px auto"}}>
-             <div style={{textAlign:"center",marginBottom:"20px"}}>
-             <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
+        <div style={{width:"-webkit-fill-available",height:"100vh"}}>
+        <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
+        <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+        <div style={{textAlign:"center"}}>
+             <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}} size="medium">
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-            <Card style={{border:"1px solid", borderRadius:"50px",minWidth:"200px"}}>
-            <div style={{display:"flex",justifyContent:"center"}}>
-                    <FormControl style={{minWidth:"55px",marginLeft:"40px"}}>
+            <Card style={{border:"1px solid",minWidth:"1150px",maxHeight:700,overflowY:"auto",
+                    borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",background:'rgba(255, 255, 255, 0.95)'}}>
+                <CardContent style={{display:"flex",justifyContent:"center",paddingTop:15}}>
+                    <FormControl style={{minWidth:"80px",marginLeft:"40px"}}>
                         <InputLabel>Type</InputLabel>
-                        <Select value={typeValue} autoWidth 
+                        <Select value={typeValue} autoWidth  notched={true}
                                 onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
                                     setTypeValue(eventNr);}}>
@@ -76,8 +79,8 @@ export default function MarketplacePage(){
                                     )}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"85px"}}>
-                        <InputLabel >Category</InputLabel>
+                    <FormControl style={{marginLeft:"60px",minWidth:"115px"}}>
+                        <InputLabel style={{marginBottom:30}}>Category</InputLabel>
                         <Select value={categoryValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
                             setCategoryValue(eventNr);}}>
@@ -89,7 +92,7 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"70px",minWidth:"65px"}}> 
+                    <FormControl style={{marginLeft:"70px",minWidth:"90px"}}> 
                         <InputLabel id="Product type">Genre</InputLabel>
                         <Select value={genreValue} autoWidth={true}
                             onChange={event => {
@@ -100,7 +103,7 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"50px"}}>
+                    <FormControl style={{marginLeft:"60px",minWidth:"80px"}}>
                         <InputLabel id="Product category">Size</InputLabel>
                         <Select value={sizeValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -121,7 +124,7 @@ export default function MarketplacePage(){
                             })()}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"90px",marginRight:"20px"}}>
+                    <FormControl style={{marginLeft:"60px",minWidth:"120px",marginRight:"20px"}}>
                         <InputLabel id="Product category">Condition</InputLabel>
                         <Select value={conditionValue} onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -130,26 +133,26 @@ export default function MarketplacePage(){
                                  return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
                         </FormControl>       
-            </div>
+            </CardContent>
             <div style={{display:"flex",justifyContent:"center",borderBottom:"1px solid",paddingBottom:10}}>
-                <Fab variant="extended" size="medium" onClick={handleApplyFilters} style={{marginTop:20}}> 
+                <Fab variant="extended" size="small" color="primary" onClick={handleApplyFilters} style={{marginTop:20}}> 
                     <SearchIcon/> Apply changes
                 </Fab>
-                <Fab variant="extended" size="medium" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
+                <Fab variant="extended" size="small" color="primary" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
                     <DeleteIcon/> Reset filters
                 </Fab>
             </div>
-            <Box style={{display: "inline-grid",maxWidth:"1500px",minWidth:500}}>
+            <Box style={{display: "inline-grid",maxWidth:"1150px",minWidth:500}}>
             {(() => {
                 if (postsToShow.length === 0)
-                    return ( <div ><Typography style={{height:90, marginTop:50}}>No items found!</Typography></div> );
+                    return ( <div style={{textAlign:"center"}}><Typography style={{fontWeight:900,height:90, marginTop:50}}>No items found!</Typography></div> );
                 else return (
                     <MarketplacePostPreviewList posts={postsToShow} user={user}></MarketplacePostPreviewList>
                 )
             })()}
             </Box>
             </Card>
-        </div>
+        </div></div>
     )
 }
 

@@ -51,7 +51,7 @@ export default function ProfilePage() {
         if(post !== null)
             setDialogPost(
                 <div>
-                    <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
+                    <Dialog fullWidth maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}}  open={true} onClose={handleDialogClose}>
                         <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
                         description={post.description} cityLocation={post.cityLocation}/>
                     </Dialog>
@@ -107,9 +107,9 @@ export default function ProfilePage() {
                         </Grid>
                     </Grid>
                     <Box style={{borderTop:"1px solid",textAlign:"center"}}>
-                        <Typography style={{marginTop:20,fontWeight:900,marginBottom:20}}>Your active posts</Typography>
+                        <Typography style={{marginTop:20,fontWeight:900,marginBottom:20,fontSize:20}}>Your active posts</Typography>
                         {activePostsList()}
-                        <Typography style={{marginTop:20,fontWeight:800,marginBottom:20}}>Your disabled posts</Typography>
+                        <Typography style={{marginTop:20,fontWeight:800,marginBottom:20,fontSize:20}}>Your disabled posts</Typography>
                         {disabledPostsList()}
                     </Box>
                 </CardContent>  

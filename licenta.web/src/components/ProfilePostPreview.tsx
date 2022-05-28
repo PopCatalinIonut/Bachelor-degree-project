@@ -64,13 +64,13 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
                                 <OpenInNewRoundedIcon/></Fab>
                         </Grid>
                         <Grid item xs style={{justifyContent:"center",textAlign:"center"}}>
-                            <Typography gutterBottom style={{fontWeight:600,marginRight:30}} component="div">
+                            <Typography gutterBottom style={{fontWeight:600,fontSize:20}} component="div">
                                 {props.post.item.name}
                             </Typography>
-                            <Typography gutterBottom style={{marginRight:30,fontSize:17}} component="div">
+                            <Typography gutterBottom style={{fontSize:17}} component="div">
                                 {"Size " + props.post.item.size + " - " + props.post.item.condition}
                             </Typography>
-                            <div style={{marginTop:30,marginBottom:10}}>
+                            <div style={{marginTop:30,marginBottom:10,marginLeft:"10%"}}>
                                 {showButtons()}
                             </div>
                         </Grid>

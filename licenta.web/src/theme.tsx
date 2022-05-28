@@ -24,7 +24,7 @@ const theme = createTheme ({
       MuiToggleButton:{
         styleOverrides:{
           root:{
-            border:"1.5px solid",
+            border:"2px solid",
             borderRadius: "1.5rem 1.5rem 1.5rem 1.5rem",
             padding:"10px 10px 10px 10px",
             color:"black",
@@ -35,7 +35,7 @@ const theme = createTheme ({
         styleOverrides:{
           root:{
             fontFamily: "inherit",
-            fontSize:"20px"
+            fontSize:"17px"
           }
         }
       },
@@ -68,6 +68,7 @@ const theme = createTheme ({
           root:{
             color:"black",
             fontSize:17,
+            top:"-12px"
           }
         }
       },
@@ -76,7 +77,7 @@ const theme = createTheme ({
          "notchedOutline":{
            border:"2px solid",
            borderRadius:"1.5rem 1.5rem 1.5rem 1.5rem",
-         }
+         },
        }
      },
     }

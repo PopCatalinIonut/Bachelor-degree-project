@@ -29,44 +29,46 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
     }
     
     return (
-        <Paper style={{width: "inherit",height:"100%"}}>
-            <Grid container style={{width: "inherit",height:"100%" }}>
-                <Grid item xs={12} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
-                        backgroundSize:"cover", backgroundPosition:"center",height:"75%"}}>
-                            <Fab onClick={handleImageChangeLeft} style={{width:"10%" , height:"5%"}}>
-                            <ArrowBackIcon/>
-                        </Fab>
-                        <Fab onClick={handleImageChangeRight} style={{width:"10%" , height:"5%"}}>
-                            <ArrowForwardIcon/>
-                        </Fab>
-                       
-                </Grid>
-                <ButtonBase style={{width:"inherit",height:"25%",alignItems:"normal"}} onClick={handleOpenDialog}>   
-                    <Grid item xs={12} sm container style={{height:"inherit"}}>
-                        <Grid item xs container direction="column" >
-                                <Grid item xs >
-                                    <Typography gutterBottom style={{fontWeight:600}} component="div">
-                                        {post.item.name}
-                                    </Typography>
-                                    <Typography gutterBottom style={{fontWeight:600}} component="div">
-                                        {post.item.brand}
-                                    </Typography>
-                                    <Typography style={{marginTop:5}} variant="body2" gutterBottom>
-                                        {"Size " +post.item.size + " - " + post.item.condition}
-                                    </Typography>
-                                </Grid>
-                                <div>
-                                <Typography style={{float:"left",marginLeft:5,marginTop:5}}>
-                                    {"$" + post.item.price}
+        <Paper style={{minHeight:450,maxHeight:500,height:"fit-content"}}>
+            <div style={{width:"350px",height:"350px"}}>
+                <img style={{width:"350px",height:"350px",position:"relative"}} src={imageToShow.image.link}></img>
+                <div style={{position:"relative",top:"-105%",left:"50%",transform:"translate(-50%,50%)",textAlign:"center"}}>
+                    <Fab onClick={handleImageChangeLeft} size="medium" style={{width:"10%" , height:"5%"}}>
+                        <ArrowBackIcon/>
+                    </Fab>
+                    <Fab onClick={handleImageChangeRight} size="medium"  style={{width:"10%" , height:"5%"}}>
+                        <ArrowForwardIcon/>
+                    </Fab>
+                </div>
+            </div> 
+            <div style={{width:"inherit",height:"fit-content"}}>
+            <Grid item xs={12} sm container style={{minHeight:"500px",width:"350px"}}>
+                    <ButtonBase style={{width:"inherit",height:"25%",alignItems:"normal"}} onClick={handleOpenDialog}>  
+                    <Grid item xs container direction="column" >
+                            <Grid item xs >
+                                <Typography gutterBottom style={{fontWeight:600}} component="div">
+                                    {post.item.name}
                                 </Typography>
-                                <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
-                                    <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
+                                <Typography gutterBottom style={{fontWeight:600}} component="div">
+                                    {post.item.brand}
                                 </Typography>
-                                </div>
+                                <Typography style={{marginTop:5}} variant="body2" gutterBottom>
+                                    {"Size " +post.item.size + " - " + post.item.condition}
+                                </Typography>
                             </Grid>
-                    </Grid>
+                            <div>
+                            <Typography style={{float:"left",marginLeft:5,marginTop:5}}>
+                                {"$" + post.item.price}
+                            </Typography>
+                            <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
+                                <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
+                            </Typography>
+                            </div>
+                        </Grid>
                 </ButtonBase>
             </Grid>
-        </Paper>
+            </div>
+               
+    </Paper>
     )
 }

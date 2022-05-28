@@ -47,11 +47,11 @@ export default function PostDetailsDialog(post: Post){
             return (<div style={{display:"inline-grid",marginTop:20}}>
                         <div style={{display:"flex"}}>
                         {wishlistButton()}
-                        <Fab variant="extended" onClick={handleDialogOpen}> Message seller
+                        <Fab variant="extended" style={{marginLeft:25}} onClick={handleDialogOpen}> Message seller
                             <MessageIcon/>
                         </Fab>
                         </div>
-                        <Fab variant="extended" onClick={handleGenerateOutfit}>Generate an outfit with this item 
+                        <Fab variant="extended" style={{marginTop:50}} onClick={handleGenerateOutfit}>Generate an outfit with this item 
                             <FollowTheSignsIcon/>
                         </Fab>
                     </div>)
@@ -84,62 +84,72 @@ export default function PostDetailsDialog(post: Post){
         navigate("/outfitGenerator")
     }
     return (
-            <div style={{margin: 'auto', width: 900}}>
+            <div style={{width: "100%",backgroundColor:"whitesmoke"}}>
                 <Grid container>
                     <Grid item style={{textAlign:"center"}} xs={12}>
-                        <Typography style={{fontWeight:600, fontSize:30}}>{post?.item.name}</Typography>
+                        <Typography style={{fontWeight:900, fontSize:40}}>{post?.item.name}</Typography>
+                        <Typography style={{fontWeight:400, fontSize:50, marginTop:10}}><AttachMoneyIcon 
+                         style={{width:40,height:40}}/>{post?.item.price}</Typography>
                     </Grid>
-                    <Grid item xs={6}>
-                        {buttons()}
-                    </Grid>
-                     <Grid item xs={6}>
+                     <Grid item xs={12}>
                      <div style={{textAlign:"right"}}>  
-                        <Typography style={{fontWeight:400, fontSize:30, marginTop:10}}><AttachMoneyIcon 
-                         style={{width:18}}/>{post?.item.price}</Typography>
-                        <Typography >
-                            <LocationOnIcon style={{fontWeight:400, fontSize:30, marginTop:10}}/>
+                        <Typography style={{fontWeight:400, fontSize:25, marginTop:10}}>
+                            <LocationOnIcon />
                         {"Item is located in " + post?.cityLocation}
                         </Typography>
                             </div>
                      </Grid>
-                    <Grid item xs={6} style={{marginTop:50, textAlign: "left", float:"left"}}>
-                        <TableContainer component={Paper} style={{width:300}}>
+                    <Grid item xs={4} style={{marginTop:30, textAlign: "left", float:"left"}}>
+                        <TableContainer style={{height:250,width:350,backgroundColor:"transparent",marginLeft:1}}>
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell component="th" scope="row " style={{textAlign:"center", border: "1px solid"}}>
+                                        <TableCell component="th" scope="row " style={{textAlign:"center", border: "1.5px solid"}}>
                                             <Typography style={{fontWeight:600}}>Description</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableCell style={{height:130,textAlign:"center", border: "1px solid"}}>{post.description}</TableCell>
+                                    <TableCell style={{height:150,textAlign:"center", border: "1.5px solid"}}>{post.description}</TableCell>
                                 </TableBody>
                             </Table>
                         </TableContainer>
                     </Grid>
-                    <Grid item xs={6} >
-                        <div style={{marginTop:50, textAlign: "right", float:"right"}}>
-                            <TableContainer component={Paper} style={{width:300}}>
-                                <Table style={{height:150, border: "1px solid"}}>
+                    <Grid item xs={4} style={{textAlign:"center",marginTop:"5%"}}>
+                        {buttons()}
+                    </Grid>
+                    <Grid item xs={4} >
+                        <div style={{marginTop:30, textAlign: "right", float:"right"}}>
+                            <TableContainer component={Paper} style={{width:400,backgroundColor:"transparent",marginRight:2, border: "2px solid"}}>
+                                <Table >
                                     <TableHead>
                                         <TableRow >
-                                            <TableCell component="th" scope="row " style={{textAlign:"center"}}>
+                                            <TableCell component="th" scope="row " style={{textAlign:"center", borderRight: "1.5px solid"}}>
                                                 <Typography style={{fontWeight:600}}>Condition</Typography>
                                                 </TableCell>
                                             <TableCell style={{textAlign:"center"}}>{post.item.condition}</TableCell>
                                         </TableRow>
                                         <TableRow >
-                                            <TableCell component="th" scope="row " style={{textAlign:"center"}}>
+                                            <TableCell component="th" scope="row " style={{textAlign:"center", borderRight: "1.5px solid"}}>
                                                 <Typography style={{fontWeight:600}}>Size</Typography>
                                             </TableCell>
                                             <TableCell style={{textAlign:"center"}}>{post.item.size}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell component="th" scope="row" style={{textAlign:"center"}}> 
-                                                <Typography style={{fontWeight:600}}>Recommened fit</Typography>
+                                            <TableCell component="th" scope="row" style={{textAlign:"center", borderRight: "1.5px solid"}}> 
+                                                <Typography style={{fontWeight:600}}>Recommended fit</Typography>
                                             </TableCell>
                                         <TableCell style={{textAlign:"center"}}>{post.item.fit}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell component="th" scope="row" style={{textAlign:"center", borderRight: "1.5px solid"}}> 
+                                                <Typography style={{fontWeight:600}}>Colors</Typography>
+                                            </TableCell>
+                                        <TableCell style={{textAlign:"center"}}>{post.item.colorSchema.colors.map((x,index) => {
+                                                    if(index < post.item.colorSchema.colors.length-1)
+                                                        return x + ", ";
+                                                    else return x;
+                                        })}</TableCell>
                                         </TableRow>
                                     </TableHead>
                                 </Table>
@@ -150,7 +160,7 @@ export default function PostDetailsDialog(post: Post){
                 <Grid container style={{marginTop:20,justifyContent:"center"}}>
                     {post.item.images.map((image) =>{
                         return <Grid item xs={6}> 
-                        <img src={image.link} style={{width:450,height:450}}></img>
+                        <img src={image.link} style={{width:"100%",height:"100%"}}></img>
                             </Grid>
                     })}
                 </Grid>

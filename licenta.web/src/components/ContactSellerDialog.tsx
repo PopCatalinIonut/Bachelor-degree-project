@@ -29,14 +29,14 @@ export default function ContactSellerDialog(props: ContactSellerDialogProps){
             <Grid container>
                 <Grid item xs={9} >
                     <Paper style={{width:300, height:200}}>
-                        <TextField multiline rows={9} style={{width:300}} 
+                        <TextField multiline rows={7} style={{width:300}} variant="filled"
                             onBlur={(event) => {setMessage(event.currentTarget.value)}}>
                         </TextField>
                     </Paper>
                 </Grid>
                 <Grid item xs={3} style={{height:200, width:100}}>
-                <div style={{marginLeft:20}}>
-                    <Fab onClick={handleSendMessage}>
+                <div style={{marginLeft:25}}>
+                    <Fab onClick={handleSendMessage} size="medium">
                         <SendIcon></SendIcon>
                     </Fab>
                 </div>

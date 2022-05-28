@@ -41,17 +41,17 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
             <Grid container style={{width: "inherit",height:"100%" }}>
                 <Grid item xs={6} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
                     backgroundSize:"cover", backgroundPosition:"center"}}>
-                    <Fab onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
+                    <Fab size="medium" onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
                          <ArrowBackIcon/>
                     </Fab>
-                    <Fab onClick={handleImageChangeRight} style={{width:"15%" , height:"5%"}}>
+                    <Fab size="medium" onClick={handleImageChangeRight} style={{width:"15%" , height:"5%"}}>
                          <ArrowForwardIcon/>
                     </Fab>
                 </Grid> 
                 <div style={{position:"relative",left:-40}}>
                     {(() =>  {
                             if(props.isDeletable === true)
-                            return  <Fab onClick={hanleRemoveFromGenerator} style={{width:"150%" , height:"5%", background:"red"}}>
+                            return  <Fab size="medium" onClick={hanleRemoveFromGenerator} style={{width:"150%" , height:"5%", background:"red"}}>
                             <DeleteOutlineOutlinedIcon/>
                         </Fab>}
                     )()}

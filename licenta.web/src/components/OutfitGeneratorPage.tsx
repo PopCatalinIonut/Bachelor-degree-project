@@ -11,6 +11,7 @@ import OutfitGeneratorPostPreview from "./OutfitGeneratorPostPreview";
 import { Outfit, OutfitComponent, Post, PostUserDetails } from "./types";
 import PostDetailsDialog from "./PostDetailsDialog";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+import background_image from "../assets/background.png"
 
 const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
@@ -79,14 +80,17 @@ export default function OutfitGeneratorPage(){
                     </div>
         
     }
-    return (<div style={{textAlign:"center"}}>
+    return ( <div style={{width:"-webkit-fill-available",height:"100vh"}}>
+    <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
+    <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
          <div style={{textAlign:"center"}}>
-             <Fab onClick={() => {navigate("/home")}} style={{backgroundColor:"#ff3333"}}>
+             <Fab size="medium" onClick={() => {navigate("/home")}} style={{backgroundColor:"#ff3333"}}>
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
-            <Grid container sm style={{textAlign:"center",justifyContent:"center", minHeight:750}}>
-                <Grid item xs={6} container style={{border:"1px solid",maxWidth:553}}>
+            <Grid container style={{textAlign:"center",justifyContent:"center", minHeight:690,
+            minWidth:1000,background:'rgba(255, 255, 255, 0.95)'}}>
+                <Grid item xs={6} container style={{border:"1px solid",maxWidth:500}}>
                     <Grid item xs={12} style={{marginTop:"3%",display:"flex",textAlign:"center",justifyContent:"center"}}>
                         <Typography style={{paddingTop:15}}>Budget:</Typography>
                         <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -95,31 +99,27 @@ export default function OutfitGeneratorPage(){
                                     setPriceValue(event.currentTarget.value);
                                 }}/>
                     </Grid>
-                    <Grid item xs={12} container>
-                        <Grid item xs={12}>
-                            <Typography>Condition</Typography>
-                            <ToggleButtonGroup color="primary" value={conditionValue} exclusive style={{maxWidth:350,fontSize:10}}
-                                onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
-                                    {(() =>  
-                                    conditions.map((condition) => {
-                                        return ( <ToggleButton style={{fontSize:13}} value={condition}>{condition}</ToggleButton> )
-                                    })
-                                    )()}
-                            </ToggleButtonGroup>
-                        </Grid>
+                    <Grid item xs={12}>
+                        <Typography>Condition</Typography>
+                        <ToggleButtonGroup color="primary" value={conditionValue} exclusive style={{maxWidth:350,fontSize:10}}
+                            onChange={(event: React.MouseEvent<HTMLElement>, newCondition: string) =>{setConditionValue(newCondition)}}>
+                                {(() =>  
+                                conditions.map((condition) => {
+                                    return ( <ToggleButton style={{fontSize:13}} value={condition}>{condition}</ToggleButton> )
+                                })
+                                )()}
+                        </ToggleButtonGroup>
                     </Grid>
-                    <Grid item sm={12} container>
-                        <Grid item xs={12} style={{marginBottom:"1%"}}>
-                            <Typography>Specified season</Typography>
-                            <ToggleButtonGroup color="primary" value={outfitSeasonValue} exclusive
-                                onChange={(event: React.MouseEvent<HTMLElement>, newType: string) =>{setOutfitSeasonValue(newType)}}>
-                                    {(() =>  
-                                        outfitSeasonType.map((season) => {
-                                            return ( <ToggleButton style={{fontSize:13}} value={season}>{season}</ToggleButton> )
-                                        })
-                                    )()}
-                            </ToggleButtonGroup>
-                        </Grid>
+                    <Grid item sm={12} style={{marginBottom:"1%"}}>
+                        <Typography>Specified season</Typography>
+                        <ToggleButtonGroup color="primary" value={outfitSeasonValue} exclusive
+                            onChange={(event: React.MouseEvent<HTMLElement>, newType: string) =>{setOutfitSeasonValue(newType)}}>
+                                {(() =>  
+                                    outfitSeasonType.map((season) => {
+                                        return ( <ToggleButton style={{fontSize:13}} value={season}>{season}</ToggleButton> )
+                                    })
+                                )()}
+                        </ToggleButtonGroup>
                     </Grid>  
                     <Grid item xs={12}>
                         <Typography>Specified genre </Typography>
@@ -172,17 +172,17 @@ export default function OutfitGeneratorPage(){
                             </ToggleButtonGroup>
                     </Grid>
                 </Grid>
-                <Grid item xs={6} container style={{border:"1px solid",width:"fit-content",maxWidth:553,display:"grid",alignContent:"center"}}>
+                <Grid item xs={6} container style={{border:"1px solid",width:500,display:"grid",alignContent:"center"}}>
                    {outfitSection()}
                 </Grid>
             </Grid>
-        <div>
-            <Button variant="contained" color="primary" onClick={handleGenerateOutfit}>Generate</Button>
+        <div style={{textAlign:"center"}}>
+            <Button variant="contained"  color="primary" onClick={handleGenerateOutfit}>Generate</Button>
         </div>
         <Snackbar
           open={errorSnackOpened} autoHideDuration={3000} message="There was an error"
           anchorOrigin={{vertical: "top", horizontal: "center"}}/>
-      
+      </div>
     </div>)
 }
 
@@ -201,7 +201,7 @@ export function ShowItem(props: ShowItemProps){
         if(post !== null)
             setDialogPost(
                 <div>
-                    <Dialog fullWidth maxWidth="md" open={true} onClose={handleDialogClose}>
+                    <Dialog fullWidth maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}}  open={true} onClose={handleDialogClose}>
                         <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
                         description={post.description} cityLocation={post.cityLocation}/>
                     </Dialog>
@@ -212,16 +212,16 @@ export function ShowItem(props: ShowItemProps){
     const handleDialogClose = () =>{ setDialogPost(<div></div>) }
     
     if (props.post !== undefined && props.post.post !== null )
-        return (<Grid item xs={12} style={{width:550,height:250}} key={props.post.post.id}>
+        return (<Grid item xs={12} style={{width:"inherit",height:230}} key={props.post.post.id}>
                     <OutfitGeneratorPostPreview post={props.post.post} user={props.user}  isDeletable={props.selectedItem.post?.id === props.post.post.id}
                         dialogOpen={handleDialogOpen}/>
                     {dialogPost}
                 </Grid>)
     else if(props.selectedItem.post !== null && props.selectedItem.type !== props.type && props.firstOpen !== 0) 
-            return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+            return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:"inherit",height:230,alignContent:"center"}}>
                         <Typography style={{fontWeight:900}}>We couldn't find any top matching your criteria!</Typography>
                     </Grid>)
         else 
-        return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:550,height:250,alignContent:"center"}}>
+        return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:"inherit",height:230,alignContent:"center"}}>
             </Grid>)
 }

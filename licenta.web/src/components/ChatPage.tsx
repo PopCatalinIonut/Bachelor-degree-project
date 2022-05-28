@@ -1,4 +1,4 @@
-import { Box, Card, createStyles, Fab, Grid, TextField, Theme, Typography } from "@mui/material";
+import { Box, Card, Input, Fab, Grid, TextField, Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles"
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../app/hooks"
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import ButtonBase from '@mui/material/ButtonBase';
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
+import background_image from "../assets/background.png"
 
 const useStyles = makeStyles((theme: Theme) =>
 ({
@@ -80,15 +81,15 @@ export default function ChatPage(){
             if(msg.sender.id !== user.id)
                 return( <Grid item xs={12} >
                             <div className={classes.leftSide}>
-                                <Typography style={{fontSize:"11px"}} variant="overline">{msg.date.toString()}</Typography>
-                                <Typography style={{maxWidth:"660px",fontSize:"19px"}}>{msg.text}</Typography>
+                                <Typography style={{fontSize:"10px"}} variant="overline">{msg.date.toString()}</Typography>
+                                <Typography style={{maxWidth:"530px",fontSize:"21px"}}>{msg.text}</Typography>
                             </div>
                         </Grid>)
             else 
                 return( <Grid item xs={12}>
                             <div className={classes.rightSide}>
-                                <Typography style={{fontSize:"11px"}} variant="overline">{msg.date.toString()}</Typography>
-                                <Typography style={{maxWidth:"660px",fontSize:"19px"}}>{msg.text}</Typography>
+                                <Typography style={{fontSize:"10px"}} variant="overline">{msg.date.toString()}</Typography>
+                                <Typography style={{maxWidth:"530px",fontSize:"21px"}}>{msg.text}</Typography>
                             </div>
                         </Grid>)
             })}
@@ -106,31 +107,31 @@ export default function ChatPage(){
             setMessage("")
        
     }
-    return (
-        <div style={{textAlign:"center",marginTop:"100px"}}>
-             <div style={{textAlign:"center",marginBottom:"20px"}}>
-             <Fab onClick={() => {navigate('/home')}} style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
-                <ArrowBackIcon></ArrowBackIcon>
-                </Fab>
-            </div>
+    return (<div style={{width:"-webkit-fill-available",height:"100vh"}}>
+                <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
+            <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+                <div style={{textAlign:"center"}}>
+                    <Fab onClick={() => {navigate('/home')}} size="medium" style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
+                        <ArrowBackIcon></ArrowBackIcon>
+                    </Fab>
+                </div>
             <div style={{display:"flex",justifyContent:"center"}}>
-                <Card style={{width:"1000px",marginBottom:"30px"}}>
+                <Card style={{width:"800px",marginBottom:"30px",background:'rgba(255, 255, 255, 0.95)'}}>
                     <Grid container style={{border:"1px solid"}}>
-                        <Grid item xs={3} style={{border:"1px solid"}}>
+                        <Grid item xs={3} style={{borderRight:"1px solid"}}>
                             {recipientList()}
                         </Grid>
                         <Grid item xs={9}>
                             <Grid item style={{height:400}}>
                                 {conversation()}
                             </Grid>
-                        <Grid container style={{height:40, border:"1px solid"}}>
+                        <Grid container style={{height:55}}>
                             <Grid item xs={11}>
-                                <TextField style={{width:"100%"}} value={message} 
-                                    onChange={(event) => {setMessage(event.currentTarget.value)}}>
-                                </TextField>
+                                <Input style={{width:"100%",borderTop:"1px solid",height:60}} value={message}
+                                    onChange={(event) => {setMessage(event.currentTarget.value)}}/>
                             </Grid>
-                            <Grid item xs={1} >
-                                <Fab onClick={handleSendMessage} style={{width:40,height:20, float:"right"}} size="small">
+                            <Grid item xs={1} style={{borderTop:"1px solid"}}>
+                                <Fab onClick={handleSendMessage} style={{width:40,height:40, float:"right",marginRight:5,marginTop:5}} size="medium">
                                     <SendIcon></SendIcon>
                                 </Fab>
                             </Grid>
@@ -138,7 +139,7 @@ export default function ChatPage(){
                         </Grid>
                     </Grid>
                 </Card>
-            </div>
+            </div></div>
         </div>
     )
  
