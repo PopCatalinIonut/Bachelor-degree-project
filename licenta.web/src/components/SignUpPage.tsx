@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { userSignUp } from "../features/UserSlice";
 
+import login_background from "../assets/login_background.jpg"
 export default function SignUpPage() {
   const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
@@ -47,10 +48,15 @@ export default function SignUpPage() {
     return errors;
   }
   return (
-    <div style={{textAlign:"center"}}>
-    <Card style={{display: "inline-grid", marginTop: "200px" }} variant="outlined">
+    <div style={{width:"-webkit-fill-available",height:"98vh"}}>
+    
+      <img style={{width:"-webkit-fill-available",height:"98vh"}} src={login_background}></img>
+  
+      <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+    <Card style={{display: "inline-grid",border:"2px solid",
+        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem"}} variant="outlined">
       <CardContent style={{ textAlign: "center",display: "inline-grid"}}>
-        <Typography style={{fontWeight: 600, fontSize:15}}>Please fill this form to create your account!</Typography>
+        <Typography style={{fontWeight: 600, fontSize:22, marginBottom:"3%"}}>Please fill this form to create your account!</Typography>
         {errorAddingArea}
         <div style={{ textAlign: "center",display: "inline-grid",marginLeft:"70px",marginRight:'70px'}}>
           <FormControl>
@@ -95,7 +101,7 @@ export default function SignUpPage() {
           open={snackOpened} autoHideDuration={3000} message="Account created"
           anchorOrigin={{vertical: "top", horizontal: "center"}}/>
       </CardContent>
-    </Card>
+    </Card></div>
     </div>
   );
   }

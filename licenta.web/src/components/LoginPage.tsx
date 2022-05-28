@@ -4,7 +4,10 @@ import { useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../app/hooks";
 import { initUserWishlist, userLogin } from "../features/UserSlice";
 import { LoggedUserDetails } from "../features/types";
-import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent } from "@mui/material";
+import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
+import logo from "../assets/logo_cropped.png"
+import login_background from "../assets/login_background.jpg"
+
 export default function LoginPage() {
   const dispatch = useAppDispatch();
 
@@ -31,32 +34,44 @@ export default function LoginPage() {
 
   }
   return (
-    <div style={{textAlign:"center"}}> 
-    <Card style={{display: "inline-grid", textAlign:"center",marginTop: "200px" }} variant="outlined">
-      <CardContent>
-        <div style={{ display: "inline-grid"}}>
-          <Typography style={{fontWeight: 600, fontSize:30}}>Welcome!</Typography>
-          {incorrectCredentials}
-          <FormControl>
-              <InputLabel>Username</InputLabel>
-              <Input value={usernameValue} onChange={event =>{ setUsernameValue(event.target.value)}}/>
-          </FormControl>
-          <FormControl>
-              <InputLabel >Password</InputLabel>
-              <Input type="password" value={passwordValue} onChange={event =>{setPasswordValue(event.target.value)}}/>
-          </FormControl>
-        </div>
-        <div >
-          <Button type="button" variant="contained" style={{display: "inline-grid",marginTop:"20px"}}
-           color="primary" size="large" onClick={handleLogin}>
-              Log in
-          </Button>
-        </div>
-        <Typography style={{marginTop:"20px"}}>Don't have an account?
-            <Button type="button" variant="contained" color="primary" style={{ marginLeft:"20px"}}
-             onClick={handleSignup}> Sign up</Button>
-        </Typography>
-      </CardContent>
-    </Card> </div>
+    <div style={{width:"-webkit-fill-available",height:"98vh"}}>
+      <img style={{width:"-webkit-fill-available",height:"98vh"}} src={login_background}></img>
+    <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+      <Card style={{display: "inline-grid", textAlign:"center",width:"350px",marginTop:"-5%",border:"2px solid",
+        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem"}} variant="outlined">
+        <CardContent style={{padding:0}}> 
+          <img src={logo} style={{height:250, width:350}} ></img>
+          <Grid container>
+            <Grid item xs={12}>
+              <div style={{ display: "inline-grid"}}>
+                <Typography style={{fontWeight: 600, fontSize:30, marginBottom:"5%"}}>Welcome!</Typography>
+                {incorrectCredentials}
+                <FormControl>
+                    <InputLabel>Username</InputLabel>
+                    <Input value={usernameValue} onChange={event =>{ setUsernameValue(event.target.value)}}/>
+                </FormControl>
+                <FormControl style={{marginTop:"5%"}}>
+                    <InputLabel >Password</InputLabel>
+                    <Input type="password" value={passwordValue} onChange={event =>{setPasswordValue(event.target.value)}}/>
+                </FormControl>
+            </div>
+            </Grid>
+            <Grid item xs={12}>
+              <div>
+                <Button type="button" variant="contained" style={{display: "inline-grid",marginTop:"20px"}}
+                        color="primary" size="large" onClick={handleLogin}>
+                        Log in
+                </Button>
+              </div>
+              <Typography style={{marginTop:"20px",marginBottom:"2%"}}>Don't have an account?
+                      <Button type="button" variant="contained" color="primary" style={{ marginLeft:"20px"}}
+                      onClick={handleSignup}> Sign up</Button>
+              </Typography>
+            </Grid>
+          </Grid>
+        </CardContent>
+      </Card> 
+    </div>
+    </div>
   );
 }
