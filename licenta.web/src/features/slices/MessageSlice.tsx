@@ -1,9 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import { DisplayMessage, SendMessage } from "../components/types";
-import { SetInitialMessageSliceStatePayload } from "./payloads";
-import { Conversation } from "./types";
+import { RootState } from "../../app/store"
+import { DisplayMessage, SendMessage } from "../../components/types";
+import { SetInitialMessageSliceStatePayload } from "../payloads";
+import { Conversation } from "../types";
 
 export interface MessagesConfigurationState {
     conversations: Conversation[];

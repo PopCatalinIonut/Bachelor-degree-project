@@ -1,16 +1,16 @@
 import { Box, Card, Input, Fab, Grid, TextField, Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles"
 import { useEffect, useState } from "react";
-import { useAppDispatch, useAppSelector } from "../app/hooks"
-import { getUserMessages, conversationsSelector, sendMessage, currentConversationSelector } from "../features/MessageSlice";
-import { userSelector } from "../features/UserSlice";
-import { DisplayMessage } from "./types";
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
+import { getUserMessages, conversationsSelector, sendMessage, currentConversationSelector } from "../../features/slices/MessageSlice";
+import { userSelector } from "../../features/slices/UserSlice";
+import { DisplayMessage } from "../types";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import ButtonBase from '@mui/material/ButtonBase';
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
-import background_image from "../assets/background.png"
+import background_image from "../../assets/background.png"
 
 const useStyles = makeStyles((theme: Theme) =>
 ({

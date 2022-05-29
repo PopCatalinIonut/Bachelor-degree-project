@@ -6,11 +6,11 @@ import ChatIcon from '@mui/icons-material/Chat';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import SellIcon from '@mui/icons-material/Sell';
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { logout, userSelector } from "../features/UserSlice";
-import { LoggedUserDetails } from "../features/types";
-import logo from "../assets/logo_cropped.png"
-import background_image from "../assets/background.png"
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { logout, userSelector } from "../../features/slices/UserSlice";
+import { LoggedUserDetails } from "../../features/types";
+
+import background_image from "../../assets/background.png"
 export default function HomePage() {
 
   const dispatch = useAppDispatch();

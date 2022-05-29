@@ -3,7 +3,7 @@ import { DisplayMessage, PostUserDetails } from "./types";
 import SendIcon from '@mui/icons-material/Send';
 import { useState } from "react";
 import { useAppDispatch } from "../app/hooks";
-import { sendMessage } from "../features/MessageSlice";
+import { sendMessage } from "../features/slices/MessageSlice";
 export interface ContactSellerDialogProps{
     seller: PostUserDetails;
     userId: number;

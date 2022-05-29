@@ -1,10 +1,10 @@
 import { Button, Card, CardContent, FormControl, Snackbar, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
-import { userSignUp } from "../features/UserSlice";
+import { useAppDispatch } from "../../app/hooks";
+import { userSignUp } from "../../features/slices/UserSlice";
 
-import background_image from "../assets/background.png"
+import background_image from "../../assets/background.png"
 export default function SignUpPage() {
   const [usernameValue, setUsernameValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");

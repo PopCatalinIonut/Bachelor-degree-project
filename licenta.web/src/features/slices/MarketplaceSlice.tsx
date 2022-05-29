@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import { Post, PostEncoded } from "../components/types";
-import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload, UpdatePostActiveStatusPayload } from "./payloads";
+import { RootState } from "../../app/store";
+import { Post, PostEncoded } from "../../components/types";
+import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
 
 export interface MarketplaceConfigurationState {
   posts: Post[];

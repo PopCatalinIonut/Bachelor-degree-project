@@ -6,19 +6,19 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MessageIcon from '@mui/icons-material/Message';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/UserSlice";
-import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/MarketplaceSlice";
+import { addItemToUserWishlist, removeItemFromUserWishlist, userSelector } from "../features/slices/UserSlice";
+import { AddItemToWishlist, RemoveItemFromWishlist } from "../features/slices/MarketplaceSlice";
 import ContactSellerDialog from "./ContactSellerDialog";
 import { useState } from "react";
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
-import { addItemToGenerator } from "../features/OutfitSlice";
+import { addItemToGenerator } from "../features/slices/OutfitSlice";
 import { useNavigate } from "react-router-dom";
 export default function PostDetailsDialog(post: Post){
     
     const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
     const [snackOpened,setSnackOpened] = useState(false)
-    let isWishlisted = user.wishlist.findIndex((x) => x.id === post.id) !== -1
+    let isWishlisted = user.wishlist.findIndex((x: { id: number; }) => x.id === post.id) !== -1
   
     let navigate = useNavigate(); 
 
@@ -120,7 +120,7 @@ export default function PostDetailsDialog(post: Post){
                     </Grid>
                     <Grid item xs={4} >
                         <div style={{marginTop:30, textAlign: "right", float:"right"}}>
-                            <TableContainer component={Paper} style={{width:400,backgroundColor:"transparent",marginRight:2, border: "2px solid"}}>
+                            <TableContainer component={Paper} style={{width:350,backgroundColor:"transparent",marginRight:2, border: "2px solid"}}>
                                 <Table >
                                     <TableHead>
                                         <TableRow >

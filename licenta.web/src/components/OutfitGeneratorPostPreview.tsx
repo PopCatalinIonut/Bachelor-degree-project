@@ -6,7 +6,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import { useAppDispatch } from "../app/hooks";
-import { removeItemFromGenerator } from "../features/OutfitSlice";
+import { removeItemFromGenerator } from "../features/slices/OutfitSlice";
 export interface MarketplacePostPreviewProps {
     post: Post;
     dialogOpen: (post: Post) => void;

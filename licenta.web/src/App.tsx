@@ -1,13 +1,13 @@
-import LoginPage from './components/LoginPage';
+import LoginPage from './components/pages/LoginPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import SignUpPage from './components/SignUpPage';
-import HomePage from './components/HomePage';
-import ProfilePage from './components/ProfilePage';
-import AddItemPage from './components/AddItemPage';
-import WishlistPage from './components/WishlistPage';
-import MarketplacePage from './components/MarketplacePage';
-import ChatPage from './components/ChatPage';
-import OutfitGeneratorPage from './components/OutfitGeneratorPage';
+import SignUpPage from './components/pages/SignUpPage';
+import HomePage from './components/pages/HomePage';
+import ProfilePage from './components/pages/ProfilePage';
+import AddItemPage from './components/pages/AddItemPage';
+import WishlistPage from './components/pages/WishlistPage';
+import MarketplacePage from './components/pages/MarketplacePage';
+import ChatPage from './components/pages/ChatPage';
+import OutfitGeneratorPage from './components/pages/OutfitGeneratorPage';
 import "./global.css"
 function App() {
   return (

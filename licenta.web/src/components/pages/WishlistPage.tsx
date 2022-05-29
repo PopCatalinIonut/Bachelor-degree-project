@@ -1,10 +1,10 @@
 import { Fab, Card, Typography, CardContent } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useAppSelector } from "../app/hooks";
-import { userSelector, userWishlistSelector } from "../features/UserSlice";
-import MarketplacePostPreviewList from "./MarketplacePostPreviewList";
-import background_image from "../assets/background.png"
+import { useAppSelector } from "../../app/hooks";
+import { userSelector, userWishlistSelector } from "../../features/slices/UserSlice";
+import MarketplacePostPreviewList from "../MarketplacePostPreviewList";
+import background_image from "../../assets/background.png"
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
 
 export default function WishlistPage(){

@@ -4,10 +4,10 @@ import {
     PayloadAction,
   } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import { Post } from "../components/types";
-import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "./payloads";
-import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "./types";
+import { RootState } from "../../app/store";
+import { Post } from "../../components/types";
+import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
+import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "../types";
 
 export interface LoginSiceConfigurationState {
     user: LoggedUserDetails;

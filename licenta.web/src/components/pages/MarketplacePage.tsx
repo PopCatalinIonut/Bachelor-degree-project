@@ -2,15 +2,15 @@ import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Card, CardContent, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Post } from "./types";
-import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../data/itemPropertiesData";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { getAllPosts, marketplaceItemsSelector } from "../features/MarketplaceSlice";
+import { Post } from "../types";
+import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../../data/itemPropertiesData";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { getAllPosts, marketplaceItemsSelector } from "../../features/slices/MarketplaceSlice";
 import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { userSelector } from "../features/UserSlice";
-import MarketplacePostPreviewList from "./MarketplacePostPreviewList";
-import background_image from "../assets/background.png"
+import { userSelector } from "../../features/slices/UserSlice";
+import MarketplacePostPreviewList from "../MarketplacePostPreviewList";
+import background_image from "../../assets/background.png"
 
 export default function MarketplacePage(){
 

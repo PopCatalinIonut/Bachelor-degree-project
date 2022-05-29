@@ -1,16 +1,16 @@
-import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Chip, Select, Snackbar, TextField, Typography, FormControl, OutlinedInput, Box } from "@mui/material";
+import { Button, Card, Fab, Grid, Input, InputAdornment,  MenuItem, Chip, Select, Snackbar, TextField, Typography, Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { itemTypesSelect, categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../data/itemPropertiesData";
-import { useAppDispatch, useAppSelector } from "../app/hooks";
-import { addItemToMarketplace } from "../features/MarketplaceSlice";
-import { addPostReducer, userSelector } from "../features/UserSlice";
-import { Post } from "./types";
+import { itemTypesSelect, categoryList, genreList, footwearSizes, clothingSizes, conditions, colors } from "../../data/itemPropertiesData";
+import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { addItemToMarketplace } from "../../features/slices/MarketplaceSlice";
+import { addPostReducer, userSelector } from "../../features/slices/UserSlice";
+import { Post } from "../types";
 import { unwrapResult } from "@reduxjs/toolkit";
-import background_image from "../assets/background.png"
+import background_image from "../../assets/background.png"
 
 const styles = {
 

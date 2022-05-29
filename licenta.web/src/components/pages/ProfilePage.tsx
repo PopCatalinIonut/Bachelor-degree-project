@@ -2,14 +2,14 @@ import { Box, Card, CardContent, Dialog, Fab, Grid, Typography } from "@mui/mate
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import React, { useState } from "react";
-import { useAppSelector } from "../app/hooks";
-import { LoggedUserDetails } from "../features/types";
-import { userActivePostsSelector,userDisabledPostsSelector, userSelector } from "../features/UserSlice";
+import { useAppSelector } from "../../app/hooks";
+import { LoggedUserDetails } from "../../features/types";
+import { userActivePostsSelector,userDisabledPostsSelector, userSelector } from "../../features/slices/UserSlice";
 import PersonIcon from '@mui/icons-material/Person';
-import { Post } from "./types";
-import ProfilePostItemPreview from "./ProfilePostPreview";
-import background_image from "../assets/background.png"
-import PostDetailsDialog from "./PostDetailsDialog";
+import { Post } from "../types";
+import ProfilePostItemPreview from "../ProfilePostPreview";
+import background_image from "../../assets/background.png"
+import PostDetailsDialog from "../PostDetailsDialog";
 
 const styles = {
     typographyFormat: {

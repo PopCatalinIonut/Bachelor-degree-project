@@ -1,8 +1,8 @@
 import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
-import { RootState } from "../app/store";
-import { Outfit, OutfitComponent, Post } from "../components/types";
-import { GenerateOutfitProps } from "./types";
+import { RootState } from "../../app/store";
+import { Outfit, OutfitComponent, Post } from "../../components/types";
+import { GenerateOutfitProps } from "../types";
 
 export interface OutfitConfigurationState {
     outfit: Outfit;

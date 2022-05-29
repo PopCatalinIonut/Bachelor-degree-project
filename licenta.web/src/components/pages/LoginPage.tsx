@@ -1,12 +1,12 @@
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
-import { useAppDispatch } from "../app/hooks";
-import { initUserWishlist, userLogin } from "../features/UserSlice";
-import { LoggedUserDetails } from "../features/types";
+import { useAppDispatch } from "../../app/hooks";
+import { initUserWishlist, userLogin } from "../../features/slices/UserSlice";
+import { LoggedUserDetails } from "../../features/types";
 import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
-import logo from "../assets/logo_cropped.png"
-import background_image from "../assets/background.png"
+import logo from "../../assets/logo_cropped.png"
+import background_image from "../../assets/background.png"
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();

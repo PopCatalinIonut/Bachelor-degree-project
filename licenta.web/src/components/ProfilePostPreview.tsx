@@ -1,8 +1,8 @@
 import { Post, PostUserDetails } from "./types";
 import { Paper, Grid, Typography, Button, Fab } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
-import { DeletePost, UpdatePostActiveStatus } from "../features/MarketplaceSlice";
-import { deletePostReducer, updatePostStatus }  from "../features/UserSlice";
+import { DeletePost, UpdatePostActiveStatus } from "../features/slices/MarketplaceSlice";
+import { deletePostReducer, updatePostStatus }  from "../features/slices/UserSlice";
 import OpenInNewRoundedIcon from '@mui/icons-material/OpenInNewRounded';
 export interface ProfilePostPreviewProps {
     post: Post;

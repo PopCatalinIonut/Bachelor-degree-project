@@ -1,17 +1,17 @@
 import { Button, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette, conditions } from "../data/itemPropertiesData";
+import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette, conditions } from "../../data/itemPropertiesData";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
-import { generateOutfit, itemToGenerateWithSelector, outfitSelector, succesSelector } from "../features/OutfitSlice";
-import { userSelector } from "../features/UserSlice";
-import OutfitGeneratorPostPreview from "./OutfitGeneratorPostPreview";
-import { Outfit, OutfitComponent, Post, PostUserDetails } from "./types";
-import PostDetailsDialog from "./PostDetailsDialog";
+import { generateOutfit, itemToGenerateWithSelector, outfitSelector, succesSelector } from "../../features/slices/OutfitSlice";
+import { userSelector } from "../../features/slices/UserSlice";
+import OutfitGeneratorPostPreview from "../OutfitGeneratorPostPreview";
+import { Outfit, OutfitComponent, Post, PostUserDetails } from "../types";
+import PostDetailsDialog from "../PostDetailsDialog";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import background_image from "../assets/background.png"
+import background_image from "../../assets/background.png"
 
 const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
