@@ -42,8 +42,8 @@
         "size":"44 EU",
         "fit":"44 EU",
         "ColorSchema": {
-          "colors": ["Orange","White","Black"],
-          "predominantPalette": "NonColor",
+          "colors": ["Orange","White"],
+          "predominantPalette": "Mixed",
           "containsWarm": "true",
           "containsCool": "false",
           "containsNonColor": "true"
@@ -1052,10 +1052,11 @@
           "condition":"New with tags",
           "price":50,
           "images":[
+
+            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/532bccb3-9c5c-41f0-b61d-8562d03bf208/sportswear-club-mens-graphic-shorts-hQgvng.png"},
             {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/427248c0-63d4-411c-8e3b-cf3469f9bd4e/sportswear-club-mens-graphic-shorts-hQgvng.png"},
             {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/fb455325-1fbf-420b-983a-17da18fd86b5/sportswear-club-mens-graphic-shorts-hQgvng.png"},
-            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/ac3fe7a2-7177-44d0-9336-d0586b31f1da/sportswear-club-mens-graphic-shorts-hQgvng.png"},
-            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/532bccb3-9c5c-41f0-b61d-8562d03bf208/sportswear-club-mens-graphic-shorts-hQgvng.png"}]},
+            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/ac3fe7a2-7177-44d0-9336-d0586b31f1da/sportswear-club-mens-graphic-shorts-hQgvng.png"}]},
           "date":"2022-05-19T14:05:58.4715802",
           "cityLocation":"Baia Mare",
           "description":"dm me for more info",
@@ -1533,8 +1534,8 @@
           "condition":"New without tags",
           "price":85,
           "images":[
-            {"link":"https://static.footshop.com/568804-full_product/122530.jpg"},
             {"link":"https://www.rapcity.ro/JORDAN_HEATWAVE_WOMEN_S_DIAMOND_SHORT-i210347.jpg"},
+            {"link":"https://static.footshop.com/568804-full_product/122530.jpg"},
             {"link":"https://www.rapcity.ro/JORDAN_HEATWAVE_WOMEN_S_DIAMOND_SHORT-i210351.jpg"},
             {"link":"https://cdn.shopify.com/s/files/1/0187/5180/products/ONENESS_0029_WOMENS_JORDAN_DIAMOND_SHORT_BLACK_WHITE_DC2149-084_5000x.jpg?v=1620074281"}]},
           "date":"2022-05-19T14:05:58.4715802",
@@ -1688,10 +1689,10 @@
           "condition":"New with tags",
           "price":90,
           "images":[
+            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9bb47166-204c-4904-be97-29c0cbe46549/sportswear-club-fleece-trousers-2bHDLX.png"},
             {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/r3eekioybduydacnl5kv/sportswear-club-fleece-trousers-2bHDLX.png"},
             {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/f07e4174-d7c1-4698-9fc7-e0d3b8e5e3bf/sportswear-club-fleece-trousers-2bHDLX.png"},
-            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/fovd2yugc39l6ntnpsw2/sportswear-club-fleece-joggers-27ggJk.png"},
-            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/9bb47166-204c-4904-be97-29c0cbe46549/sportswear-club-fleece-trousers-2bHDLX.png"}]},
+            {"link":"https://static.nike.com/a/images/t_PDP_1280_v1/f_auto,q_auto:eco/fovd2yugc39l6ntnpsw2/sportswear-club-fleece-joggers-27ggJk.png"}]},
           "date":"2022-05-19T14:05:58.4715802",
           "cityLocation":"Baia Mare",
           "description":"fresh pair",
@@ -2118,7 +2119,7 @@
           "category":"Pants",
           "genre":"Women",
           "size":"M",
-          "fit":"M ",
+          "fit":"M",
           "ColorSchema": {
             "colors": ["Violet"],
             "predominantPalette": "Cool",
@@ -2342,9 +2343,9 @@
         "condition":"New with tags",
         "price":140,
         "images":[
+          {"link":"https://images.asos-media.com/products/adidas-originals-x-pharrell-williams-premium-basics-hoodie-in-off-white/201845532-1-white?$n_640w$&wid=513&fit=constrain"},
           {"link":"https://static.footshop.com/675643-full_product/192049.jpg"},
           {"link":"https://cdn.shopify.com/s/files/1/0473/6965/0340/products/11654cbc420297bb612202570a2d9520983cea76_HG1815_Adidas_x_Pharrell_Williams_Basics_Hoodie_Off_White_os_1_768x768.jpg?v=1650527760"},
-          {"link":"https://images.asos-media.com/products/adidas-originals-x-pharrell-williams-premium-basics-hoodie-in-off-white/201845532-1-white?$n_640w$&wid=513&fit=constrain"},
           {"link":"https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC9IRzE4MTUvSEcxODE1LUxPT1NFLTAzLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb250YWluIiwid2lkdGgiOjU4MCwiaGVpZ2h0Ijo3MjUsImJhY2tncm91bmQiOnsiciI6MjU1LCJnIjoyNTUsImIiOjI1NSwiYWxwaGEiOjF9fX19"}]},
         "date":"2022-05-19T14:05:58.4715802",
         "cityLocation":"Seini",
@@ -2653,9 +2654,9 @@
         "condition":"New without tags",
         "price":150,
         "images":[
-          {"link":"https://static.footshop.com/652036-cropped/154627.jpg"},
-          {"link":"https://static.footshop.com/652039/154627.jpg"},
           {"link":"https://static.footshop.com/652042/154627.jpg"},
+          {"link":"https://static.footshop.com/652039/154627.jpg"},
+          {"link":"https://static.footshop.com/652036-cropped/154627.jpg"},
           {"link":"https://static.footshop.com/652045-full_product/154627.jpg"}]},
         "date":"2022-05-19T14:05:58.4715802",
         "cityLocation":"Craiova",
@@ -4575,8 +4576,8 @@
         "condition":"New with tags",
         "price":80,
         "images":[
-          {"link":"https://static.footshop.com/236745/47450.jpg"},
           {"link":"https://static.footshop.com/236785/47450.jpg"},
+          {"link":"https://static.footshop.com/236745/47450.jpg"},
           {"link":"https://static.footshop.com/236794/47450.jpg"},
           {"link":"https://static.footshop.com/236802/47450.jpg"}]},
         "date":"2022-05-19T14:05:58.4715802",

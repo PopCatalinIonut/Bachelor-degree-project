@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +15,7 @@ namespace licenta.BLL.Models
             ContainsCool = containsCool;
             ContainsNonColor = containsNonColor;
         }
-
+        
         public ColorSchema(List<string> colors)
         {
             Colors = colors;

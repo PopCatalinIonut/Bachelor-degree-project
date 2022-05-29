@@ -3,7 +3,10 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.IO;
 using System.Linq;
+using CorsPolicySettings;
 using licenta.BLL.Helpers;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
@@ -20,12 +23,13 @@ namespace licenta.API
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddNewtonsoftJsonFile(dir)
                 .Build();
-            
+
             builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
                 });
+            
             var providers = config.Providers.AsEnumerable().ToList();
             const string key = "SQLite";
             var connectionProvider = providers.First();
@@ -34,6 +38,7 @@ namespace licenta.API
             builder.Services
                 .AddDbContext<ShopDbContext>(options => options.UseSqlite(connectionString));
         }
+
     }
 
 }

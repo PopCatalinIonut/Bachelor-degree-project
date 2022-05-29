@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace licenta.BLL.Models
 {
-    public class Item
+    public class Item: ICloneable
     {
         public Item(int id, string name, string brand, string type, string category, string genre, string size, string fit, string condition, double price, List<ItemImage> images)
         {
@@ -21,6 +22,21 @@ namespace licenta.BLL.Models
             Images = images;
         }
 
+        public Item(Item other)
+        {
+            Id = other.Id;
+            Name = other.Name;
+            Brand = other.Brand;
+            Type = other.Type;
+            Category = other.Category;
+            ColorSchema = other.ColorSchema;
+            Genre = other.Genre;
+            Size = other.Size;
+            Fit = other.Fit;
+            Condition = other.Condition;
+            Price = other.Price;
+            Images = other.Images;
+        }
         public Item(){}
         [Key]
         public int Id { get; set; }
@@ -42,5 +58,33 @@ namespace licenta.BLL.Models
         
         [ForeignKey("Post")]
         public int PostId { get; set; }
+
+        public object Clone()
+        {
+            return new Item
+            {
+                Id = Id,
+                Name = Name,
+                Brand = Brand,
+                Type = Type,
+                Category = Category,
+                ColorSchema = new ColorSchema
+                {
+                    Colors = ColorSchema.Colors,
+                    ContainsCool = ColorSchema.ContainsCool,
+                    ContainsWarm = ColorSchema.ContainsWarm,
+                    ContainsNonColor = ColorSchema.ContainsNonColor,
+                    PredominantPalette = ColorSchema.PredominantPalette,
+                    Id = ColorSchema.Id,
+                    ItemId = ColorSchema.ItemId
+                },
+                Genre = Genre,
+                Size = Size,
+                Fit = Fit,
+                Condition = Condition,
+                Price = Price,
+                Images =Images
+            }; 
+        }
     }
 }

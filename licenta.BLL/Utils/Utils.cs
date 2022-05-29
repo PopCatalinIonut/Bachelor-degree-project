@@ -44,12 +44,10 @@ namespace licenta.BLL.Utils
 
         private static double CalculateSimilarity(Item firstItem, Item secondItem)
         {
+            firstItem = (Item) firstItem.Clone(); 
+            secondItem = (Item) secondItem.Clone(); 
             var pointsOfSimilarity = 0d;
-            var totalPointsAvailable = 100d;
-
-            var conditionDifference =
-                Math.Abs(ConditionDictionary[firstItem.Condition] - ConditionDictionary[secondItem.Condition]);
-            pointsOfSimilarity += conditionDifference == 0 ? 10 : 10 - (conditionDifference * 2.5);
+            var totalPointsAvailable = 90d;
 
             pointsOfSimilarity += 30 * CalculateItemTypesSimilarity(firstItem, secondItem);
             if (firstItem.Genre == "Unisex" || secondItem.Genre == "Unisex")
@@ -63,7 +61,7 @@ namespace licenta.BLL.Utils
         private static double CalculateItemTypesSimilarity(Item firstItem, Item secondItem)
         {
             var pointsOfSimilarity = 0d;
-            var totalPointsAvailable = 30d;
+            var totalPointsAvailable = 15d;
             if (firstItem.Type == "Footwear" || secondItem.Type == "Footwear")
             {
                 if (secondItem.Type == "Footwear")
@@ -126,9 +124,9 @@ namespace licenta.BLL.Utils
                 var sizeDifference = Math.Abs(ClothingSizes[firstItem.Size] - ClothingSizes[secondItem.Size]);
                 var fitDifference = Math.Abs(ClothingSizes[firstItem.Fit] - ClothingSizes[secondItem.Fit]);
                 
-                totalPointsAvailable += 35;
-                pointsOfSimilarity += sizeDifference == 0 ? 15 : 15 - ((sizeDifference/ ClothingSizes.Count) * 15);
-                pointsOfSimilarity += fitDifference == 0 ? 20 : 20 - ((fitDifference / ClothingSizes.Count) * 20);
+                totalPointsAvailable += 25;
+                pointsOfSimilarity += sizeDifference == 0 ? 10 : 10 - ((sizeDifference/ ClothingSizes.Count) * 10);
+                pointsOfSimilarity += fitDifference == 0 ? 15 : 15 - ((fitDifference / ClothingSizes.Count) * 15);
             }
 
             return pointsOfSimilarity / totalPointsAvailable;
@@ -161,7 +159,7 @@ namespace licenta.BLL.Utils
         {
             
             var similarities = CalculateSimilaritiesForPost(new List<Post>() { starter }, toCompareWith1);
-            while (similarities.First().Value > 0.7)
+            while (similarities.First().Value > 0.6)
             {
                 var secondItem = GetPostBySimilarityList(similarities, new List<Post>() { starter }, maximumPrice);
                 if (secondItem == null) return false;
@@ -185,7 +183,7 @@ namespace licenta.BLL.Utils
         private static Post GetPostBySimilarityList(Dictionary<Post, double> similarities, List<Post> toCompareWith, double maximumPrice)
         { 
             
-            var aboveLimit = similarities.Count(x => x.Value > 0.70);
+            var aboveLimit = similarities.Count(x => x.Value > 0.6);
             var random = new Random();
             while (similarities.Count > 0 && aboveLimit > 0)
             {
@@ -201,7 +199,7 @@ namespace licenta.BLL.Utils
         private static double CalculateColorSchemaSimilarity(ColorSchema firstSchema, ColorSchema secondSchema)
         {
             var pointsOfSimilarity = 0;
-            var totalPointsAvailable = 15d;
+            var totalPointsAvailable = 25d;
 
             if(firstSchema.Colors.Count > secondSchema.Colors.Count)
                 (firstSchema.Colors , secondSchema.Colors) = (secondSchema.Colors, firstSchema.Colors);

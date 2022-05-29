@@ -91,9 +91,18 @@ namespace licenta.BLL.Managers
 
             if (!string.IsNullOrEmpty(data.ColorPalette))
             {
-                allFootwear = allFootwear.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette).ToList();
-                allPants = allPants.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette).ToList();
-                allTops = allTops.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette).ToList();
+                allFootwear = allFootwear.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette || 
+                    ((x.Item.ColorSchema.PredominantPalette == "Mixed") && 
+                    ((data.ColorPalette == "Cool" && x.Item.ColorSchema.ContainsCool) || (data.ColorPalette == "Warm" && x.Item.ColorSchema.ContainsWarm)
+                        || data.ColorPalette == "NonColor" && x.Item.ColorSchema.ContainsNonColor))).ToList();
+                allPants = allPants.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette || 
+                    ((x.Item.ColorSchema.PredominantPalette == "Mixed") && 
+                    ((data.ColorPalette == "Cool" && x.Item.ColorSchema.ContainsCool) || (data.ColorPalette == "Warm" && x.Item.ColorSchema.ContainsWarm)
+                        || data.ColorPalette == "NonColor" && x.Item.ColorSchema.ContainsNonColor))).ToList();
+                allTops = allTops.Where(x => x.Item.ColorSchema.PredominantPalette == data.ColorPalette || 
+                   ((x.Item.ColorSchema.PredominantPalette == "Mixed") && 
+                   ((data.ColorPalette == "Cool" && x.Item.ColorSchema.ContainsCool) || (data.ColorPalette == "Warm" && x.Item.ColorSchema.ContainsWarm )
+                       || data.ColorPalette == "NonColor" && x.Item.ColorSchema.ContainsNonColor))).ToList();
             }
 
             var maximumPrice = data.MaximumValue != 0 ? data.MaximumValue : double.MaxValue;
