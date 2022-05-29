@@ -32,7 +32,6 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
     const hanleRemoveFromGenerator = () =>{
         dispatch(removeItemFromGenerator(props.post.id))
     }
-    console.log(props.post.item.colorSchema.colors)
     const handleOpenDialog = () =>{
         props.dialogOpen(post);
     }

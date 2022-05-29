@@ -36,7 +36,6 @@ export const generateOutfit = createAsyncThunk(
           }
         );
         var outfit: Outfit = response.data;
-        console.log(outfit)
         return outfit;
       }
       catch (err: any) {
@@ -84,10 +83,6 @@ export const outfitSlice = createSlice({
         state.itemToGenerateWith = itemToAdd;
       }, removeItemFromGenerator: (state, action:PayloadAction<number>) =>{
         state.itemToGenerateWith =  {post:null,type:""};
-        state.outfit.components.forEach((x) =>{
-          if(x.post?.id === action.payload)
-            x.post = null;
-        })
       }
     },
     extraReducers: builder => {

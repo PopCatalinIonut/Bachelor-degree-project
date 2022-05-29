@@ -110,6 +110,7 @@ namespace licenta.BLL.Managers
             
             var post = _context.Posts.Where(x => x.Id == data.PostId)
             .Include(x => x.Item).ThenInclude(x => x.Images)
+            .Include(x => x.Seller)
             .Include(x => x.Item.ColorSchema).FirstOrDefault();
 
             CalculateOutfit(allFootwear,allPants,allTops,outfit,post,maximumPrice);

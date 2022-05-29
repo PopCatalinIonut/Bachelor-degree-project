@@ -89,7 +89,7 @@ export default function PostDetailsDialog(post: Post){
                     <Grid item style={{textAlign:"center"}} xs={12}>
                         <Typography style={{fontWeight:900, fontSize:40}}>{post?.item.name}</Typography>
                         <Typography style={{fontWeight:400, fontSize:50, marginTop:10}}><AttachMoneyIcon 
-                         style={{width:40,height:40}}/>{post?.item.price}</Typography>
+                         style={{width:50,height:35}}/>{post?.item.price}</Typography>
                     </Grid>
                      <Grid item xs={12}>
                      <div style={{textAlign:"right"}}>  
