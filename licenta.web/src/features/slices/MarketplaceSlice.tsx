@@ -1,8 +1,9 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
-import { Post, PostEncoded } from "../../components/types";
+import { Post, PostEncoded, PostUserDetails, SellingItem } from "../../components/types";
 import { AddItemToWishlistPayload, SetInitialMarketplaceSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
+import { PostResponse } from "../types";
 
 export interface MarketplaceConfigurationState {
   posts: Post[];
@@ -16,8 +17,37 @@ export const getAllPosts = createAsyncThunk(
   "features/MarketplaceSlice/getAllPosts",
   async() =>{
     try{
-      const response = await axios.get<Post[]>("http://localhost:7071/api/posts");
-      return response.data;
+      const response = await axios.get<PostResponse[]>("http://localhost:7071/api/posts");
+      var posts: Post[] = [];
+      response.data.forEach((post) => {
+        posts.push({
+          id: post.id,
+          description: post.description,
+          location: post.cityLocation,
+          is_active: post.isActive,
+          item: {
+            color_schema: {colors: post.item.colorSchema.colors},
+            images: post.item.images,
+            id: post.item.id,
+            name: post.item.name,
+            size: post.item.size,
+            fit: post.item.fit,
+            genre: post.item.genre,
+            price: post.item.price,
+            type: post.item.type,
+            category: post.item.category,
+            brand: post.item.brand,
+            condition: post.item.condition
+          },
+          seller: {
+            id: post.seller.id,
+            first_name: post.seller.firstName,
+            last_name: post.seller.lastName
+          }
+        })
+      });
+      console.log(posts)
+      return posts;
     }
   catch (err: any) {
     return err.response.data;
@@ -97,7 +127,7 @@ export const addItemToMarketplace = createAsyncThunk(
           images: post.item.images,
           colors: post.item.colors
       },
-      cityLocation: post.cityLocation,
+      cityLocation: post.location,
       description: post.description,
       userId : post.userId
     });    

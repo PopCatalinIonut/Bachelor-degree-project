@@ -1,0 +1,1 @@
+declare module "@elastic/app-seach-node"

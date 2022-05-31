@@ -42,7 +42,7 @@ export default function ContactSellerDialog(props: ContactSellerDialogProps){
                 </div>
                 <div style={{marginTop:40, textAlign:"center"}}>
                     <Typography> To: </Typography>
-                    <Typography>{props.seller.firstName + " " + props.seller.lastName}</Typography>
+                    <Typography>{props.seller.first_name + " " + props.seller.last_name}</Typography>
                 </div>
                 </Grid>
             </Grid>

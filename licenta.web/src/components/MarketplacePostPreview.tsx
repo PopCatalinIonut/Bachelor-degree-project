@@ -61,7 +61,7 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
                                 {"$" + post.item.price}
                             </Typography>
                             <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, marginTop:5}}>
-                                <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
+                                <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.location}
                             </Typography>
                             </div>
                         </Grid>

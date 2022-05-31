@@ -52,8 +52,8 @@ export default function ProfilePage() {
             setDialogPost(
                 <div>
                     <Dialog fullWidth maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}}  open={true} onClose={handleDialogClose}>
-                        <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
-                        description={post.description} cityLocation={post.cityLocation}/>
+                        <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} is_active={post.is_active}
+                        description={post.description} location={post.location}/>
                     </Dialog>
                 </div>
             );
@@ -83,13 +83,13 @@ export default function ProfilePage() {
                                     <Typography style={styles.typographyFormat}>First name: </Typography>
                                 </Grid>
                                 <Grid item sm={8}>
-                                    <Typography style={styles.typographyFormat}>{currentUser?.firstName} </Typography>
+                                    <Typography style={styles.typographyFormat}>{currentUser?.first_name} </Typography>
                                 </Grid>
                                 <Grid item sm={4}>
                                     <Typography style={styles.typographyFormat} >Last name: </Typography>
                                 </Grid>
                                 <Grid item sm={8}>
-                                    <Typography style={styles.typographyFormat}>{currentUser?.lastName}</Typography>
+                                    <Typography style={styles.typographyFormat}>{currentUser?.last_name}</Typography>
                                 </Grid>
                                 <Grid item sm={4} >
                                     <Typography style={styles.typographyFormat}>Email:</Typography>

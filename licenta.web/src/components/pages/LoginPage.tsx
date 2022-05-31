@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { initUserWishlist, userLogin } from "../../features/slices/UserSlice";
-import { LoggedUserDetails } from "../../features/types";
+import { LoggedUserDetails, LoggedUserDetailsResponse } from "../../features/types";
 import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
 import logo from "../../assets/logo_cropped.png"
 import background_image from "../../assets/background.png"
@@ -22,7 +22,16 @@ export default function LoginPage() {
   const handleLogin = async () =>{ 
     const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
     try {
-      const payload: LoggedUserDetails = unwrapResult(response);
+      var user = response.payload as LoggedUserDetailsResponse;
+      const payload: LoggedUserDetails = {
+          id: user.id,
+          loginUsername: user.loginUsername,
+          first_name: user.firstName,
+          last_name: user.lastName,
+          email: user.email,
+          postedPosts: user.postedPosts,
+          wishlist: user.wishlist
+      }
       console.log(payload);
       if(payload.wishlist.length > 0 ){
         dispatch(initUserWishlist(payload.wishlist))
@@ -47,11 +56,11 @@ export default function LoginPage() {
                 <Typography style={{fontWeight: 600, fontSize:30, marginBottom:"5%"}}>Welcome!</Typography>
                 {incorrectCredentials}
                 <FormControl>
-                    <InputLabel>Username</InputLabel>
+                    <InputLabel style={{marginTop:"20px"}}>Username</InputLabel>
                     <Input value={usernameValue} onChange={event =>{ setUsernameValue(event.target.value)}}/>
                 </FormControl>
                 <FormControl style={{marginTop:"5%"}}>
-                    <InputLabel >Password</InputLabel>
+                    <InputLabel style={{marginTop:"20px"}}>Password</InputLabel>
                     <Input type="password" value={passwordValue} onChange={event =>{setPasswordValue(event.target.value)}}/>
                 </FormControl>
             </div>

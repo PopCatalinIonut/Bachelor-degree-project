@@ -16,8 +16,8 @@ export default function MarketplacePostPreviewList(props: MarketplacePostPreview
         setDialogPost(
             <div >
                 <Dialog  fullWidth={true} maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}} open={true} onClose={handleDialogClose}>
-                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} isActive={post.isActive}
-                    description={post.description} cityLocation={post.cityLocation}/>
+                    <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} is_active={post.is_active}
+                    description={post.description} location={post.location}/>
                 </Dialog>
             </div>
         );

@@ -95,7 +95,7 @@ export default function PostDetailsDialog(post: Post){
                      <div style={{textAlign:"right"}}>  
                         <Typography style={{fontWeight:400, fontSize:25, marginTop:10}}>
                             <LocationOnIcon />
-                        {"Item is located in " + post?.cityLocation}
+                        {"Item is located in " + post?.location}
                         </Typography>
                             </div>
                      </Grid>
@@ -145,8 +145,8 @@ export default function PostDetailsDialog(post: Post){
                                             <TableCell component="th" scope="row" style={{textAlign:"center", borderRight: "1.5px solid"}}> 
                                                 <Typography style={{fontWeight:600}}>Colors</Typography>
                                             </TableCell>
-                                        <TableCell style={{textAlign:"center"}}>{post.item.colorSchema.colors.map((x,index) => {
-                                                    if(index < post.item.colorSchema.colors.length-1)
+                                        <TableCell style={{textAlign:"center"}}>{post.item.color_schema.colors.map((x,index) => {
+                                                    if(index < post.item.color_schema.colors.length-1)
                                                         return x + ", ";
                                                     else return x;
                                         })}</TableCell>

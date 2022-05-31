@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Box, Card, CardContent, Fab, FormControl, InputLabel, MenuItem, Select, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Fab, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Post } from "../types";
 import { categoryList, clothingSizes, conditions, footwearSizes, genreList, itemTypesSelect } from "../../data/itemPropertiesData";
@@ -10,8 +10,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userSelector } from "../../features/slices/UserSlice";
 import MarketplacePostPreviewList from "../MarketplacePostPreviewList";
-import background_image from "../../assets/background.png"
-
+import background_image from "../../assets/background.png";
+import axios from "axios";
 export default function MarketplacePage(){
 
     const dispatch = useAppDispatch();
@@ -20,10 +20,11 @@ export default function MarketplacePage(){
     const [genreValue, setGenreValue] = useState("");
     const [conditionValue, setConditionValue] = useState("");
     const [sizeValue, setSizeValue] =useState("");
-
+    const [searchInput, setSearchInput] = useState("");
     let user = useAppSelector(userSelector)
     let navigate = useNavigate(); 
     let postList: Post[] = useAppSelector(marketplaceItemsSelector);
+
     const [postsToShow, setPostsToShow] = useState<Post[]>(postList);
     const fetchPosts = async () =>{
         const response = await dispatch(getAllPosts())
@@ -35,6 +36,50 @@ export default function MarketplacePage(){
         if(postList.length === 0)
             fetchPosts()
     },[]);
+    const performQuery = async (queryString: string) => {
+        /*
+        postList.forEach(async (post) =>{
+            const response = await axios.post<Post>("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/documents",post,
+            {headers:{
+                "Content-Type": "application/json",
+                "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
+            }});
+            console.log(response);
+        })
+        */
+      /*
+       postList.forEach(async (post) =>{
+        const response = await axios.delete("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/documents",
+        {headers:{
+            "Content-Type": "application/json",
+            "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
+        }, data: [post.id]});
+       })*/
+       var newPostsToShow: Post[] = [];
+        const response = await axios.post("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/search",{
+           "query": queryString,
+            "page":{
+                "size":300
+            }
+        },
+        {headers:{
+            "Content-Type": "application/json",
+            "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
+        }});
+       var results = response.data.results;
+       for(let i=0;i<results.length;i++){
+        newPostsToShow.push({
+            id: results[i].id.raw,
+            item: JSON.parse(results[i].item.raw),
+            seller: JSON.parse(results[i].seller.raw),
+            description: results[i].description.raw,
+            location: results[i].location.raw,
+            is_active: results[i].is_active.raw
+        })
+       }
+       console.log(results)
+        setPostsToShow(newPostsToShow)
+    };
 
     const handleApplyFilters = () =>{
        var filteredPosts = postList.filter((post) => (categoryValue.length === 0) || (categoryValue.length !== 0 && post.item.category === categoryValue) )
@@ -65,9 +110,11 @@ export default function MarketplacePage(){
                 <ArrowBackIcon></ArrowBackIcon>
                 </Fab>
             </div>
+         
             <Card style={{border:"1px solid",minWidth:"1150px",maxHeight:700,overflowY:"auto",
                     borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",background:'rgba(255, 255, 255, 0.95)'}}>
                 <CardContent style={{display:"flex",justifyContent:"center",paddingTop:15}}>
+                    
                     <FormControl style={{minWidth:"80px",marginLeft:"40px"}}>
                         <InputLabel>Type</InputLabel>
                         <Select value={typeValue} autoWidth  notched={true}
@@ -141,11 +188,16 @@ export default function MarketplacePage(){
                 <Fab variant="extended" size="small" color="primary" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
                     <DeleteIcon/> Reset filters
                 </Fab>
+                <Input  
+                onBlur={(event: { currentTarget: { value: string; }; }) => {
+                    setSearchInput(event.currentTarget.value);
+                }}/>
+            <Button onClick={() => {performQuery(searchInput)}}> Search</Button>
             </div>
             <Box style={{display: "inline-grid",maxWidth:"1150px",minWidth:500}}>
             {(() => {
                 if (postsToShow.length === 0)
-                    return ( <div style={{textAlign:"center"}}><Typography style={{fontWeight:900,height:90, marginTop:50}}>No items found!</Typography></div> );
+                    return ( <div style={{textAlign:"center",justifyContent:"center"}}><Typography style={{fontWeight:900,height:90, marginTop:50, fontSize:30}}>No items found!</Typography></div> );
                 else return (
                     <MarketplacePostPreviewList posts={postsToShow} user={user}></MarketplacePostPreviewList>
                 )
@@ -155,4 +207,3 @@ export default function MarketplacePage(){
         </div></div>
     )
 }
-

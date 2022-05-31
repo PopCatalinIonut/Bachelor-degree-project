@@ -13,14 +13,14 @@ export interface AddSellingItem {
 }
 
 export interface SellingItem extends Omit<AddSellingItem,"images"|"colors"> {
-  colorSchema: ColorSchema;
+  color_schema: ColorSchema;
   images: ItemImage[];
   id: number;
 }
 
 export interface ItemImage{
     id: number;
-    itemId: number;
+    item_id: number;
     link: string;
 }
 
@@ -28,14 +28,14 @@ export interface AddPost{
     item: AddSellingItem;
     userId: number;
     description: string;
-    cityLocation: string;
+    location: string;
 }
 
 export interface Post extends Omit<AddPost,"item"|"userId">{
     id: number;
     item: SellingItem;  
     seller: PostUserDetails;
-    isActive: boolean;
+    is_active: boolean;
 }
 
 export interface SellingItemEncoded extends Omit<AddSellingItem, 'images'> {
@@ -47,8 +47,8 @@ export interface PostEncoded extends Omit<AddPost, 'item'> {
 }
 
 export interface PostUserDetails {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     id: number;
 }
 

@@ -66,8 +66,8 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
                                     {post.item.brand}
                                 </Typography>
                                 <Typography style={{fontSize:14}}>
-                                    {post.item.colorSchema.colors.map((x,index) => {
-                                        if(index+1 === post.item.colorSchema.colors.length)
+                                    {post.item.color_schema.colors.map((x,index) => {
+                                        if(index+1 === post.item.color_schema.colors.length)
                                             return(x);
                                         else return (x + " / ")
                                         })}
@@ -83,7 +83,7 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
                                     {"$" + post.item.price}
                                 </Typography>
                                 <Typography style={{float:"right",alignItems: "flex-end",display: "flex",marginRight:5, fontSize:16}}>
-                                    <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.cityLocation}
+                                    <LocationOnIcon style={{width:18}}></LocationOnIcon>{post.location}
                                 </Typography>
                             </div>
                     </ButtonBase>

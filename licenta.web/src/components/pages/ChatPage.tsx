@@ -68,8 +68,8 @@ export default function ChatPage(){
                                 <PersonIcon style={{width:"50px", height:"50px"}}/>
                             </Grid>
                             <Grid item xs={6} style={{textAlign:"left",marginTop:"20px",paddingLeft:"5px"}}>
-                                <Typography>{rec.recipient.firstName}</Typography>
-                                <Typography>{rec.recipient.lastName}</Typography>
+                                <Typography>{rec.recipient.first_name}</Typography>
+                                <Typography>{rec.recipient.last_name}</Typography>
                             </Grid></Grid>
                         </ButtonBase>)})}
                     </Grid>)  

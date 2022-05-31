@@ -38,7 +38,7 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
     }
 
     const showButtons = () =>{
-        if(props.post.isActive === true)
+        if(props.post.is_active === true)
         return <Button variant="contained" size="small" style={{marginRight:30}} color="secondary"
                        onClick={() => {handleUpdatePostStatus(false)}} >Disable post</Button>
                 

@@ -107,7 +107,7 @@ export default function AddItemPage() {
                         condition: conditionValue, price: Number(priceValue),
                         colors: colorsValue, images: convertedImages, brand:brandValue
                     },
-                    description: descriptionValue, cityLocation: locationValue, userId: user.id
+                    description: descriptionValue, location: locationValue, userId: user.id
                 }))
                 const post = unwrapResult(response) as Post
                 setSnackOpened("Item has been successfuly posted!\n Now you will be redirected to home.");

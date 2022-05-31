@@ -7,7 +7,7 @@ import axios from "axios";
 import { RootState } from "../../app/store";
 import { Post } from "../../components/types";
 import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
-import { LoggedUserDetails, LoginCredentials, SignupCredentials } from "../types";
+import { LoggedUserDetails, LoggedUserDetailsResponse, LoginCredentials, SignupCredentials } from "../types";
 
 export interface LoginSiceConfigurationState {
     user: LoggedUserDetails;
@@ -35,7 +35,7 @@ export const userLogin = createAsyncThunk(
   "features/UserSlice/userLogin",
   async (credentials: LoginCredentials) => {
 
-    const response = await axios.get<LoggedUserDetails>("http://localhost:7071/api/users/login" 
+    const response = await axios.get<LoggedUserDetailsResponse>("http://localhost:7071/api/users/login" 
     .concat("&username=").concat(credentials.username).concat("&password=").concat(credentials.password));
     var user = {
       loginUsername: response.data.loginUsername,
@@ -51,7 +51,7 @@ export const userLogin = createAsyncThunk(
 );
 const initialState: LoginSiceConfigurationState = {
     initialized: false,
-    user: {id: 0, loginUsername: "", firstName: "", lastName: "", email: "" , postedPosts :[], wishlist: []}
+    user: {id: 0, loginUsername: "", first_name: "", last_name: "", email: "" , postedPosts :[], wishlist: []}
 };
 
 export const userSlice = createSlice({
@@ -63,7 +63,7 @@ export const userSlice = createSlice({
         state.initialized = true;
       },
       logout: (state) => {
-        state.user = { id: 0, loginUsername: "", firstName: "", lastName: "", email: "", postedPosts: [], wishlist: []};
+        state.user = { id: 0, loginUsername: "", first_name: "", last_name: "", email: "", postedPosts: [], wishlist: []};
         state.initialized = false;
       },
       initUserWishlist: (state, action: PayloadAction<Post[]>) => {
@@ -79,7 +79,7 @@ export const userSlice = createSlice({
       updatePostStatus: (state, action:PayloadAction<UpdatePostActiveStatusPayload>) =>{
         var post = state.user.postedPosts.find(x => x.id === action.payload.postId);
         if(post!==undefined)
-          post.isActive = action.payload.status;
+          post.is_active = action.payload.status;
       },
       deletePostReducer: (state, action:PayloadAction<number>) =>{
         state.user.postedPosts.splice(state.user.postedPosts.findIndex(x => x.id === action.payload),1);
@@ -93,8 +93,8 @@ export const userSlice = createSlice({
         .addCase(userLogin.fulfilled, (state, action) => {
           state.user = {
             loginUsername: action.payload.loginUsername,
-            firstName: action.payload.firstName,
-            lastName: action.payload.lastName,
+            first_name: action.payload.firstName,
+            last_name: action.payload.lastName,
             email: action.payload.email,
             id: action.payload.id,
             postedPosts: action.payload.postedPosts,
@@ -117,7 +117,7 @@ export const {
   
 export const userSelector = (state: RootState) => state.userSlice.user;
 export const userWishlistSelector = (state: RootState) => state.userSlice.user.wishlist
-export const userDisabledPostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.isActive === false)
-export const userActivePostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.isActive === true);
+export const userDisabledPostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.is_active === false)
+export const userActivePostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.is_active === true);
 export default userSlice.reducer;
   
