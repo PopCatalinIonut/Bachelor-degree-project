@@ -1,16 +1,13 @@
-import { Box, Card, Input, Fab, Grid, TextField, Theme, Typography } from "@mui/material";
+import { Box, Card, Input, Fab, Grid, Theme, Typography } from "@mui/material";
 import { makeStyles } from "@mui/styles"
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { getUserMessages, conversationsSelector, sendMessage, currentConversationSelector } from "../../features/slices/MessageSlice";
 import { userSelector } from "../../features/slices/UserSlice";
 import { DisplayMessage } from "../types";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from "react-router-dom";
 import ButtonBase from '@mui/material/ButtonBase';
 import SendIcon from '@mui/icons-material/Send';
 import PersonIcon from '@mui/icons-material/Person';
-import background_image from "../../assets/background.png"
 
 const useStyles = makeStyles((theme: Theme) =>
 ({
@@ -51,7 +48,6 @@ export default function ChatPage(){
     const [currentRecipient, setCurrentRecipient] = useState(0);
     const currentConversation = useAppSelector(currentConversationSelector(currentRecipient));
     const [message, setMessage] = useState("")
-    let navigate = useNavigate(); 
 
     const classes = useStyles();
     useEffect(() => {
@@ -68,7 +64,7 @@ export default function ChatPage(){
                                 <PersonIcon style={{width:"50px", height:"50px"}}/>
                             </Grid>
                             <Grid item xs={6} style={{textAlign:"left",marginTop:"20px",paddingLeft:"5px"}}>
-                                <Typography>{rec.recipient.first_name}</Typography>
+                                <Typography style={{color:"black"}}>{rec.recipient.first_name}</Typography>
                                 <Typography>{rec.recipient.last_name}</Typography>
                             </Grid></Grid>
                         </ButtonBase>)})}
@@ -76,20 +72,20 @@ export default function ChatPage(){
     }
 
     const conversation = () =>{
-        return (<Box style={{height:400, overflow: 'auto'}}><Grid container style={{boxSizing:"content-box"}}>
+        return (<Box style={{overflow: 'auto',height:"inherit"}}><Grid container style={{boxSizing:"content-box"}}>
             { currentConversation?.messages.map((msg: DisplayMessage) =>{
             if(msg.sender.id !== user.id)
                 return( <Grid item xs={12} >
                             <div className={classes.leftSide}>
                                 <Typography style={{fontSize:"10px"}} variant="overline">{msg.date.toString()}</Typography>
-                                <Typography style={{maxWidth:"530px",fontSize:"21px"}}>{msg.text}</Typography>
+                                <Typography style={{maxWidth:"44vw",fontSize:"21px"}}>{msg.text}</Typography>
                             </div>
                         </Grid>)
             else 
                 return( <Grid item xs={12}>
                             <div className={classes.rightSide}>
                                 <Typography style={{fontSize:"10px"}} variant="overline">{msg.date.toString()}</Typography>
-                                <Typography style={{maxWidth:"530px",fontSize:"21px"}}>{msg.text}</Typography>
+                                <Typography style={{maxWidth:"44vw",fontSize:"21px"}}>{msg.text}</Typography>
                             </div>
                         </Grid>)
             })}
@@ -107,22 +103,14 @@ export default function ChatPage(){
             setMessage("")
        
     }
-    return (<div style={{width:"-webkit-fill-available",height:"100vh"}}>
-                <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
-            <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
-                <div style={{textAlign:"center"}}>
-                    <Fab onClick={() => {navigate('/home')}} size="medium" style={{marginLeft:"20px",backgroundColor:"#ff3333"}}>
-                        <ArrowBackIcon></ArrowBackIcon>
-                    </Fab>
-                </div>
-            <div style={{display:"flex",justifyContent:"center"}}>
-                <Card style={{width:"800px",marginBottom:"30px",background:'rgba(255, 255, 255, 0.95)'}}>
-                    <Grid container style={{border:"1px solid"}}>
+    return ( <div style={{textAlign:"center",display:"flex",justifyContent:"center",height:"94vh"}}>
+                <Card style={{width:"1000px",marginBottom:"30px",height:"inherit"}}>
+                    <Grid container style={{border:"1px solid",height:"inherit"}}>
                         <Grid item xs={3} style={{borderRight:"1px solid"}}>
                             {recipientList()}
                         </Grid>
                         <Grid item xs={9}>
-                            <Grid item style={{height:400}}>
+                            <Grid item style={{height:"85vh"}}>
                                 {conversation()}
                             </Grid>
                         <Grid container style={{height:55}}>
@@ -139,8 +127,7 @@ export default function ChatPage(){
                         </Grid>
                     </Grid>
                 </Card>
-            </div></div>
-        </div>
+            </div>
     )
  
 }

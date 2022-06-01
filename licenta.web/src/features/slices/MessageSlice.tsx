@@ -3,7 +3,7 @@ import axios from "axios";
 import { RootState } from "../../app/store"
 import { DisplayMessage, SendMessage } from "../../components/types";
 import { SetInitialMessageSliceStatePayload } from "../payloads";
-import { Conversation } from "../types";
+import { Conversation, ConversationResponse } from "../types";
 
 export interface MessagesConfigurationState {
     conversations: Conversation[];
@@ -18,8 +18,17 @@ export interface MessagesConfigurationState {
     "features/MessageSlice/getUserMessages",
     async(userId: number) =>{
       try{
-        const response = await axios.get<Conversation[]>("http://localhost:7071/api/messages/".concat(userId.toString()));
-        var conversations: Conversation[] = response.data;
+        const response = await axios.get<ConversationResponse[]>("http://localhost:7071/api/messages/".concat(userId.toString()));
+        var conversations: Conversation[] = [];
+        response.data.forEach((conv) =>{
+          conversations.push({recipient:{
+            first_name: conv.recipient.firstName,
+            last_name: conv.recipient.lastName,
+            id: conv.recipient.id
+          },messages:conv.messages.map((x) => {return {id: x.id,date:x.date,
+            sender:{id:x.sender.id,first_name:x.sender.firstName,last_name:x.sender.lastName},
+          receiver:{id:x.receiver.id,first_name:x.receiver.firstName,last_name:x.receiver.lastName},text:x.text}})})
+        })
         return conversations;
       }
     catch (err: any) {

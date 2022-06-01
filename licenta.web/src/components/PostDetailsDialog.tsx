@@ -12,22 +12,28 @@ import ContactSellerDialog from "./ContactSellerDialog";
 import { useState } from "react";
 import FollowTheSignsIcon from '@mui/icons-material/FollowTheSigns';
 import { addItemToGenerator } from "../features/slices/OutfitSlice";
-import { useNavigate } from "react-router-dom";
-export default function PostDetailsDialog(post: Post){
+import { useNavigate  } from "react-router-dom";
+export interface PostDetailsDialogProps{
+    post: Post;
+    dialogClose: () => void;
+}
+
+export default function PostDetailsDialog(props: PostDetailsDialogProps){
     
+    let post = props.post;
     const dispatch = useAppDispatch();
     const user = useAppSelector(userSelector);
     const [snackOpened,setSnackOpened] = useState(false)
     let isWishlisted = user.wishlist.findIndex((x: { id: number; }) => x.id === post.id) !== -1
   
-    let navigate = useNavigate(); 
+    let navigate = useNavigate();
 
     const [dialogOpen, setDialogOpen] = useState(false);
     const handleDialogClose = () =>{
         setDialogOpen(false);
     }
 
-    const handleDialogOpen = () =>{ console.log("open click"); setDialogOpen(true)}
+    const handleDialogOpen = () =>{ setDialogOpen(true)}
     const handleAddToWishlist = async () =>{
         const response = await dispatch(AddItemToWishlist({
              userId: user.id,
@@ -80,8 +86,11 @@ export default function PostDetailsDialog(post: Post){
     }
 
     const handleGenerateOutfit = () =>{
+
+        props.dialogClose()
         dispatch(addItemToGenerator(post))
-        navigate("/outfitGenerator")
+        console.log("apasat")
+        navigate("/home",{state:{key:"outfit"}})
     }
     return (
             <div style={{width: "100%",backgroundColor:"whitesmoke"}}>

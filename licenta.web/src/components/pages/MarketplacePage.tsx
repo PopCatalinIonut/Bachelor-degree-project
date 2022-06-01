@@ -1,5 +1,3 @@
-import { useNavigate } from "react-router-dom";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Box, Button, Card, CardContent, Fab, FormControl, Input, InputLabel, MenuItem, Select, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Post } from "../types";
@@ -10,8 +8,9 @@ import SearchIcon from '@mui/icons-material/Search';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { userSelector } from "../../features/slices/UserSlice";
 import MarketplacePostPreviewList from "../MarketplacePostPreviewList";
-import background_image from "../../assets/background.png";
 import axios from "axios";
+import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
+
 export default function MarketplacePage(){
 
     const dispatch = useAppDispatch();
@@ -21,8 +20,8 @@ export default function MarketplacePage(){
     const [conditionValue, setConditionValue] = useState("");
     const [sizeValue, setSizeValue] =useState("");
     const [searchInput, setSearchInput] = useState("");
+    const [priceValue, setPriceValue] = useState("");
     let user = useAppSelector(userSelector)
-    let navigate = useNavigate(); 
     let postList: Post[] = useAppSelector(marketplaceItemsSelector);
 
     const [postsToShow, setPostsToShow] = useState<Post[]>(postList);
@@ -87,6 +86,7 @@ export default function MarketplacePage(){
             .filter((post) =>(genreValue.length === 0) || (genreValue.length !== 0 && post.item.genre === genreValue))
             .filter((post) =>(conditionValue.length === 0) || (conditionValue.length !== 0 && post.item.condition === conditionValue))
             .filter((post) => (sizeValue.length === 0) || (sizeValue.length !== 0 && post.item.size === sizeValue))
+            .filter((post) => (priceValue.length !== 0 && isNaN(parseInt(priceValue)) === false && post.item.price <= Number(priceValue)))
         setPostsToShow(filteredPosts)
     }
     const handleClearFilters = () =>{
@@ -96,27 +96,14 @@ export default function MarketplacePage(){
         setConditionValue("");
         setSizeValue("");
         setPostsToShow(postList)
+        setPriceValue("")
     }
-    
-    const handleGoHome = () =>{ 
-        navigate("/home")
-    };
-    return (
-        <div style={{width:"-webkit-fill-available",height:"100vh"}}>
-        <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
-        <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
+    return ( 
         <div style={{textAlign:"center"}}>
-             <Fab onClick={handleGoHome} style={{marginLeft:"20px",backgroundColor:"#ff3333"}} size="medium">
-                <ArrowBackIcon></ArrowBackIcon>
-                </Fab>
-            </div>
-         
-            <Card style={{border:"1px solid",minWidth:"1150px",maxHeight:700,overflowY:"auto",
-                    borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",background:'rgba(255, 255, 255, 0.95)'}}>
-                <CardContent style={{display:"flex",justifyContent:"center",paddingTop:15}}>
-                    
-                    <FormControl style={{minWidth:"80px",marginLeft:"40px"}}>
-                        <InputLabel>Type</InputLabel>
+            <Card style={{border:"1px solid",maxHeight:"95vh",overflowY:"auto"}}>
+                <CardContent style={{display:"flex",justifyContent:"center",paddingTop:30,paddingBottom:0,height:90}}>
+                    <FormControl style={{minWidth:"80px"}}>
+                        <InputLabel style={{top:"-12px"}}>Type</InputLabel>
                         <Select value={typeValue} autoWidth  notched={true}
                                 onChange={event => {
                                     var eventNr = event.target.value as unknown as string;
@@ -126,8 +113,8 @@ export default function MarketplacePage(){
                                     )}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"115px"}}>
-                        <InputLabel style={{marginBottom:30}}>Category</InputLabel>
+                    <FormControl style={{marginLeft:"30px",minWidth:"115px"}}>
+                        <InputLabel style={{top:"-12px"}}>Category</InputLabel>
                         <Select value={categoryValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
                             setCategoryValue(eventNr);}}>
@@ -139,8 +126,8 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"70px",minWidth:"90px"}}> 
-                        <InputLabel id="Product type">Genre</InputLabel>
+                    <FormControl style={{marginLeft:"30px",minWidth:"90px"}}> 
+                        <InputLabel style={{top:"-12px"}}>Genre</InputLabel>
                         <Select value={genreValue} autoWidth={true}
                             onChange={event => {
                             var eventNr = event.target.value as unknown as string;
@@ -150,9 +137,9 @@ export default function MarketplacePage(){
                             })}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"80px"}}>
-                        <InputLabel id="Product category">Size</InputLabel>
-                        <Select value={sizeValue} autoWidth onChange={event => {
+                    <FormControl style={{marginLeft:"30px",minWidth:"80px"}}>
+                        <InputLabel style={{top:"-12px"}}>Size</InputLabel>
+                        <Select  value={sizeValue} autoWidth onChange={event => {
                             var eventNr = event.target.value as unknown as string;
                             setSizeValue(eventNr);
                             }}> {(() => {
@@ -171,39 +158,52 @@ export default function MarketplacePage(){
                             })()}
                         </Select>
                     </FormControl>
-                    <FormControl style={{marginLeft:"60px",minWidth:"120px",marginRight:"20px"}}>
-                        <InputLabel id="Product category">Condition</InputLabel>
+                    <FormControl style={{marginLeft:"30px",minWidth:"120px",marginRight:"20px"}}>
+                        <InputLabel style={{top:"-12px"}}>Condition</InputLabel>
                         <Select value={conditionValue} onChange={event => {
                             var eventNr = event.target.value as unknown as string;
                             setConditionValue(eventNr)}}>
                             {conditions.map((item) =>{
-                                 return <MenuItem key={item} value={item}>{item}</MenuItem>
+                                return <MenuItem key={item} value={item}>{item}</MenuItem>
                             })}</Select>
-                        </FormControl>       
-            </CardContent>
-            <div style={{display:"flex",justifyContent:"center",borderBottom:"1px solid",paddingBottom:10}}>
-                <Fab variant="extended" size="small" color="primary" onClick={handleApplyFilters} style={{marginTop:20}}> 
+                        </FormControl> 
+                    <FormControl style={{marginLeft:"20px",marginRight:"20px",top:"-30px"}}>
+                        <InputLabel style={{top:"15px"}}>Maximum price</InputLabel>
+                        <Input style={{width:150,height:50}} value={priceValue}
+                            onChange={(event: { currentTarget: { value: string; }; }) => {
+                            setPriceValue(event.currentTarget.value);
+                            }}/>    
+                    </FormControl> 
+                    <Fab variant="extended" size="small" color="primary" onClick={handleApplyFilters} style={{marginLeft:10}}> 
                     <SearchIcon/> Apply changes
                 </Fab>
-                <Fab variant="extended" size="small" color="primary" onClick={handleClearFilters} style={{marginLeft:40,marginTop:20}}>
+                <Fab variant="extended" size="small" color="primary" onClick={handleClearFilters} style={{marginLeft:20}}>
                     <DeleteIcon/> Reset filters
                 </Fab>
-                <Input  
-                onBlur={(event: { currentTarget: { value: string; }; }) => {
-                    setSearchInput(event.currentTarget.value);
-                }}/>
-            <Button onClick={() => {performQuery(searchInput)}}> Search</Button>
+            </CardContent>
+            <div style={{display:"flex",justifyContent:"center",borderBottom:"1px solid",paddingBottom:10}}>
+                <FormControl style={{marginLeft:50}}>
+                    <InputLabel>Search by key word</InputLabel>
+                    <Input style={{width:180}} 
+                        onBlur={(event: { currentTarget: { value: string; }; }) => {
+                            setSearchInput(event.currentTarget.value);
+                        }}/>
+                </FormControl>
+                <Button onClick={() => {performQuery(searchInput)}} variant="contained" style={{height:30,marginTop:20,marginLeft:30}}> Search</Button>
             </div>
-            <Box style={{display: "inline-grid",maxWidth:"1150px",minWidth:500}}>
-            {(() => {
-                if (postsToShow.length === 0)
-                    return ( <div style={{textAlign:"center",justifyContent:"center"}}><Typography style={{fontWeight:900,height:90, marginTop:50, fontSize:30}}>No items found!</Typography></div> );
-                else return (
-                    <MarketplacePostPreviewList posts={postsToShow} user={user}></MarketplacePostPreviewList>
-                )
-            })()}
+            <Box style={{display: "inline-grid",minWidth:500,height:"80vh"}}>
+                {(() => {
+                    if (postsToShow.length === 0)
+                        return ( <div style={{textAlign:"center",justifyContent:"center"}}>
+                                    <Typography style={{fontWeight:900, marginTop:50, fontSize:30}}>No items found!</Typography>
+                                    <ErrorOutlineOutlinedIcon style={{width:250,height:250}}/>
+                                </div> );
+                    else return (
+                        <MarketplacePostPreviewList posts={postsToShow} user={user}></MarketplacePostPreviewList>
+                    )
+                })()}
             </Box>
             </Card>
-        </div></div>
+        </div>
     )
 }

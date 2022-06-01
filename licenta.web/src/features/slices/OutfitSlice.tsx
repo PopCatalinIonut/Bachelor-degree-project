@@ -1,8 +1,8 @@
-import { createAsyncThunk, createSlice, current, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store";
-import { Outfit, OutfitComponent, Post } from "../../components/types";
-import { GenerateOutfitProps } from "../types";
+import { Outfit, OutfitComponent, OutfitComponentResponse, OutfitResponse, Post } from "../../components/types";
+import { convertFromPostResponseToPost, GenerateOutfitProps } from "../types";
 
 export interface OutfitConfigurationState {
     outfit: Outfit;
@@ -23,7 +23,7 @@ export const generateOutfit = createAsyncThunk(
     "features/OutfitSlice/generateOutfit",
     async(props: GenerateOutfitProps, {rejectWithValue}) =>{
       try{
-        const response = await axios.post<Outfit>("http://localhost:7071/api/outfits",{
+        const response = await axios.post<OutfitResponse>("http://localhost:7071/api/outfits",{
             userId: props.userId,
             condition: props.condition,
             maximumValue: props.maximumValue,
@@ -35,7 +35,9 @@ export const generateOutfit = createAsyncThunk(
             postId: props.postId
           }
         );
-        var outfit: Outfit = response.data;
+        var outfit: Outfit = {components:[]};
+        response.data.components.forEach((comp: OutfitComponentResponse) =>{ 
+          outfit.components.push({type: comp.type,post: comp.post === null ? null : convertFromPostResponseToPost(comp.post)})})
         return outfit;
       }
       catch (err: any) {

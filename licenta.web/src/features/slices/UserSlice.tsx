@@ -7,7 +7,7 @@ import axios from "axios";
 import { RootState } from "../../app/store";
 import { Post } from "../../components/types";
 import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
-import { LoggedUserDetails, LoggedUserDetailsResponse, LoginCredentials, SignupCredentials } from "../types";
+import { convertFromPostResponseToPost, LoggedUserDetails, LoggedUserDetailsResponse, LoginCredentials, SignupCredentials } from "../types";
 
 export interface LoginSiceConfigurationState {
     user: LoggedUserDetails;
@@ -31,6 +31,7 @@ export const userSignUp = createAsyncThunk(
     }
   },
 );
+
 export const userLogin = createAsyncThunk(
   "features/UserSlice/userLogin",
   async (credentials: LoginCredentials) => {
@@ -43,9 +44,9 @@ export const userLogin = createAsyncThunk(
       lastName: response.data.lastName,
       email: response.data.email, 
       id: response.data.id,
-      postedPosts: response.data.postedPosts,
-      wishlist: response.data.wishlist
-    };
+      postedPosts: response.data.postedPosts.map((post) => {return convertFromPostResponseToPost(post)}),
+      wishlist: response.data.wishlist.map((post) => {return convertFromPostResponseToPost(post)})
+      }
     return user;
   },
 );

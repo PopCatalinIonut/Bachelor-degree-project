@@ -8,7 +8,8 @@ const theme = createTheme ({
     },
     secondary:{
       main: red[500]
-    }
+    },
+    background: {default:"#f5f5f5",paper:"#f5f5f5"}
   },
     components:{
       MuiButton: {
@@ -17,16 +18,20 @@ const theme = createTheme ({
             style: {
               padding:"5px 12px",
               minWidth:100
-            },
-          },]
+            }
+          },
+          {props: { size: 'medium' },
+          style: {
+            padding:"5px 12px",
+            width:"fit-content"
+          }}]
         }
       ,
       MuiToggleButton:{
         styleOverrides:{
           root:{
             border:"2px solid",
-            borderRadius: "1.5rem 1.5rem 1.5rem 1.5rem",
-            padding:"10px 10px 10px 10px",
+            padding:"5px 10px 5px 10px",
             color:"black",
           },
         }
@@ -68,7 +73,7 @@ const theme = createTheme ({
           root:{
             color:"black",
             fontSize:17,
-            top:"-40%"
+            paddingBottom: 20
           }
         }
       },
@@ -76,10 +81,16 @@ const theme = createTheme ({
        styleOverrides:{
          "notchedOutline":{
            border:"2px solid",
-           borderRadius:"1.5rem 1.5rem 1.5rem 1.5rem",
          },
        }
      },
+     MuiChip:{
+       styleOverrides:{
+         label:{
+          padding:"0px 5px"
+         }
+       }
+     }
     }
     }
   );

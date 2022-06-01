@@ -39,7 +39,7 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
         <Paper style={{width: "inherit",height:"100%"}}>
             <Grid container style={{width: "inherit",height:"100%" }}>
                 <Grid item xs={6} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
-                    backgroundSize:"cover", backgroundPosition:"center"}}>
+                    backgroundSize:"cover", backgroundPosition:"center",width:"inherit"}}>
                     <Fab size="medium" onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
                          <ArrowBackIcon/>
                     </Fab>

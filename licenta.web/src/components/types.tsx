@@ -1,3 +1,5 @@
+import { PostResponse } from "../features/types";
+
 export interface AddSellingItem {
     name: string;
     type: string;
@@ -74,6 +76,14 @@ export interface Outfit{
     components: OutfitComponent[];
 }
 
+export interface OutfitResponse{
+    components: OutfitComponentResponse[];
+}
+
+export interface OutfitComponentResponse{
+    type: string;
+    post: PostResponse | null
+}
 export interface OutfitComponent{
     type: string;
     post: Post | null

@@ -1,12 +1,10 @@
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useState } from "react";
 import { useNavigate} from "react-router-dom";
 import { useAppDispatch } from "../../app/hooks";
 import { initUserWishlist, userLogin } from "../../features/slices/UserSlice";
-import { LoggedUserDetails, LoggedUserDetailsResponse } from "../../features/types";
-import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid, Theme } from "@mui/material";
-import logo from "../../assets/logo_cropped.png"
-import background_image from "../../assets/background.png"
+import { LoggedUserDetails } from "../../features/types";
+import { Typography, FormControl, Card, Input, InputLabel, Button, CardContent, Grid } from "@mui/material";
+import logo from "../../assets/logo_cropped.jpg"
 
 export default function LoginPage() {
   const dispatch = useAppDispatch();
@@ -20,21 +18,12 @@ export default function LoginPage() {
   }
 
   const handleLogin = async () =>{ 
-    const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
-    try {
-      var user = response.payload as LoggedUserDetailsResponse;
-      const payload: LoggedUserDetails = {
-          id: user.id,
-          loginUsername: user.loginUsername,
-          first_name: user.firstName,
-          last_name: user.lastName,
-          email: user.email,
-          postedPosts: user.postedPosts,
-          wishlist: user.wishlist
-      }
-      console.log(payload);
-      if(payload.wishlist.length > 0 ){
-        dispatch(initUserWishlist(payload.wishlist))
+    try { 
+      const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
+      var user = response.payload as LoggedUserDetails;
+      console.log(user);
+      if(user.wishlist.length > 0 ){
+        dispatch(initUserWishlist(user.wishlist))
       }
       navigate("/home");
     } catch (err) {
@@ -43,24 +32,21 @@ export default function LoginPage() {
 
   }
   return (
-    <div style={{width:"-webkit-fill-available",height:"100vh"}}>
-      <img style={{width:"-webkit-fill-available",height:"100vh"}} src={background_image}></img>
     <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
-      <Card style={{display: "inline-grid", textAlign:"center",width:"350px",marginTop:"-5%",border:"2px solid",
-        borderRadius: "2.5rem 2.5rem 2.5rem 2.5rem",backgroundColor:'rgba(255, 255, 255, 0.95)'}} variant="outlined">
+      <Card style={{display: "inline-grid", textAlign:"center",width:"350px",marginTop:"-5%",border:"2px solid"}} variant="outlined">
         <CardContent style={{padding:0}}> 
-          <img src={logo} style={{height:136, width:200}} ></img>
+         <img src={logo} style={{height:180, width:240}} ></img>
           <Grid container>
             <Grid item xs={12}>
               <div style={{ display: "inline-grid"}}>
                 <Typography style={{fontWeight: 600, fontSize:30, marginBottom:"5%"}}>Welcome!</Typography>
                 {incorrectCredentials}
                 <FormControl>
-                    <InputLabel style={{marginTop:"20px"}}>Username</InputLabel>
+                    <InputLabel>Username</InputLabel>
                     <Input value={usernameValue} onChange={event =>{ setUsernameValue(event.target.value)}}/>
                 </FormControl>
                 <FormControl style={{marginTop:"5%"}}>
-                    <InputLabel style={{marginTop:"20px"}}>Password</InputLabel>
+                    <InputLabel >Password</InputLabel>
                     <Input type="password" value={passwordValue} onChange={event =>{setPasswordValue(event.target.value)}}/>
                 </FormControl>
             </div>
@@ -80,7 +66,6 @@ export default function LoginPage() {
           </Grid>
         </CardContent>
       </Card> 
-    </div>
     </div>
   );
 }

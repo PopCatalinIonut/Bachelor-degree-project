@@ -1,7 +1,5 @@
-import { Button, Dialog, Fab, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@mui/material";
+import { Button, Dialog, Grid, Input, InputAdornment, MenuItem, Select, Snackbar, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { clothingSizes, footwearSizes, genreList, outfitSeasonType, colorPalette, conditions } from "../../data/itemPropertiesData";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
@@ -11,7 +9,6 @@ import OutfitGeneratorPostPreview from "../OutfitGeneratorPostPreview";
 import { Outfit, OutfitComponent, Post, PostUserDetails } from "../types";
 import PostDetailsDialog from "../PostDetailsDialog";
 import ErrorOutlineOutlinedIcon from '@mui/icons-material/ErrorOutlineOutlined';
-import background_image from "../../assets/background.png"
 
 const clothingSizesWithNone = [""].concat(clothingSizes);
 const shoeSizesWithBlank = [{size:"",  genre:"", category:"", }].concat(footwearSizes)
@@ -34,8 +31,6 @@ export default function OutfitGeneratorPage(){
     var selectedItem = useAppSelector(itemToGenerateWithSelector);
     const user = useAppSelector(userSelector)
     const succes = useAppSelector(succesSelector)
-
-    let navigate = useNavigate(); 
 
     const handleGenerateOutfit = async () =>{
         try{
@@ -80,17 +75,9 @@ export default function OutfitGeneratorPage(){
                     </div>
         
     }
-    return ( <div style={{width:"-webkit-fill-available",height:"100vh"}}>
-    <img style={{width:"-webkit-fill-available",height:"100vh",position:"relative"}} src={background_image}></img>
-    <div style={{position:"absolute",bottom:"50%",left:"50%",transform:"translate(-50%,50%)"}}> 
-         <div style={{textAlign:"center"}}>
-             <Fab size="medium" onClick={() => {navigate("/home")}} style={{backgroundColor:"#ff3333"}}>
-                <ArrowBackIcon></ArrowBackIcon>
-                </Fab>
-            </div>
-            <Grid container style={{textAlign:"center",justifyContent:"center", minHeight:690,
-            minWidth:1000,background:'rgba(255, 255, 255, 0.95)'}}>
-                <Grid item xs={6} container style={{border:"1px solid",maxWidth:500}}>
+    return ( <div style={{textAlign:"center",height:"95vh"}}>
+            <Grid container style={{textAlign:"center",justifyContent:"center"}}>
+                <Grid item xs={7} container style={{borderLeft:"1px solid",borderTop:"1px solid",borderBottom:"1px solid",maxWidth:500,height:"inherit"}}>
                     <Grid item xs={12} style={{marginTop:"3%",display:"flex",textAlign:"center",justifyContent:"center"}}>
                         <Typography style={{paddingTop:15}}>Budget:</Typography>
                         <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}
@@ -171,18 +158,17 @@ export default function OutfitGeneratorPage(){
                                 )()}
                             </ToggleButtonGroup>
                     </Grid>
+                    <Grid item xs={12}>
+                        <Button variant="contained"  color="primary" onClick={handleGenerateOutfit}>Generate</Button>
+                    </Grid>
                 </Grid>
-                <Grid item xs={6} container style={{border:"1px solid",width:500,display:"grid",alignContent:"center"}}>
+                <Grid item xs={5} container style={{border:"1px solid",display:"grid",maxWidth:"fit-content",alignContent:"center"}}>
                    {outfitSection()}
                 </Grid>
             </Grid>
-        <div style={{textAlign:"center"}}>
-            <Button variant="contained"  color="primary" onClick={handleGenerateOutfit}>Generate</Button>
-        </div>
         <Snackbar
           open={errorSnackOpened} autoHideDuration={3000} message="There was an error"
           anchorOrigin={{vertical: "top", horizontal: "center"}}/>
-      </div>
     </div>)
 }
 
@@ -196,30 +182,30 @@ export interface ShowItemProps{
 
 export function ShowItem(props: ShowItemProps){  
     const [dialogPost, setDialogPost] = useState(<div></div>);
-
-    const handleDialogOpen = (post:Post | null) => {
-        if(post !== null)
+    const handleDialogOpen = (post:Post) => {
+        if(post !== null && post !== undefined){
             setDialogPost(
                 <div>
                     <Dialog fullWidth maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}}  open={true} onClose={handleDialogClose}>
-                        <PostDetailsDialog item={post.item} seller={post.seller} id={post.id} is_active={post.is_active}
-                        description={post.description} location={post.location}/>
+                        <PostDetailsDialog post={post} dialogClose={handleDialogClose} />
                     </Dialog>
                 </div>
             );
+        }
+           
     };
 
     const handleDialogClose = () =>{ setDialogPost(<div></div>) }
     
     if (props.post !== undefined && props.post.post !== null )
-        return (<Grid item xs={12} style={{width:"inherit",height:230}} key={props.post.post.id}>
+        return (<Grid item xs={12} style={{height:"31.5vh",width:"33.3vw"}} key={props.post.post.id}>
                     <OutfitGeneratorPostPreview post={props.post.post} user={props.user}  isDeletable={props.selectedItem.post?.id === props.post.post.id}
                         dialogOpen={handleDialogOpen}/>
                     {dialogPost}
                 </Grid>)
     else if(props.selectedItem.post !== null && props.selectedItem.type !== props.type && props.firstOpen !== 0) 
             return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:"inherit",height:230,alignContent:"center"}}>
-                        <Typography style={{fontWeight:900}}>We couldn't find any top matching your criteria!</Typography>
+                        <Typography style={{fontWeight:900}}>{"We couldn't find any " + props.type + " matching your criteria!"}</Typography>
                     </Grid>)
         else 
         return (<Grid item xs={12} style={{display:"grid",textAlign:"center",width:"inherit",height:230,alignContent:"center"}}>
