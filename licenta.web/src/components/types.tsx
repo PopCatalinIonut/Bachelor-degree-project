@@ -1,4 +1,4 @@
-import { PostResponse } from "../features/types";
+import { LoggedUserDetailsResponse, PostResponse } from "../features/types";
 
 export interface AddSellingItem {
     name: string;
@@ -61,7 +61,18 @@ export interface DisplayMessage{
     text: string;
     date: Date;
 }
- 
+
+export interface PostUserDetailsResponse{
+    firstName: string;
+    lastName: string;
+    id: number;
+}
+
+export interface DisplayMessageResponse extends Omit<DisplayMessage,"sender"|"receiver">{
+    sender: PostUserDetailsResponse;
+    receiver: PostUserDetailsResponse;
+}
+
 export interface SendMessage{
     senderId: number;
     receiverId: number;

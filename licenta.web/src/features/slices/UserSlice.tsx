@@ -1,3 +1,4 @@
+import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import {
     createAsyncThunk,
     createSlice,
@@ -7,7 +8,7 @@ import axios from "axios";
 import { RootState } from "../../app/store";
 import { Post } from "../../components/types";
 import { SetInitialUserSliceStatePayload, UpdatePostActiveStatusPayload } from "../payloads";
-import { convertFromPostResponseToPost, LoggedUserDetails, LoggedUserDetailsResponse, LoginCredentials, SignupCredentials } from "../types";
+import { convertFromPostResponseToPost, LoggedUserDetails, LoggedUserDetailsResponse, LoginCredentials, PostResponse, SignupCredentials } from "../types";
 
 export interface LoginSiceConfigurationState {
     user: LoggedUserDetails;
@@ -17,7 +18,7 @@ export const userSignUp = createAsyncThunk(
   "features/UserSlice/userSignin",
   async (credentials: SignupCredentials, { rejectWithValue }) => {
   try{
-      await axios.post("http://localhost:7071/api/users",{
+      await axios.post("http://localhost:5001/users",{
         loginusername: credentials.username,
         firstName: credentials.firstName,
         lastName: credentials.lastName,
@@ -36,8 +37,9 @@ export const userLogin = createAsyncThunk(
   "features/UserSlice/userLogin",
   async (credentials: LoginCredentials) => {
 
-    const response = await axios.get<LoggedUserDetailsResponse>("http://localhost:7071/api/users/login" 
+    const response = await axios.get<LoggedUserDetailsResponse>("http://localhost:5000/users/login" 
     .concat("&username=").concat(credentials.username).concat("&password=").concat(credentials.password));
+    console.log(response.data)
     var user = {
       loginUsername: response.data.loginUsername,
       firstName: response.data.firstName,
@@ -85,8 +87,8 @@ export const userSlice = createSlice({
       deletePostReducer: (state, action:PayloadAction<number>) =>{
         state.user.postedPosts.splice(state.user.postedPosts.findIndex(x => x.id === action.payload),1);
       },
-      addPostReducer: (state, action:PayloadAction<Post>) =>{
-        state.user.postedPosts.push(action.payload);
+      addPostReducer: (state, action:PayloadAction<PostResponse>) =>{
+        state.user.postedPosts.push(convertFromPostResponseToPost(action.payload));
       }
     },
     extraReducers: builder => {
@@ -120,5 +122,6 @@ export const userSelector = (state: RootState) => state.userSlice.user;
 export const userWishlistSelector = (state: RootState) => state.userSlice.user.wishlist
 export const userDisabledPostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.is_active === false)
 export const userActivePostsSelector = (state: RootState) => state.userSlice.user.postedPosts.filter(post => post.is_active === true);
+
 export default userSlice.reducer;
   

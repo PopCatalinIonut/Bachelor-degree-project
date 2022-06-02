@@ -14,6 +14,10 @@ export interface AddItemToWishlistPayload {
   postId: number;
 }
 
+export interface GetUserMessagesPayload{
+  userId: number;
+  connectionId: string;
+}
 
 export interface SetInitialMessageSliceStatePayload {
   conversations: Conversation[]

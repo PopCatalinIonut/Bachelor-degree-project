@@ -23,7 +23,7 @@ export const generateOutfit = createAsyncThunk(
     "features/OutfitSlice/generateOutfit",
     async(props: GenerateOutfitProps, {rejectWithValue}) =>{
       try{
-        const response = await axios.post<OutfitResponse>("http://localhost:7071/api/outfits",{
+        const response = await axios.post<OutfitResponse>("http://localhost:5000/outfits",{
             userId: props.userId,
             condition: props.condition,
             maximumValue: props.maximumValue,

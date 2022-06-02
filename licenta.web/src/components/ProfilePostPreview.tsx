@@ -51,8 +51,8 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
     }
 
     return (
-        <Paper style={{ width: 800,maxWidth: 800,padding:0 ,background:'rgba(255, 255, 255, 0.55)'}} >
-            <Grid container spacing={2} style={{margin:"auto",padding:0, marginBottom:20}}>
+        <Paper style={{ width: 800,maxWidth: 800,padding:0}} >
+            <Grid container spacing={2} style={{padding:0, marginBottom:20}}>
                 <Grid item xs={7} style={{padding:0,maxWidth:"450px"}} >
                     {showImages()}
                 </Grid>
@@ -60,7 +60,7 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
                      
                     <Grid item xs container direction="column">
                         <Grid item xs={12}>
-                            <Fab size="medium" style={{float:"right",marginRight:"3%"}} onClick={() => {props.dialogOpen(props.post)}}>
+                            <Fab size="medium" style={{float:"right",marginTop:"5%"}} onClick={() => {props.dialogOpen(props.post)}}>
                                 <OpenInNewRoundedIcon/></Fab>
                         </Grid>
                         <Grid item xs style={{justifyContent:"center",textAlign:"center"}}>

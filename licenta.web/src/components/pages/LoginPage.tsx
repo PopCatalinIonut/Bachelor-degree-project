@@ -21,7 +21,7 @@ export default function LoginPage() {
     try { 
       const response = await dispatch(userLogin({username:usernameValue,password:passwordValue}))
       var user = response.payload as LoggedUserDetails;
-      console.log(user);
+
       if(user.wishlist.length > 0 ){
         dispatch(initUserWishlist(user.wishlist))
       }

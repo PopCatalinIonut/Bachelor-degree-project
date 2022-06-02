@@ -8,6 +8,7 @@ import { addItemToMarketplace } from "../../features/slices/MarketplaceSlice";
 import { addPostReducer, userSelector } from "../../features/slices/UserSlice";
 import { Post } from "../types";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { PostResponse } from "../../features/types";
 const styles = {
 
     typographyFormat: {
@@ -98,7 +99,7 @@ export default function AddItemPage() {
                     },
                     description: descriptionValue, location: locationValue, userId: user.id
                 }))
-                const post = unwrapResult(response) as Post
+                const post = response.payload as PostResponse
                 setSnackOpened("Item has been successfuly posted!");
                 dispatch(addPostReducer(post))
                 }catch (err) {

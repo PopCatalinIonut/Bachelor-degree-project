@@ -40,23 +40,25 @@ export default function OutfitGeneratorPostPreview (props: MarketplacePostPrevie
             <Grid container style={{width: "inherit",height:"100%" }}>
                 <Grid item xs={6} style={{ backgroundImage:"url(" + imageToShow.image.link + ")",
                     backgroundSize:"cover", backgroundPosition:"center",width:"inherit"}}>
-                    <Fab size="medium" onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%"}}>
+                        <Fab size="medium" onClick={handleImageChangeLeft} style={{width:"15%" , height:"5%", left: props.isDeletable === true ? "10%" : "0%"}}>
                          <ArrowBackIcon/>
                     </Fab>
-                    <Fab size="medium" onClick={handleImageChangeRight} style={{width:"15%" , height:"5%"}}>
+                    <Fab size="medium" onClick={handleImageChangeRight} style={{width:"15%" , height:"5%", left: props.isDeletable === true ? "10%" : "0%"}}>
                          <ArrowForwardIcon/>
                     </Fab>
+                            <div style={{float:"right"}}>
+                        {(() =>  {
+                                if(props.isDeletable === true)
+                                return  <Fab size="medium" onClick={hanleRemoveFromGenerator} style={{height:"5%", background:"red"}}>
+                                <DeleteOutlineOutlinedIcon/>
+                            </Fab>}
+                        )()}  
+                    </div>
+                  
                 </Grid> 
-                <div style={{position:"relative",left:-40}}>
-                    {(() =>  {
-                            if(props.isDeletable === true)
-                            return  <Fab size="medium" onClick={hanleRemoveFromGenerator} style={{width:"150%" , height:"5%", background:"red"}}>
-                            <DeleteOutlineOutlinedIcon/>
-                        </Fab>}
-                    )()}
-                </div>
+                
                 <Grid item xs={6} sm container style={{position:"relative"}}>
-                    <ButtonBase style={{width:"inherit",display:"inline-block"}} onClick={handleOpenDialog}>   
+                    <ButtonBase style={{width:"inherit",display:"inline-block"}} onClick={handleOpenDialog}> 
                         <Grid item xs container direction="column" >
                             <Grid item xs={12} style={{textAlign:"center",justifyContent:"center"}}>
                                 <Typography gutterBottom style={{fontWeight:900, fontSize:16}} component="div">

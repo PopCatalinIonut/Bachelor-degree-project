@@ -20,7 +20,6 @@ export default function ProfilePage() {
     const currentUser: LoggedUserDetails = useAppSelector(userSelector);
     const activePosts: Post[] = useAppSelector(userActivePostsSelector);
     const disabledPosts: Post[] = useAppSelector(userDisabledPostsSelector);
-
     const activePostsList = () =>{
         if (activePosts?.length === 0)
             return <Typography>You currently have no active posts!</Typography>
@@ -55,7 +54,7 @@ export default function ProfilePage() {
         <div style={{width:"-webkit-fill-available",height:"100vh"}}>
             <div style={{textAlign:"center"}}>
             <Grid container style={{textAlign:'center'}}>
-                <Grid item xs={5} style={{marginTop:"10%",textAlign:"center",justifyContent:"center"}}>
+                <Grid item xs={5} style={{marginTop:"5%",textAlign:"center",justifyContent:"center"}}>
                     <Grid container style={{width:"80%"}}>
                         <Grid item xs={12}>
                     <PersonIcon style={{width:"240px",height:"240px"}}></PersonIcon>
