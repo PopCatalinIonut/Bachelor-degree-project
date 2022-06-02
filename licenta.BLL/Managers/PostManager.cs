@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net.Mime;
 using System.Threading.Tasks;
-using Azure.Storage.Blobs;
 using licenta.BLL.DTOs;
 using licenta.BLL.Helpers;
 using licenta.BLL.Models;
@@ -34,7 +32,7 @@ namespace licenta.BLL.Managers
 
             if (post.Id == 0) return null;
             
-            var dir = Path.GetFullPath(@"..\..\..\..\") + "appsettings.json";
+            var dir = Path.GetFullPath(@"..\") + "appsettings.json";
             var config = new ConfigurationBuilder()
                 .SetBasePath(Environment.CurrentDirectory)
                 .AddNewtonsoftJsonFile(dir)

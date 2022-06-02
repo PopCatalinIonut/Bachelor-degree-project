@@ -218,7 +218,7 @@ namespace licenta.BLL.Utils
         static Utils()
         {
             var propsFileLocation
-                = Directory.GetParent(Directory.GetCurrentDirectory())?.Parent?.Parent?.Parent?.FullName + @"\"+ "ItemProperties.json";
+                = Directory.GetParent(Directory.GetCurrentDirectory())?.FullName + @"\"+ "ItemProperties.json";
             var text = File.ReadAllText(propsFileLocation);
             var itemProperties = JsonConvert.DeserializeObject<ItemProperties>(text);
             ColorsDictionary = new Dictionary<string, List<string>>();

@@ -1,23 +1,21 @@
-﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
 using licenta.BLL.DTOs;
-using licenta.BLL.Managers;
 using licenta.BLL.Helpers;
+using licenta.BLL.Managers;
 using licenta.BLL.Models;
-using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace licenta.API
+namespace licenta.API.Controllers
 {
-    public class PostFunctions
+    [ApiController]
+    [Route("posts")]
+    public class PostFunctions : Controller
     {
         private readonly PostManager _postManager ;
 
@@ -27,15 +25,19 @@ namespace licenta.API
         }
         
         [HttpPost]
-        [FunctionName("AddToWishlist")]
-        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
-        public async Task<ActionResult<Post>> AddPostToWishlist(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "posts/wishlist")] HttpRequest req,
-            ILogger log)
+        [Route("/wishlist")]
+        public async Task<ActionResult<Post>> AddPostToWishlist()
         {
             try
             { 
-                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var body = HttpContext.Request.Body;
+                var requestBody = "";
+                using (StreamReader reader 
+                       = new StreamReader(body, Encoding.UTF8, true, 1024, true))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+
                 var addPostData = JsonConvert.DeserializeObject<WishlistPost>(requestBody);
                
                 var added = _postManager.AddPostToWishlist(addPostData);
@@ -57,13 +59,9 @@ namespace licenta.API
             }
         }
         
-        [FunctionName("RemoveFromWishlist")]
-        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
-        [OpenApiParameter("userId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
-        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
-        public ActionResult<Post> RemovePostFromWishlist(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "posts/wishlist/post/{postId}/user/{userId}")] HttpRequest req, int postId, int userId,
-            ILogger log)
+        [HttpDelete]
+        [Route("/wishlist/post/{postId}/user/{userId}")]
+        public ActionResult<Post> RemovePostFromWishlist(int postId, int userId)
         {
             try
             { 
@@ -88,14 +86,9 @@ namespace licenta.API
             }
         }
         
-        [HttpPost]
-        [FunctionName("UpdatePostStatus")]
-        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
-        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
-        [OpenApiParameter("status", In = ParameterLocation.Path, Required = true, Type = typeof(bool))]
-        public ActionResult<Post> UpdatePostStatus(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "patch", Route = "posts/{postId}/{status}")] HttpRequest req, int postId, bool status,
-            ILogger log)
+        [HttpPatch]
+        [Route("/posts/post={postId}&status={status}")]
+        public ActionResult<Post> UpdatePostStatus(int postId, bool status)
         {
             try
             { 
@@ -118,13 +111,9 @@ namespace licenta.API
             }
         }
         
-        [HttpPost]
-        [FunctionName("DeletePost")]
-        [OpenApiRequestBody("application/json", typeof(WishlistPost))]
-        [OpenApiParameter("postId", In = ParameterLocation.Path, Required = true, Type = typeof(int))]
-        public ActionResult<Post> DeletePost(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "posts/{postId}")] HttpRequest req, int postId,
-            ILogger log)
+        [HttpDelete]
+        [Route("/posts/{postId}")]
+        public ActionResult<Post> DeletePost(int postId)
         {
             try
             { 
@@ -147,11 +136,8 @@ namespace licenta.API
             }
         }
         
-        [FunctionName("GetActivePosts")]
-        [OpenApiRequestBody("application/json", typeof(Post))]
-        public ActionResult<List<Post>> GetActivePosts(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "posts")] HttpRequest req,
-            ILogger log)
+        [HttpGet]
+        public ActionResult<List<Post>> GetActivePosts()
         {
             try
             {
@@ -165,16 +151,18 @@ namespace licenta.API
                 };
             }
         }
-        [FunctionName("AddPost")]
-        [OpenApiOperation("add", "posts")]
-        [OpenApiRequestBody("application/json", typeof(AddPostDto))]
-        public async Task<ActionResult<Post>> AddPost(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "posts")] HttpRequest req,
-            ILogger log)
+        [HttpPost]
+        public async Task<ActionResult<Post>> AddPost()
         {
             try
             {
-                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var body = HttpContext.Request.Body;
+                var requestBody = "";
+                using (StreamReader reader 
+                       = new StreamReader(body, Encoding.UTF8, true, 1024, true))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
                 var addPostData = JsonConvert.DeserializeObject<AddPostDto>(requestBody);
 
                 var added = await _postManager.AddPost(addPostData);

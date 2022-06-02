@@ -1,34 +1,23 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AzureFunctionsVersion>v4</AzureFunctionsVersion>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Common" Version="1.1.0" />
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.AppSettings" Version="1.2.0" />
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.Configuration.Json" Version="2.1.1.1" />
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.DependencyInjection" Version="2.2.0.1" />
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi" Version="3.1.1" />
-    <PackageReference Include="Aliencube.AzureFunctions.Extensions.OpenApi.Core" Version="3.1.1" />
-    <PackageReference Include="CorsPolicySettings" Version="2.0.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Cors" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.Formatters.Json" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.24" />
-    <PackageReference Include="Microsoft.Azure.Functions.Extensions" Version="1.1.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.NewtonsoftJson" Version="5.0.1" />
-    <PackageReference Include="Microsoft.NET.Sdk.Functions" Version="3.0.13" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\licenta.BLL\licenta.BLL.csproj" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="host.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+        <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="5.0.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="local.settings.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\licenta.BLL\licenta.BLL.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -19,6 +19,7 @@ namespace licenta.BLL.Managers
             var user = _context.Users
                 .Include(x => x.PostedPosts)
                 .ThenInclude(x => x.Item).ThenInclude(x => x.Images)
+                .Include(x => x.PostedPosts).ThenInclude(x => x.Item.ColorSchema)
                 .Include(x => x.WishlistList)
                 .FirstOrDefault(x => x.LoginUsername == username && x.Password == password);
             if (user == null) return null;
@@ -35,8 +36,8 @@ namespace licenta.BLL.Managers
                     Description = Posts.Description,
                     IsActive = Posts.IsActive,
                     Item = new Item(Posts.Item.Id,Posts.Item.Name,Posts.Item.Brand,Posts.Item.Type,Posts.Item.Category,Posts.Item.Genre,
-                        Posts.Item.Size,Posts.Item.Fit,Posts.Item.Condition,Posts.Item.Price,Posts.Item.Images),
-                    Seller = Posts.Seller
+                        Posts.Item.Size,Posts.Item.Fit,Posts.Item.Condition,Posts.Item.Price,Posts.Item.Images,Posts.Item.ColorSchema),
+                    Seller = Posts.Seller,
                 }
             ).ToList();
                 

@@ -7,7 +7,8 @@ namespace licenta.BLL.Models
 {
     public class Item: ICloneable
     {
-        public Item(int id, string name, string brand, string type, string category, string genre, string size, string fit, string condition, double price, List<ItemImage> images)
+        public Item(int id, string name, string brand, string type, string category, string genre, string size,
+            string fit, string condition, double price, List<ItemImage> images, ColorSchema itemColorSchema)
         {
             Id = id;
             Name = name;
@@ -20,6 +21,7 @@ namespace licenta.BLL.Models
             Condition = condition;
             Price = price;
             Images = images;
+            ColorSchema = itemColorSchema;
         }
 
         public Item(Item other)

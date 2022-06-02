@@ -1,35 +1,30 @@
-﻿using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
-using System.Web.Http;
 using licenta.BLL.DTOs;
+using licenta.BLL.Helpers;
 using licenta.BLL.Managers;
 using licenta.BLL.Models;
-using licenta.BLL.Helpers;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
-namespace licenta.API
+namespace licenta.API.Controllers
 {
-    public class UserFunctions
+    [ApiController]
+    [Route("users")]
+    public class UserFunctions : Controller
     {
         private readonly UserManager _userManager;
-
+        
         public UserFunctions(ShopDbContext dbContext)
         {
             _userManager = new UserManager(dbContext);
         }
-        [FunctionName("GetUsers")]
-        [OpenApiRequestBody("application/json", typeof(User))]
-        public ActionResult<List<User>> GetAllUsers(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users")] HttpRequest req,
-            ILogger log)
+        [HttpGet]
+        public ActionResult<List<User>> GetAllUsers()
         {
             try
             {
@@ -43,16 +38,19 @@ namespace licenta.API
                 };
             }
         }
-        [FunctionName("AddUser")]
-        [OpenApiOperation("add", "users")]
-        [OpenApiRequestBody("application/json", typeof(string))]
-        public async Task<ActionResult<string>> AddUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "users")] HttpRequest req,
-            ILogger log)
+        [HttpPost]
+        public async Task<ActionResult<string>> AddUser()
         {
             try
             {
-                string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+                var body = HttpContext.Request.Body;
+                var requestBody = "";
+                using (StreamReader reader 
+                       = new StreamReader(body, Encoding.UTF8, true, 1024, true))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+
                 var addUserData = JsonConvert.DeserializeObject<User>(requestBody);
                 var message = _userManager.AddUser(addUserData);
                 if (message.Length == 0)
@@ -72,12 +70,10 @@ namespace licenta.API
                 };
             }
         }
-        [FunctionName("VerifyUser")]
-        [OpenApiOperation("get", "user")]
-        [OpenApiRequestBody("application/json", typeof(User))]
-        public ActionResult<UserWithWishlistDto> VerifyUser(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "users/login&username={username}&password={password}")] HttpRequest req,
-            [FromUri] string username, [FromUri]string password, ILogger log)
+        
+        [HttpGet]
+        [Route("login&username={username}&password={password}")]
+        public ActionResult<UserWithWishlistDto> VerifyUser(string username, string password)
         {
             try
             {
@@ -98,6 +94,5 @@ namespace licenta.API
                 };
             }
         }
-       
     }
 }

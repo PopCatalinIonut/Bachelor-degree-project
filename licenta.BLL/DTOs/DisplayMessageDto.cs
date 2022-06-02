@@ -1,5 +1,4 @@
-﻿using System;
-using licenta.BLL.Models;
+﻿using licenta.BLL.Models;
 
 namespace licenta.BLL.DTOs
 {

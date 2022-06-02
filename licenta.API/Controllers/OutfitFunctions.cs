@@ -1,22 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Threading.Tasks;
-using Aliencube.AzureFunctions.Extensions.OpenApi.Core.Attributes;
 using licenta.BLL.DTOs;
 using licenta.BLL.Helpers;
 using licenta.BLL.Managers;
-using licenta.BLL.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
-namespace licenta.API
+namespace licenta.API.Controllers
 {
-    public class OutfitFunctions
+    [ApiController]
+    [Route(("outfits"))]
+    public class OutfitFunctions : Controller
     {
         private readonly OutfitManager _outfitManager ;
 
@@ -24,15 +21,18 @@ namespace licenta.API
         {
             _outfitManager = new OutfitManager(dbContext);
         }
-        [FunctionName("GenerateOutfit")]
-        [OpenApiRequestBody("application/json", typeof(AddPostDto))]
-        public async Task<ActionResult<ReturnedOutfitDto>> GenerateOutfit(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "outfits")] HttpRequest req,
-            ILogger log)
+        [HttpPost]
+        public async Task<ActionResult<ReturnedOutfitDto>> GenerateOutfit()
         {
             try
-            {
-                var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            { var body = HttpContext.Request.Body;
+                var requestBody = "";
+                using (StreamReader reader 
+                       = new StreamReader(body, Encoding.UTF8, true, 1024, true))
+                {
+                    requestBody = await reader.ReadToEndAsync();
+                }
+
                 var data = JsonConvert.DeserializeObject<GenerateOutfitDto>(requestBody);
 
                 var outfit = _outfitManager.GenerateOutfit(data);
