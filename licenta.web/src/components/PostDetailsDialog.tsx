@@ -57,7 +57,7 @@ export default function PostDetailsDialog(props: PostDetailsDialogProps){
                             <MessageIcon/>
                         </Fab>
                         </div>
-                        <Fab variant="extended" style={{marginTop:50}} onClick={handleGenerateOutfit}>Generate an outfit with this item 
+                        <Fab variant="extended" style={{marginTop:50,paddingRight:0, paddingLeft:0}} onClick={handleGenerateOutfit}>Generate an outfit with this item 
                             <FollowTheSignsIcon/>
                         </Fab>
                     </div>)
@@ -109,17 +109,17 @@ export default function PostDetailsDialog(props: PostDetailsDialogProps){
                             </div>
                      </Grid>
                     <Grid item xs={4} style={{marginTop:30, textAlign: "left", float:"left"}}>
-                        <TableContainer style={{height:250,width:350,backgroundColor:"transparent",marginLeft:1}}>
+                        <TableContainer style={{height:250,width:370,backgroundColor:"transparent",marginLeft:1}}>
                             <Table>
                                 <TableHead>
                                     <TableRow>
-                                        <TableCell component="th" scope="row " style={{textAlign:"center", border: "1.5px solid"}}>
+                                        <TableCell component="th" scope="row " style={{textAlign:"center", border: "2px solid"}}>
                                             <Typography style={{fontWeight:600}}>Description</Typography>
                                         </TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    <TableCell style={{height:150,textAlign:"center", border: "1.5px solid"}}>{post.description}</TableCell>
+                                    <TableCell style={{height:180,textAlign:"center", border: "2px solid"}}>{post.description}</TableCell>
                                 </TableBody>
                             </Table>
                         </TableContainer>
@@ -129,7 +129,7 @@ export default function PostDetailsDialog(props: PostDetailsDialogProps){
                     </Grid>
                     <Grid item xs={4} >
                         <div style={{marginTop:30, textAlign: "right", float:"right"}}>
-                            <TableContainer component={Paper} style={{width:350,backgroundColor:"transparent",marginRight:2, border: "2px solid"}}>
+                            <TableContainer component={Paper} style={{width:370,backgroundColor:"transparent",marginRight:2, border: "2px solid"}}>
                                 <Table >
                                     <TableHead>
                                         <TableRow >

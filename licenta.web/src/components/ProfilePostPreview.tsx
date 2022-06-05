@@ -1,5 +1,5 @@
 import { Post, PostUserDetails } from "./types";
-import { Paper, Grid, Typography, Button, Fab } from "@mui/material";
+import { Paper, Grid, Typography, Button, Fab, Card } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { DeletePost, UpdatePostActiveStatus } from "../features/slices/MarketplaceSlice";
 import { deletePostReducer, updatePostStatus }  from "../features/slices/UserSlice";
@@ -51,16 +51,15 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
     }
 
     return (
-        <Paper style={{ width: 800,maxWidth: 800,padding:0}} >
-            <Grid container spacing={2} style={{padding:0, marginBottom:20}}>
+        <Card style={{ width: 800,maxWidth: 800,padding:0}} >
+            <Grid container spacing={2} style={{padding:0, marginBottom:20,height:"fit-content"}}>
                 <Grid item xs={7} style={{padding:0,maxWidth:"450px"}} >
                     {showImages()}
                 </Grid>
-                <Grid item xs={5} style={{padding:0}}>
-                     
+                <Grid item xs={5} style={{padding:0,height:"inherit"}}>
                     <Grid item xs container direction="column">
-                        <Grid item xs={12}>
-                            <Fab size="medium" style={{float:"right",marginTop:"5%"}} onClick={() => {props.dialogOpen(props.post)}}>
+                        <Grid item xs={12} style={{padding:0}}>
+                            <Fab size="small" style={{float:"right",marginTop:20,marginLeft:50}} onClick={() => {props.dialogOpen(props.post)}}>
                                 <OpenInNewRoundedIcon/></Fab>
                         </Grid>
                         <Grid item xs style={{justifyContent:"center",textAlign:"center"}}>
@@ -70,13 +69,13 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
                             <Typography gutterBottom style={{fontSize:17}} component="div">
                                 {"Size " + props.post.item.size + " - " + props.post.item.condition}
                             </Typography>
-                            <div style={{marginTop:30,marginBottom:10,marginLeft:"10%"}}>
+                            <div style={{marginTop:10,marginLeft:"10%"}}>
                                 {showButtons()}
                             </div>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-        </Paper>
+        </Card>
     )
 }

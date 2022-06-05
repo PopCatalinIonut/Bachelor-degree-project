@@ -54,10 +54,12 @@ const theme = createTheme ({
       MuiMenuItem:{
         styleOverrides:{
           root:{
-            height:"30px"
-          }
-        }
-      },
+            height:"30px",
+            "&.Mui-selected": {
+              backgroundColor: "#4C0078",
+              "&.Mui-focusVisible": { background: "#4C0099" }
+            }
+      },selected:{background:"red"}}},
       MuiFab:{
         variants:[{
           props: { size: 'large' },

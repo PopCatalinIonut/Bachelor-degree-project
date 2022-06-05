@@ -41,9 +41,9 @@ export default function MarketplacePostPreview (props: MarketplacePostPreviewPro
                     </Fab>
                 </div>
             </div> 
-            <div style={{width:"inherit",height:"fit-content"}}>
-            <Grid item xs={12} sm container style={{minHeight:"500px",width:"350px"}}>
-                    <ButtonBase style={{width:"inherit",height:"25%",alignItems:"normal"}} onClick={handleOpenDialog}>  
+            <div style={{width:"inherit",minHeight:"130px",maxHeight:"fit-content"}}>
+            <Grid item xs={12} sm container style={{minHeight:"130px",width:"350px",maxHeight:"150px",height:"fit-content"}}>
+                    <ButtonBase style={{width:"inherit",height:"30%",alignItems:"normal"}} onClick={handleOpenDialog}>  
                     <Grid item xs container direction="column" >
                             <Grid item xs >
                                 <Typography gutterBottom style={{fontWeight:600}} component="div">

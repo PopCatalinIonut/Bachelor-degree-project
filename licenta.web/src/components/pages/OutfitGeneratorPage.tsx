@@ -56,7 +56,7 @@ export default function OutfitGeneratorPage(){
 
         if(firstOpen !== 0 )  {
             if(succes === false && selectedItem.post === null && containsElements === false)
-                return (<div>
+                return (<div style={{paddingLeft:20,paddingRight:20}}>
                             <Typography style={{fontWeight:900}}> We couln't find an outfit matching your criteria! </Typography>
                             <Typography style={{fontWeight:900}}> Try removing some filters. </Typography>
                             <ErrorOutlineOutlinedIcon style={{height:150,width:150}}/>
@@ -77,7 +77,7 @@ export default function OutfitGeneratorPage(){
     }
     return ( <div style={{textAlign:"center",height:"95vh"}}>
             <Grid container style={{textAlign:"center",justifyContent:"center"}}>
-                <Grid item xs={7} container style={{borderLeft:"1px solid",borderTop:"1px solid",borderBottom:"1px solid",maxWidth:500,height:"inherit"}}>
+                <Grid item xs={7} container style={{borderLeft:"1px solid",borderTop:"1px solid",borderBottom:"1px solid",maxWidth:500,height:"inherit",minHeight:"90vh"}}>
                     <Grid item xs={12} style={{marginTop:"3%",display:"flex",textAlign:"center",justifyContent:"center"}}>
                         <Typography style={{paddingTop:15}}>Budget:</Typography>
                         <Input  startAdornment={<InputAdornment position="start">$</InputAdornment>}

@@ -2,7 +2,7 @@ import { HubConnection, HubConnectionBuilder } from "@microsoft/signalr";
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios from "axios";
 import { RootState } from "../../app/store"
-import { DisplayMessage, SendMessage } from "../../components/types";
+import { SendMessage } from "../../components/types";
 import { GetUserMessagesPayload, SetInitialMessageSliceStatePayload } from "../payloads";
 import { Conversation, ConversationResponse, DisplayMessageResponse } from "../types";
 
@@ -82,6 +82,9 @@ export const messageSlice = createSlice({
             sender:{id: message.sender.id, first_name: message.sender.firstName, last_name: message.sender.lastName},
           receiver:{id: message.receiver.id, first_name: message.receiver.firstName, last_name: action.payload.receiver.lastName}})
         })
+      },
+      setMessageSliceInitialized:(state, action: PayloadAction<boolean>) =>{
+          state.initialized = action.payload;
       }
     },
     extraReducers: builder => {
@@ -98,7 +101,8 @@ export const messageSlice = createSlice({
 
 export const {
   setInitialState,
-  addMessageToConversation
+  addMessageToConversation,
+  setMessageSliceInitialized
 } = messageSlice.actions;
     
 export const conversationsSelector = (state: RootState) => state.messageSlice.conversations;

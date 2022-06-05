@@ -22,8 +22,8 @@ export default function MarketplacePage(){
     const [searchInput, setSearchInput] = useState("");
     const [priceValue, setPriceValue] = useState("");
     let user = useAppSelector(userSelector)
+    
     let postList: Post[] = useAppSelector(marketplaceItemsSelector);
-
     const [postsToShow, setPostsToShow] = useState<Post[]>(postList);
     const fetchPosts = async () =>{
         const response = await dispatch(getAllPosts())
@@ -35,6 +35,7 @@ export default function MarketplacePage(){
         if(postList.length === 0)
             fetchPosts()
     },[]);
+
     const performQuery = async (queryString: string) => {
         /*
         postList.forEach(async (post) =>{

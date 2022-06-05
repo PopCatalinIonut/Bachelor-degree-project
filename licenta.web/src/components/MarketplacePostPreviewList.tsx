@@ -16,7 +16,7 @@ export default function MarketplacePostPreviewList(props: MarketplacePostPreview
     const handleDialogOpen = (post:Post) => {
         setDialogPost(
             <div >
-                <Dialog  fullWidth={true} maxWidth={false} style={{width:1200,position:"absolute",top:"5%",left:"10%"}} open={true} onClose={handleDialogClose}>
+                <Dialog  fullWidth={true} maxWidth={false} style={{width:1200,position:"absolute",top:"-4%",left:"12vw",height:"108vh"}} open={true} onClose={handleDialogClose}>
                     <PostDetailsDialog post={post} dialogClose={handleDialogClose}/>
                 </Dialog>
             </div>

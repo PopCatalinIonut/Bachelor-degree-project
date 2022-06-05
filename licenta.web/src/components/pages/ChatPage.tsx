@@ -77,7 +77,7 @@ export default function ChatPage(){
             return (<Grid item>
                 { conversations.map((rec) => {
                 return (<ButtonBase style={{width:"100%"}} onClick={() => {setCurrentRecipient(rec.recipient.id)}}>
-                    <Grid container style={{borderBottom:"1px solid"}}>
+                    <Grid container style={{borderBottom:"1px solid", backgroundColor: rec.recipient.id === currentRecipient ? "#CDC8C8" : "whitesmoke"}}>
                             <Grid item xs={6} style={{height:70, textAlign:"right",marginTop:"20px"}}>
                                 <PersonIcon style={{width:"50px", height:"50px"}}/>
                             </Grid>
