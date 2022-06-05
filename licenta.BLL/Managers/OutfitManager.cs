@@ -128,22 +128,21 @@ namespace licenta.BLL.Managers
                 switch (postType)
                 {
                     case "Footwear":
-                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, topPosts, pantsPosts, maximumPrice, outfit);
+                        Utils.Utils.GenerateOutfitWithStarter(post, topPosts, pantsPosts, maximumPrice, outfit);
                         break;
 
                     case "Pants":
-                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, topPosts, footwearPosts, maximumPrice, outfit);
+                        Utils.Utils.GenerateOutfitWithStarter(post, topPosts, footwearPosts, maximumPrice, outfit);
                         break;
 
                     case "Top":
-                        Utils.Utils.GenerateOutfitWithStarterBacktr(post, footwearPosts, pantsPosts, maximumPrice, outfit);
+                        Utils.Utils.GenerateOutfitWithStarter(post, footwearPosts, pantsPosts, maximumPrice, outfit);
                         break;
                 }
             }
             else {
                 var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
                 while (remaining.Contains(true)) {
-                    
                     var starter = random.Next(0, 3);
                     switch (starter)
                     {
@@ -198,7 +197,7 @@ namespace licenta.BLL.Managers
                     case "Footwear":
                     {
                         var item = footwearPostsCopy[random.Next(0, footwearPostsCopy.Count)];
-                        var pantsPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item, pantsPostsCopy,topPostsCopy, maximumPrice,outfit);
+                        var pantsPost = Utils.Utils.GenerateOutfitWithStarter(item, pantsPostsCopy,topPostsCopy, maximumPrice,outfit);
 
                         if (pantsPost) return true;
                         
@@ -210,7 +209,7 @@ namespace licenta.BLL.Managers
                     case "Pants" :
                     {
                         var item = pantsPostsCopy[random.Next(0, pantsPostsCopy.Count)];
-                        var footwearPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item,topPostsCopy, footwearPostsCopy,maximumPrice,outfit);
+                        var footwearPost = Utils.Utils.GenerateOutfitWithStarter(item,topPostsCopy, footwearPostsCopy,maximumPrice,outfit);
 
                         if (footwearPost) return true;
                         
@@ -223,7 +222,7 @@ namespace licenta.BLL.Managers
                     case "Top":
                     {
                         var item = topPostsCopy[random.Next(0, topPostsCopy.Count)];
-                        var pantsPost = Utils.Utils.GenerateOutfitWithStarterBacktr(item,footwearPostsCopy, pantsPostsCopy, maximumPrice,outfit);
+                        var pantsPost = Utils.Utils.GenerateOutfitWithStarter(item,footwearPostsCopy, pantsPostsCopy, maximumPrice,outfit);
 
                         if (pantsPost) return true;
                         

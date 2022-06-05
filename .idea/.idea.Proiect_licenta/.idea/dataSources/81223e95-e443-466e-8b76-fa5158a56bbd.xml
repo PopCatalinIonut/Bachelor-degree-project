@@ -1568,72 +1568,80 @@
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <foreign-key id="541" parent="479" name="FK_WishlistPosts_Users_UserId">
+    <foreign-key id="541" parent="479">
+      <ColNames>PostId</ColNames>
+      <OnDelete>cascade</OnDelete>
+      <OnUpdate>cascade</OnUpdate>
+      <RefColNames>Id</RefColNames>
+      <RefKeyName>PK_Posts</RefKeyName>
+      <RefTableName>Posts</RefTableName>
+    </foreign-key>
+    <foreign-key id="542" parent="479">
       <ColNames>UserId</ColNames>
       <OnDelete>cascade</OnDelete>
       <RefColNames>Id</RefColNames>
       <RefKeyName>PK_Users</RefKeyName>
       <RefTableName>Users</RefTableName>
     </foreign-key>
-    <index id="542" parent="479" name="sqlite_autoindex_WishlistPosts_1">
+    <index id="543" parent="479" name="sqlite_autoindex_WishlistPosts_1">
       <ColNames>PostId
 UserId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <index id="543" parent="479" name="IX_WishlistPosts_UserId">
+    <index id="544" parent="479" name="IX_WishlistPosts_UserId">
       <ColNames>UserId</ColNames>
     </index>
-    <key id="544" parent="479" name="PK_WishlistPosts">
+    <key id="545" parent="479" name="PK_WishlistPosts">
       <ColNames>PostId
 UserId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_WishlistPosts_1</UnderlyingIndexName>
     </key>
-    <column id="545" parent="480" name="MigrationId">
+    <column id="546" parent="480" name="MigrationId">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
     </column>
-    <column id="546" parent="480" name="ProductVersion">
+    <column id="547" parent="480" name="ProductVersion">
       <DataType>TEXT|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
     </column>
-    <index id="547" parent="480" name="sqlite_autoindex___EFMigrationsHistory_1">
+    <index id="548" parent="480" name="sqlite_autoindex___EFMigrationsHistory_1">
       <ColNames>MigrationId</ColNames>
       <NameSurrogate>1</NameSurrogate>
       <Unique>1</Unique>
     </index>
-    <key id="548" parent="480" name="PK___EFMigrationsHistory">
+    <key id="549" parent="480" name="PK___EFMigrationsHistory">
       <ColNames>MigrationId</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex___EFMigrationsHistory_1</UnderlyingIndexName>
     </key>
-    <column id="549" parent="481" name="type">
+    <column id="550" parent="481" name="type">
       <DataType>text|0s</DataType>
       <Position>1</Position>
     </column>
-    <column id="550" parent="481" name="name">
+    <column id="551" parent="481" name="name">
       <DataType>text|0s</DataType>
       <Position>2</Position>
     </column>
-    <column id="551" parent="481" name="tbl_name">
+    <column id="552" parent="481" name="tbl_name">
       <DataType>text|0s</DataType>
       <Position>3</Position>
     </column>
-    <column id="552" parent="481" name="rootpage">
+    <column id="553" parent="481" name="rootpage">
       <DataType>int|0s</DataType>
       <Position>4</Position>
     </column>
-    <column id="553" parent="481" name="sql">
+    <column id="554" parent="481" name="sql">
       <DataType>text|0s</DataType>
       <Position>5</Position>
     </column>
-    <column id="554" parent="482" name="name">
+    <column id="555" parent="482" name="name">
       <Position>1</Position>
     </column>
-    <column id="555" parent="482" name="seq">
+    <column id="556" parent="482" name="seq">
       <Position>2</Position>
     </column>
   </database-model>

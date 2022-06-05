@@ -45,8 +45,8 @@ namespace licenta.API.Controllers
                 {
                     var isReceiverLogged =
                         _chatHub.ConnectedClients.TryGetValue(added.Receiver.Id, out var receiverConnectionId);
-                    if(isReceiverLogged)
-                        await _chatHub.Clients.Client(receiverConnectionId).SendAsync("ReceiveMessage",added);
+                    if (isReceiverLogged)
+                        _chatHub.SendMessage(receiverConnectionId, "ReceiveMessage", added);
                     return added;
                 }
                 

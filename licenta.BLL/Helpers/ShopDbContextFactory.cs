@@ -22,15 +22,13 @@ namespace licenta.BLL.Helpers
                 .Build();
             
             var providers = config.Providers.AsEnumerable().ToList();
-            var key="SQLite";
             var connectionProvider = providers.First();
-            connectionProvider.TryGet(key, out var connectionString);
+            connectionProvider.TryGet("SQLite", out var connectionString);
             
             var optionsBuilder = new DbContextOptionsBuilder<ShopDbContext>();
             optionsBuilder.UseSqlite(connectionString);
             
             return new ShopDbContext(optionsBuilder.Options);
         }
-
     }
 }

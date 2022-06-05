@@ -154,7 +154,7 @@ namespace licenta.BLL.Utils
             return GetPostBySimilarityList(similarities, toCompareWith, price);
         }
 
-        public static bool GenerateOutfitWithStarterBacktr(Post starter, List<Post> toCompareWith1,
+        public static bool GenerateOutfitWithStarter(Post starter, List<Post> toCompareWith1,
             List<Post> toCompareWith2, double maximumPrice, Outfit outfit)
         {
             
@@ -185,10 +185,11 @@ namespace licenta.BLL.Utils
             
             var aboveLimit = similarities.Count(x => x.Value > 0.6);
             var random = new Random();
+            var toCompareWithSum = toCompareWith.Sum(x => x.Item.Price);
             while (similarities.Count > 0 && aboveLimit > 0)
             {
                 var post = similarities.ElementAt(random.Next(0, aboveLimit)).Key;
-                if (post.Item.Price + toCompareWith.Sum(x => x.Item.Price) <= maximumPrice)
+                if (post.Item.Price + toCompareWithSum <= maximumPrice)
                     return post;
 
                 similarities.Remove(post);
