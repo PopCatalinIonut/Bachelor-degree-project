@@ -4,31 +4,12 @@ namespace licenta.BLL.Models
 {
     public class Outfit
     {
-        public Dictionary<string,Post> Components = new Dictionary<string, Post>
+        public Dictionary<string, Post> Components = new()
         {
             ["Footwear"] = null,
             ["Pants"] = null,
             ["Top"] = null
         };
-
-        public Outfit(){}
-
-        public void AddPostToOutfit(Post post) {
-            switch (post.Item.Type) {
-                case "Footwear": Components["Footwear"] = post;
-                    break;
-                case "Clothing":
-                    switch (post.Item.Category) {
-                        case "Shorts" or "Pants":
-                            Components["Pants"] = post;
-                            break;
-                        case "Hoodies" or "T-Shirts" or "Sweatshirts":
-                            Components["Top"] = post;
-                            break;
-                    }
-                    break;
-            }
-        }
     }
 
     public class OutfitComponent

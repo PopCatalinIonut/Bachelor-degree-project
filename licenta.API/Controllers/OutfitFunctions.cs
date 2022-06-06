@@ -35,7 +35,7 @@ namespace licenta.API.Controllers
 
                 var data = JsonConvert.DeserializeObject<GenerateOutfitDto>(requestBody);
 
-                var outfit = _outfitManager.GenerateOutfit(data);
+                var outfit = _outfitManager.StartOutfitGenerator(data);
             
                 return outfit;
             }

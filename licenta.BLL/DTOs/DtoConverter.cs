@@ -91,7 +91,15 @@ namespace licenta.BLL.DTOs
         public static ReturnedOutfitDto ConvertOutfitToReturnedOutfitDto(Outfit outfit)
         {
             var components = outfit.Components
-                .Select(entry => new OutfitComponent(entry.Key, entry.Value)).ToList();
+                .Select(entry =>
+                {
+                    if (entry.Value == null)
+                        return new OutfitComponent(entry.Key, null);
+                    return new OutfitComponent(entry.Key, new Post(entry.Value.Id, new User(entry.Value.Seller.Id, entry.Value.Seller.FirstName,
+                            entry.Value.Seller.LastName), entry.Value.Item, entry.Value.Date, entry.Value.CityLocation,
+                        entry.Value.Description,
+                        entry.Value.IsActive));
+                }).ToList();
 
             return new ReturnedOutfitDto { Components = components };
         }

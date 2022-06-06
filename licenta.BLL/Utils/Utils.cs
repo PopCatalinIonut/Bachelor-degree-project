@@ -12,6 +12,7 @@ namespace licenta.BLL.Utils
         private static Dictionary<string,List<string>> ColorsDictionary { get; set; }
         private static Dictionary<string, int> ConditionDictionary { get; set; }
         private static Dictionary<string, int> ClothingSizes { get; set; }
+        
         public static ColorSchema CalculateItemColorSchema(List<string> colors)
         {
             var schema = new ColorSchema(colors);
@@ -50,10 +51,10 @@ namespace licenta.BLL.Utils
             var totalPointsAvailable = 90d;
 
             pointsOfSimilarity += 30 * CalculateItemTypesSimilarity(firstItem, secondItem);
-            if (firstItem.Genre == "Unisex" || secondItem.Genre == "Unisex")
-                pointsOfSimilarity += 10;
-            else if (firstItem.Genre == secondItem.Genre)
+            if (firstItem.Genre == secondItem.Genre)
                 pointsOfSimilarity += 15;
+            else if (firstItem.Genre == "Unisex" || secondItem.Genre == "Unisex")
+                pointsOfSimilarity += 10;
             pointsOfSimilarity += 45 * CalculateColorSchemaSimilarity(firstItem.ColorSchema, secondItem.ColorSchema);
             return pointsOfSimilarity/totalPointsAvailable;
         }
@@ -66,25 +67,19 @@ namespace licenta.BLL.Utils
             {
                 if (secondItem.Type == "Footwear")
                     (firstItem, secondItem) = (secondItem, firstItem);
-                
                 switch (firstItem.Category)
                 {
                     case "Boots":
                     {
-                        if (secondItem.Category is "Hoodies" or "Sweatshirt" or "Pants")
-                            pointsOfSimilarity += 15;
-                        else if (secondItem.Category is "T-Shirts")
-                            pointsOfSimilarity += 5;
+                        if (secondItem.Category is "Hoodies" or "Sweatshirt" or "Pants") pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "T-Shirts") pointsOfSimilarity += 5;
                         break;
                     }
                     case "Slides":
                     {
-                        if (secondItem.Category is "T-Shirts" or "Shorts")
-                            pointsOfSimilarity += 15;
-                        else if (secondItem.Category is "Sweatshirts")
-                            pointsOfSimilarity += 9;
-                        else if (secondItem.Category is "Hoodies" or "Pants")
-                            pointsOfSimilarity += 3;
+                        if (secondItem.Category is "T-Shirts" or "Shorts") pointsOfSimilarity += 15;
+                        else if (secondItem.Category is "Sweatshirts") pointsOfSimilarity += 9;
+                        else if (secondItem.Category is "Hoodies" or "Pants") pointsOfSimilarity += 3;
                         break;
                     }
                     case "Sneakers":
@@ -148,7 +143,7 @@ namespace licenta.BLL.Utils
             return similarities;
         }
 
-        private static Post CalculateDiffsAndPostForPost(List<Post> toCompareWith, List<Post> toPickFrom, double price)
+        private static Post CalculateSimilaritiesAndPostForPost(List<Post> toCompareWith, List<Post> toPickFrom, double price)
         {
             var similarities = CalculateSimilaritiesForPost(toCompareWith, toPickFrom);
             return GetPostBySimilarityList(similarities, toCompareWith, price);
@@ -164,7 +159,7 @@ namespace licenta.BLL.Utils
                 var secondItem = GetPostBySimilarityList(similarities, new List<Post>() { starter }, maximumPrice);
                 if (secondItem == null) return false;
 
-                var thirdItem = CalculateDiffsAndPostForPost(new List<Post>() { starter, secondItem }, toCompareWith2,
+                var thirdItem = CalculateSimilaritiesAndPostForPost(new List<Post>() { starter, secondItem }, toCompareWith2,
                     maximumPrice);
                 
                 if (thirdItem == null)
@@ -181,8 +176,7 @@ namespace licenta.BLL.Utils
         }
 
         private static Post GetPostBySimilarityList(Dictionary<Post, double> similarities, List<Post> toCompareWith, double maximumPrice)
-        { 
-            
+        {
             var aboveLimit = similarities.Count(x => x.Value > 0.6);
             var random = new Random();
             var toCompareWithSum = toCompareWith.Sum(x => x.Item.Price);
@@ -197,10 +191,11 @@ namespace licenta.BLL.Utils
             }
             return null;
         }
+        
         private static double CalculateColorSchemaSimilarity(ColorSchema firstSchema, ColorSchema secondSchema)
         {
             var pointsOfSimilarity = 0;
-            var totalPointsAvailable = 25d;
+            var totalPointsAvailable = 15d;
 
             if(firstSchema.Colors.Count > secondSchema.Colors.Count)
                 (firstSchema.Colors , secondSchema.Colors) = (secondSchema.Colors, firstSchema.Colors);

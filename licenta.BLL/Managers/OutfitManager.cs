@@ -17,30 +17,26 @@ namespace licenta.BLL.Managers
             _context = context;
         }
 
-        public ReturnedOutfitDto GenerateOutfit(GenerateOutfitDto data)
+        public ReturnedOutfitDto StartOutfitGenerator(GenerateOutfitDto data)
         {
             var outfit = new Outfit();
             
-            var allFootwear = _context.Posts.Where((x) => x.Item.Type == "Footwear" && 
-                 (x.Item.Category == "Sneakers" || x.Item.Category == "Slides" || x.Item.Category == "Boots") && x.IsActive == true)
+            var allFootwear = _context.Posts.Where((x) => x.Item.Type == "Footwear" && x.IsActive == true)
                 .Include(x => x.Item)
-                .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
-                .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
-                    x.Date, x.CityLocation, x.Description, x.IsActive)).ToList();
+                .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema).
+                Include(x => x.Seller).ToList();
             
             var allPants = _context.Posts
                 .Where((x) => x.Item.Type == "Clothing" && (x.Item.Category == "Shorts" || x.Item.Category == "Pants") && x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
-                .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
-                    x.Date, x.CityLocation, x.Description, x.IsActive)).ToList();
+                .Include(x => x.Seller).ToList();
             
             var allTops = _context.Posts.Where((x) => x.Item.Type == "Clothing" &&
                  (x.Item.Category == "Sweatshirts" || x.Item.Category == "Hoodies" || x.Item.Category == "T-Shirts") && x.IsActive == true)
                 .Include(x => x.Item)
                 .ThenInclude(item => item.Images).Include(x => x.Item.ColorSchema)
-                .Select(x => new Post(x.Id, new User(x.Seller.Id, x.Seller.FirstName, x.Seller.LastName), x.Item,
-                    x.Date, x.CityLocation, x.Description, x.IsActive)).ToList();
+                .Include(x => x.Seller).ToList();
             
             if (!string.IsNullOrEmpty(data.Season))
                 switch (data.Season)
@@ -113,123 +109,57 @@ namespace licenta.BLL.Managers
             .Include(x => x.Seller)
             .Include(x => x.Item.ColorSchema).FirstOrDefault();
 
-            CalculateOutfit(allFootwear,allPants,allTops,outfit,post,maximumPrice);
+            GenerateOutfit(allFootwear,allPants,allTops,outfit,post,maximumPrice);
             return DtoConverter.ConvertOutfitToReturnedOutfitDto(outfit);
         }
 
-        private static void CalculateOutfit(List<Post> footwearPosts, List<Post> pantsPosts,
-            List<Post> topPosts, Outfit outfit,Post post, double maximumPrice)
-        {
+        private static void GenerateOutfit(List<Post> footwearPosts, List<Post> pantsPosts, 
+            List<Post> topPosts, Outfit outfit,Post starterPost, double maximumPrice) {
             var random = new Random();
-            
-            if (post != null)
-            {
-                var postType = OutfitComponent.GetTypeOfItem(post.Item);
+            if (starterPost != null) {
+                var postType = OutfitComponent.GetTypeOfItem(starterPost.Item);
                 switch (postType)
                 {
                     case "Footwear":
-                        Utils.Utils.GenerateOutfitWithStarter(post, topPosts, pantsPosts, maximumPrice, outfit);
-                        break;
-
+                        Utils.Utils.GenerateOutfitWithStarter(starterPost, topPosts, pantsPosts, maximumPrice, outfit); break;
                     case "Pants":
-                        Utils.Utils.GenerateOutfitWithStarter(post, topPosts, footwearPosts, maximumPrice, outfit);
-                        break;
-
+                        Utils.Utils.GenerateOutfitWithStarter(starterPost, topPosts, footwearPosts, maximumPrice, outfit); break;
                     case "Top":
-                        Utils.Utils.GenerateOutfitWithStarter(post, footwearPosts, pantsPosts, maximumPrice, outfit);
-                        break;
+                        Utils.Utils.GenerateOutfitWithStarter(starterPost, footwearPosts, pantsPosts, maximumPrice, outfit); break;
                 }
             }
             else {
                 var remaining = new[]{footwearPosts.Count != 0,pantsPosts.Count != 0,topPosts.Count != 0};
-                while (remaining.Contains(true)) {
-                    var starter = random.Next(0, 3);
-                    switch (starter)
-                    {
-                        case 0 when footwearPosts.Count > 0:
-                        {
+                while (!remaining.Contains(false)) {
+                    var randomPicker = random.Next(0, 3);
+                    switch (randomPicker) {
+                        case 0 when footwearPosts.Count > 0: {
                             var item = footwearPosts[random.Next(0, footwearPosts.Count)];
-                            var succes = CalculatePosibilities(item,outfit,footwearPosts: footwearPosts, topPosts: topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                            var succes = Utils.Utils.GenerateOutfitWithStarter(item,pantsPosts,topPosts,maximumPrice,outfit);
                             if (succes) return;
                         
                             footwearPosts.Remove(item);
                             if (footwearPosts.Count == 0) remaining[0] = false;
                             break;
                         }
-                        case 1 when pantsPosts.Count > 0:
-                        {
+                        case 1 when pantsPosts.Count > 0: {
                             var item = pantsPosts[random.Next(0, pantsPosts.Count)];
-                            var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, topPosts:topPosts, pantsPosts:pantsPosts,maximumPrice:maximumPrice);
+                            var succes = Utils.Utils.GenerateOutfitWithStarter(item,footwearPosts,topPosts,maximumPrice,outfit);
                             if (succes) return;
                         
                             pantsPosts.Remove(item);
                             if (pantsPosts.Count == 0) remaining[1] = false;
                             break;
                         }
-                        case 2 when topPosts.Count > 0:
-                        {
+                        case 2 when topPosts.Count > 0: {
                             var item = topPosts[random.Next(0, topPosts.Count)];
-                            var succes = CalculatePosibilities(item,outfit, footwearPosts: footwearPosts, pantsPosts:pantsPosts, topPosts:topPosts,maximumPrice:maximumPrice);
+                            var succes = Utils.Utils.GenerateOutfitWithStarter(item,pantsPosts,footwearPosts,maximumPrice,outfit);
                             if (succes) return;
                         
                             topPosts.Remove(item);
                             if (topPosts.Count == 0) remaining[2] = false;
                             break;
                         }
-                    }
-                }
-            }
-        }
-        private static bool CalculatePosibilities(Post post, Outfit outfit, List<Post> footwearPosts,
-            List<Post> pantsPosts , List<Post> topPosts, double maximumPrice)
-        {
-            var postType = OutfitComponent.GetTypeOfItem(post.Item);
-
-            var pantsPostsCopy = new List<Post>(pantsPosts);
-            var footwearPostsCopy = new List<Post>(footwearPosts);
-            var topPostsCopy = new List<Post>(topPosts);
-            var random = new Random();
-            while (true)
-            {
-                if (pantsPostsCopy.Count == 0 || footwearPostsCopy.Count == 0 || topPostsCopy.Count == 0) return false;
-                switch (postType)
-                {
-                    case "Footwear":
-                    {
-                        var item = footwearPostsCopy[random.Next(0, footwearPostsCopy.Count)];
-                        var pantsPost = Utils.Utils.GenerateOutfitWithStarter(item, pantsPostsCopy,topPostsCopy, maximumPrice,outfit);
-
-                        if (pantsPost) return true;
-                        
-                        footwearPostsCopy.Remove(item);
-                        if (footwearPostsCopy.Count == 0) return false;
-                        
-                        break;
-                    }
-                    case "Pants" :
-                    {
-                        var item = pantsPostsCopy[random.Next(0, pantsPostsCopy.Count)];
-                        var footwearPost = Utils.Utils.GenerateOutfitWithStarter(item,topPostsCopy, footwearPostsCopy,maximumPrice,outfit);
-
-                        if (footwearPost) return true;
-                        
-                        pantsPostsCopy.Remove(item);
-                        if (pantsPostsCopy.Count == 0) return false; 
-                        
-                        break;
-
-                    }
-                    case "Top":
-                    {
-                        var item = topPostsCopy[random.Next(0, topPostsCopy.Count)];
-                        var pantsPost = Utils.Utils.GenerateOutfitWithStarter(item,footwearPostsCopy, pantsPostsCopy, maximumPrice,outfit);
-
-                        if (pantsPost) return true;
-                        
-                        topPostsCopy.Remove(item);
-                        if (footwearPostsCopy.Count == 0) return false;
-                        
-                        break;
                     }
                 }
             }
