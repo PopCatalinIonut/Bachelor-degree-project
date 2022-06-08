@@ -53,19 +53,34 @@ export default function ChatPage(){
     const currentConversation = useAppSelector(currentConversationSelector(currentRecipient));
     const [message, setMessage] = useState("")
 
-    const connection = useAppSelector(chatHubConnection);
     const isInitialized = useAppSelector(isMessageSliceInitialized);
 
     const classes = useStyles();
+
+    const connection = useAppSelector(chatHubConnection);
     useEffect(() => {
         if(isInitialized === false)
             fetchConversations()
         if(connection)
-        connection.on('ReceiveMessage', (message: DisplayMessageResponse) => {
-            dispatch(addMessageToConversation(message))
-            scrollToBottom();
+            connection.on('ReceiveMessage', (message: DisplayMessageResponse) => {
+                dispatch(addMessageToConversation(message))
+                scrollToBottom();
         });
     },[]);
+    const fetchConversations = async () =>{
+        try{
+            connection.start().then(() => console.log("connected"))
+                            .then(() => getConnectionId() )
+        }catch (err) {
+            console.log(err)
+        } 
+    }
+    const getConnectionId = () => {
+        connection.invoke('getconnectionid').then(async (data) => {
+          await dispatch(getUserMessages({userId: user.id, connectionId: data}))
+        });
+        return "";
+    }
 
     const messagesEndRef = useRef<null | HTMLDivElement>(null);
     const scrollToBottom = () => {
@@ -112,25 +127,6 @@ export default function ChatPage(){
              </Grid>
              </Box>)
     }
-
-    const fetchConversations = async () =>{
-        try{
-            let connectionId = "";
-            connection.start().then(x => console.log("connected"))
-                            .then(() => getConnectionId() )
-                            console.log(connectionId);
-            
-        }catch (err) {
-            console.log(err)
-        } 
-    }
-    const getConnectionId = () => {
-        connection.invoke('getconnectionid')
-        .then(async (data) => {
-          await dispatch(getUserMessages({userId: user.id, connectionId: data}))
-        });
-        return "";
-      }
     const handleSendMessage = async () =>{
         const response = await dispatch(sendMessage({senderId:user.id, receiverId: currentConversation?.recipient.id || 0, text: message}))
         let responseMessage = response.payload as DisplayMessage

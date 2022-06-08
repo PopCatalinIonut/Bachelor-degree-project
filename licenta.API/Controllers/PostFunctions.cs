@@ -60,7 +60,7 @@ namespace licenta.API.Controllers
         }
         
         [HttpDelete]
-        [Route("wishlist/post={postId}&user={userId}")]
+        [Route("/wishlist/post={postId}&user={userId}")]
         public ActionResult<Post> RemovePostFromWishlist(int postId, int userId)
         {
             try

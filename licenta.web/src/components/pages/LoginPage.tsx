@@ -52,15 +52,11 @@ export default function LoginPage() {
             </div>
             </Grid>
             <Grid item xs={12}>
-              <div>
                 <Button type="button" variant="contained" style={{display: "inline-grid",marginTop:"20px"}}
-                        color="primary" size="large" onClick={handleLogin}>
-                        Log in
-                </Button>
-              </div>
+                        color="primary" size="large" onClick={handleLogin}> Log in </Button>
               <Typography style={{marginTop:"20px",marginBottom:"2%", fontWeight:600}}>Don't have an account?
                       <Button type="button" variant="contained" color="primary" style={{ marginLeft:"20px"}}
-                      onClick={handleSignup}> Sign up</Button>
+                      onClick={handleSignup}> Sign up </Button>
               </Typography>
             </Grid>
           </Grid>

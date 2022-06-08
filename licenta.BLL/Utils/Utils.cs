@@ -154,7 +154,7 @@ namespace licenta.BLL.Utils
         {
             
             var similarities = CalculateSimilaritiesForPost(new List<Post>() { starter }, toCompareWith1);
-            while (similarities.First().Value > 0.6)
+            while (similarities.First().Value >= 0.6)
             {
                 var secondItem = GetPostBySimilarityList(similarities, new List<Post>() { starter }, maximumPrice);
                 if (secondItem == null) return false;
@@ -177,7 +177,7 @@ namespace licenta.BLL.Utils
 
         private static Post GetPostBySimilarityList(Dictionary<Post, double> similarities, List<Post> toCompareWith, double maximumPrice)
         {
-            var aboveLimit = similarities.Count(x => x.Value > 0.6);
+            var aboveLimit = similarities.Count(x => x.Value >= 0.6);
             var random = new Random();
             var toCompareWithSum = toCompareWith.Sum(x => x.Item.Price);
             while (similarities.Count > 0 && aboveLimit > 0)

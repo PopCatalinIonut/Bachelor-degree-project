@@ -1,5 +1,5 @@
 import { Post, PostUserDetails } from "./types";
-import { Paper, Grid, Typography, Button, Fab, Card } from "@mui/material";
+import { Grid, Typography, Button, Fab, Card } from "@mui/material";
 import { useAppDispatch } from "../app/hooks";
 import { DeletePost, UpdatePostActiveStatus } from "../features/slices/MarketplaceSlice";
 import { deletePostReducer, updatePostStatus }  from "../features/slices/UserSlice";
@@ -51,8 +51,8 @@ export default  function ProfilePostItemPreview (props: ProfilePostPreviewProps)
     }
 
     return (
-        <Card style={{ width: 800,maxWidth: 800,padding:0}} >
-            <Grid container spacing={2} style={{padding:0, marginBottom:20,height:"fit-content"}}>
+        <Card style={{ width: 800,maxWidth: 800,padding:0,height:"fit-content"}} >
+            <Grid container spacing={2} style={{padding:0,height:"fit-content"}}>
                 <Grid item xs={7} style={{padding:0,maxWidth:"450px"}} >
                     {showImages()}
                 </Grid>

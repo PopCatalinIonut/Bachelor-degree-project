@@ -10,15 +10,16 @@ export interface MessagesConfigurationState {
     conversations: Conversation[];
     initialized: boolean;
     chatHubConnection: HubConnection;
-  }
-  const initialState: MessagesConfigurationState = {
+}
+
+const initialState: MessagesConfigurationState = {
     initialized: false,
     conversations: [],
     chatHubConnection: new HubConnectionBuilder()
                       .withUrl('https://localhost:5001/hubs/chat')
                       .withAutomaticReconnect()
                       .build()
-  };
+};
 
   export const getUserMessages = createAsyncThunk(
     "features/MessageSlice/getUserMessages",

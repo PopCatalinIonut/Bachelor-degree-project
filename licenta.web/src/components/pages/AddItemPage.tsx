@@ -9,6 +9,7 @@ import { addPostReducer, userSelector } from "../../features/slices/UserSlice";
 import { Post } from "../types";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { PostResponse } from "../../features/types";
+import { useNavigate } from "react-router-dom";
 const styles = {
 
     typographyFormat: {
@@ -41,6 +42,7 @@ export default function AddItemPage() {
     const [brandValue, setBrandValue] = useState("");
     const user = useAppSelector(userSelector)
 
+    let navigate = useNavigate();
     const convertAllImagesToBase64 =  async () =>{
         var encodedImages: string[]= [];
         for (const image of images) {
@@ -102,6 +104,8 @@ export default function AddItemPage() {
                 const post = response.payload as PostResponse
                 setSnackOpened("Item has been successfuly posted!");
                 dispatch(addPostReducer(post))
+                setTimeout( () => { navigate("/home",{state:{key:"profile"}}) },3000)
+                
                 }catch (err) {
                     setSnackOpened(err as string)
             } 

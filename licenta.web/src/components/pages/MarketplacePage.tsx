@@ -55,29 +55,26 @@ export default function MarketplacePage(){
             "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
         }, data: [post.id]});
        })*/
-       var newPostsToShow: Post[] = [];
+        var newPostsToShow: Post[] = [];
         const response = await axios.post("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/search",{
-           "query": queryString,
-            "page":{
-                "size":300
-            }
+            "query": queryString,
+            "page":{ "size":300 }
         },
         {headers:{
             "Content-Type": "application/json",
             "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
         }});
-       var results = response.data.results;
-       for(let i=0;i<results.length;i++){
-        newPostsToShow.push({
-            id: results[i].id.raw,
-            item: JSON.parse(results[i].item.raw),
-            seller: JSON.parse(results[i].seller.raw),
-            description: results[i].description.raw,
-            location: results[i].location.raw,
-            is_active: results[i].is_active.raw
-        })
-       }
-       console.log(results)
+        var results = response.data.results;
+        for(let i=0;i<results.length;i++){
+            newPostsToShow.push({
+                id: results[i].id.raw,
+                item: JSON.parse(results[i].item.raw),
+                seller: JSON.parse(results[i].seller.raw),
+                description: results[i].description.raw,
+                location: results[i].location.raw,
+                is_active: results[i].is_active.raw
+            })
+        }
         setPostsToShow(newPostsToShow)
     };
 

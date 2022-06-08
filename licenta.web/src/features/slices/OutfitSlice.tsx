@@ -37,7 +37,8 @@ export const generateOutfit = createAsyncThunk(
         );
         var outfit: Outfit = {components:[]};
         response.data.components.forEach((comp: OutfitComponentResponse) =>{ 
-          outfit.components.push({type: comp.type,post: comp.post === null ? null : convertFromPostResponseToPost(comp.post)})})
+          outfit.components.push({type: comp.type,post: comp.post === null ?
+             null : convertFromPostResponseToPost(comp.post)})})
         return outfit;
       }
       catch (err: any) {

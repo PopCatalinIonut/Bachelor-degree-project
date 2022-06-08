@@ -35,7 +35,8 @@ export const UpdatePostActiveStatus = createAsyncThunk(
   "features/MarketplaceSlice/updatePostActiveStatus",
   async(props : UpdatePostActiveStatusPayload, {rejectWithValue}) =>{
     try{
-         const response = await axios.patch<Post>("http://localhost:5000/posts/post=".concat(props.postId.toString().concat("&status=")+props.status.toString()));
+         const response = await axios.patch<Post>("http://localhost:5000/posts/post="
+         .concat(props.postId.toString().concat("&status=")+props.status.toString()));
          console.log(response);
       return "Ok";
     }catch (err: any) {
@@ -48,8 +49,14 @@ export const DeletePost = createAsyncThunk(
   "features/MarketplaceSlice/deletePost",
   async(props : number, {rejectWithValue}) =>{
     try{
-         const response = await axios.delete<Post>("http://localhost:5000/posts/".concat(props.toString()));
-         console.log(response);
+         await axios.delete<Post>("http://localhost:5000/posts/"
+         .concat(props.toString()));
+         const response = await axios.delete("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/documents",
+         {headers:{
+             "Content-Type": "application/json",
+             "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
+         }, data: [props]});
+         console.log(response)
       return "Ok";
     }catch (err: any) {
       return rejectWithValue(err.response.data);
@@ -76,8 +83,8 @@ export const RemoveItemFromWishlist = createAsyncThunk(
   "features/MarketplaceSlice/removeItemFromWishlist",
   async(props : AddItemToWishlistPayload, {rejectWithValue}) =>{
     try{
-         await axios.delete<AddItemToWishlistPayload>("http://localhost:5000/posts/wishlist/post/"
-         .concat(props.postId.toString()).concat("/user/").concat(props.userId.toString()));
+         await axios.delete<AddItemToWishlistPayload>("http://localhost:5000/wishlist/post="
+         .concat(props.postId.toString()).concat("&user=").concat(props.userId.toString()));
       return "Ok";
     }catch (err: any) {
       return rejectWithValue(err.response.data);
@@ -89,7 +96,7 @@ export const addItemToMarketplace = createAsyncThunk(
   "features/MarketplaceSlice/addItemToMarketplace",
   async (post: PostEncoded, { rejectWithValue }) => {
     try{ 
-       const response = await axios.post<Post>("http://localhost:5000/posts",
+       const response = await axios.post<PostResponse>("http://localhost:5000/posts",
        { item: {
           name: post.item.name,
           brand: post.item.brand,
@@ -107,11 +114,16 @@ export const addItemToMarketplace = createAsyncThunk(
       description: post.description,
       userId : post.userId
     });    
-    console.log(response.data.id !== null)
+    const response2 = await axios.post<Post>("https://host-gbik97.api.swiftype.com/api/as/v1/engines/bachelor-degree-engine/documents",response.data,
+    {headers:{
+        "Content-Type": "application/json",
+        "Authorization": "Bearer private-educwvi3qmjr4ssv6vaah5f8"
+    }});
+    console.log(response2);
       return response.data;
     }
     catch (err: any) {
-    return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
